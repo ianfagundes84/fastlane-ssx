@@ -1,0 +1,12 @@
+# git_url("https://github.com/ianfagundes84/whiteLabel.git")
+# storage_mode("git")
+# type("development") 
+# username("ianfag@icloud.com")
+# readonly(true)
+
+git_url("https://github.com/ianfagundes84/whiteLabel.git")
+
+storage_mode("git")
+type(ENV["MATCH_TYPE"])
+username(ENV["FASTLANE_USER"])
+readonly(ENV["MATCH_READONLY"] == "true")

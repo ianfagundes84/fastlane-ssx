@@ -1,0 +1,62 @@
+# This file contains the fastlane.tools configuration
+
+#automation for CI part
+require 'base64'
+require 'tempfile'
+
+fastlane_session_base64 = ENV["FASTLANE_SESSION_BASE64"]
+
+if ENV["FASTLANE_SESSION_BASE64"].nil?
+  puts "Error: FASTLANE_SESSION_BASE64 environment variable is not set."
+else
+  decoded_fastlane_session = Base64.decode64(ENV["FASTLANE_SESSION_BASE64"])
+  temp_fastlane_session_file = Tempfile.new('fastlane_session')
+  temp_fastlane_session_file.write(decoded_fastlane_session)
+  temp_fastlane_session_file.rewind
+
+ENV["SPACESHIP_SESSION_FILE"] = temp_fastlane_session_file.path
+end
+
+#Fastfile scope
+default_platform(:ios)
+
+import("./extensions/Building.rb")
+import("./extensions/Signing.rb")
+import("./extensions/TestFlight.rb")
+
+require_relative 'values/bundle_ids'
+
+platform :ios do
+
+# Ask a name for a new app on App Store Connect
+  desc "Ask a name for the new app"
+  lane :create_new_app do
+    app_name = UI.input("What is the name of the new app?")
+    app_bundle = UI.input("What is the bundle ID of the new app?")
+    app_teamName = UI.input("What is the team name?")
+    create_app(app_name, app_bundle, app_teamName)
+  end
+
+# Define a lane to create a new app on App Store Connect
+  desc "Create a new app on App Store Connect"
+  def create_app(app_name, app_bundle, app_teamName)
+    produce(
+      username: "ianfag@icloud.com",
+      app_identifier: app_bundle,
+      app_name: app_name,
+      language: "pt-BR",
+      skip_itc: false,
+      team_name: app_teamName
+    )
+  end
+  
+  desc "Authenticate with AppStoreConnect" 
+  lane :auth_app_store_connect do 
+      app_store_connect_api_key(
+        key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
+        issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+        key_content: ENV["APP_STORE_CONNECT_API_KEY_KEY"],
+        is_key_content_base64: true,
+        in_house: false)
+  end
+end
