@@ -5,14 +5,18 @@ Dotenv.load
 
 platform :ios do
   desc "Fetch the Development, Distribution Certificates"
-  lane :fetch_certificates do
-    fetch_certificates("whitelabel", [Identifiers::WHITELABELSSX_DEV]) 
+  lane :fetch_certificates do |options|
+    target_name = options[:target_name]
+    fetch_certificates(target_name, [Identifiers::WHITELABELSSX_DEV]) # Whitelabel     
+    fetch_certificates(target_name, [Identifiers::WHITELABELSSX_DEV_COPY]) # Whitelabel copy
   end
 
   desc "Update profiles on apple developer portal when adding new devices"
-  lane :update_profiles do
+  lane :update_profiles do |options|
+    target_name = options[:target_name]
     if prompt(text: "Ao realizar esse procedimento, os profiles atuais serão revogados e substituídos, deseja continuar?", boolean: true)
-      update_profiles("whitelabel", [Identifiers::WHITELABELSSX_DEV]) 
+      update_profiles(target_name, [Identifiers::WHITELABELSSX_DEV])
+      update_profiles(target_name, [Identifiers::WHITELABELSSX_DEV_COPY]) 
     end
   end
 

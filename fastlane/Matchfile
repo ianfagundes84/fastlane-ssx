@@ -4,9 +4,4 @@
 # username("ianfag@icloud.com")
 # readonly(true)
 
-git_url("https://github.com/ianfagundes84/whiteLabel.git")
-
-storage_mode("git")
-type(ENV["MATCH_TYPE"])
-username(ENV["FASTLANE_USER"])
-readonly(ENV["MATCH_READONLY"] == "true")
+git_url("https://#{ENV['GIT_USERNAME']}:#{ENV['GIT_PASSWORD']}@github.com/ianfagundes84/whiteLabel.git")

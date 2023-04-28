@@ -4,10 +4,13 @@ require_relative '../values/configs'
 platform :ios do
   desc "Build IPA for config"
   lane :build_ipa do |options|
-    p options
     name = options[:config]
     UI.user_error!("Invalid config: #{name}") unless config = getConfig(name)
     build_adhoc_ipa(config)
+  end
+
+  def build_adhoc_ipa(config)
+    build_ipa(config, "ad-hoc", config.profile_adhoc)
   end
 
   def build_appstore_ipa(config)
@@ -15,9 +18,13 @@ platform :ios do
   end
 
   def build_ipa(config, method, profile)
-    project = "App/App.xcodeproj"
+    project = "/Users/ianfagundes/Desktop/workspace/WhiteLabel/WhiteLabel.xcodeproj"
+    puts "project: #{project}"
+    puts "File exists? #{File.exist?(project)}"
     version_number = get_version_number(xcodeproj: project, target: config.target)
+    puts "Version Number is?: #{version_number}"
     file_name = "#{config.scheme} (#{version_number} - #{$build_number}).ipa"
+    puts "config.scheme?: #{config.scheme}"
 
     gym(
       scheme: config.scheme,
