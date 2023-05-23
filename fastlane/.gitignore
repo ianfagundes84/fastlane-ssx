@@ -1,0 +1,8 @@
+*.resolved
+*.xcuserstate
+*.xcworkspacedata
+*.plist
+*.DS_Store
+*.pyc
+*.swp
+*.ext1 *.ext2 *.ext3
