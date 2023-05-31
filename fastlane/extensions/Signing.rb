@@ -21,13 +21,13 @@ platform :ios do
   end
 
   def fetch_certificates(branch, bundle_ids)
-    match(git_branch: branch, app_identifier: bundle_ids, type: "development", api_key_path: "/Users/ianfagundes/Desktop/workspace/WhiteLabel/fastlane/extensions/AppStoreConnectAPIKey.json")
-    match(git_branch: branch, app_identifier: bundle_ids, type: "appstore", api_key_path: "/Users/ianfagundes/Desktop/workspace/WhiteLabel/fastlane/extensions/AppStoreConnectAPIKey.json")
+    match(git_branch: branch, app_identifier: bundle_ids, type: "development", api_key_path: ENV["APPSTORECONNECT_API_KEY_PATH"])
+    match(git_branch: branch, app_identifier: bundle_ids, type: "appstore", api_key_path: ENV["APPSTORECONNECT_API_KEY_PATH"])
   end
 
   def update_profiles(branch, bundle_ids)
     auth_app_store_connect()
-    match(readonly: false, force_for_new_devices: true, git_branch: branch, app_identifier: bundle_ids, type: "development", api_key_path: "/Users/ianfagundes/Desktop/workspace/WhiteLabel/fastlane/extensions/AppStoreConnectAPIKey.json")
-    match(readonly: false, git_branch: branch, app_identifier: bundle_ids, type: "appstore", api_key_path: "/Users/ianfagundes/Desktop/workspace/WhiteLabel/fastlane/extensions/AppStoreConnectAPIKey.json")
+    match(readonly: false, force_for_new_devices: true, git_branch: branch, app_identifier: bundle_ids, type: "development", api_key_path: ENV["APPSTORECONNECT_API_KEY_PATH"])
+    match(readonly: false, git_branch: branch, app_identifier: bundle_ids, type: "appstore", api_key_path: ENV["APPSTORECONNECT_API_KEY_PATH"])
   end
 end
