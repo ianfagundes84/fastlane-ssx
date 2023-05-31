@@ -32,7 +32,7 @@ end
 def recreate_api_key_file
     api_key_json = ENV["APPSTORECONNECT_API_KEY_JSON"]
     api_key_hash = JSON.parse(api_key_json)
-    file_path = File.expand_path("AppStoreConnectAPIKey.json") # Use full path
+    file_path = File.expand_path("AppStoreConnectAPIKey.json") 
     File.open(file_path, "w") do |f|
         f.write(api_key_hash.to_json)
     end
