@@ -1,6 +1,9 @@
 # Fastfile dedicated to signing configuration of iOS projects
 require_relative '../values/bundle_ids'
 require 'dotenv'
+require 'json'
+require 'tempfile'
+
 Dotenv.load
 
 platform :ios do
