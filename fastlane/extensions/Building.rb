@@ -1,4 +1,3 @@
-# Fastfile dedicated to signing configuration of iOS projects
 require_relative '../values/configs'
 
 platform :ios do
@@ -18,7 +17,7 @@ platform :ios do
   end
 
   def build_ipa(config, method, profile)
-    project = "/Users/ianfagundes/Desktop/workspace/WhiteLabel/WhiteLabel.xcodeproj"
+    project = ENV['XCODE_PROJECT_PATH'] || "/Users/ianfagundes/Desktop/workspace/WhiteLabel/WhiteLabel.xcodeproj"
     puts "project: #{project}"
     puts "File exists? #{File.exist?(project)}"
     version_number = get_version_number(xcodeproj: project, target: config.target)
@@ -35,6 +34,6 @@ platform :ios do
       },
       output_directory: "output/ipa",
       output_name: file_name
-    ) 
+    )
   end
 end
