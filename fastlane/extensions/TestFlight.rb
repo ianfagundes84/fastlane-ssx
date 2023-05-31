@@ -14,7 +14,7 @@ platform :ios do
     auth_app_store_connect()
 
     $build_number = latest_testflight_build_number(app_identifier: config.id) + 1
-    increment_build_number(xcodeproj: "/Users/ianfagundes/Desktop/workspace/WhiteLabel/WhiteLabel.xcodeproj", build_number: $build_number)
+    increment_build_number(xcodeproj: ENV["XCODE_PROJECT_PATH"], build_number: $build_number)
 
     build_appstore_ipa(config)
     testflight(
