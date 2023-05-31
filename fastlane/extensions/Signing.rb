@@ -24,16 +24,18 @@ platform :ios do
   end
 
   def fetch_certificates(branch, bundle_ids)
-    recreate_api_key_file
-    match(git_branch: branch, app_identifier: bundle_ids, type: "development", api_key_path: "AppStoreConnectAPIKey.json")
-    match(git_branch: branch, app_identifier: bundle_ids, type: "appstore", api_key_path: "AppStoreConnectAPIKey.json")
-  end
+    api_key_path = recreate_api_key_file
+    match(git_branch: branch, app_identifier: bundle_ids, type: "development", api_key_path: api_key_path)
+    match(git_branch: branch, app_identifier: bundle_ids, type: "appstore", api_key_path: api_key_path)
+end
   
-  def recreate_api_key_file
+def recreate_api_key_file
     api_key_json = ENV["APPSTORECONNECT_API_KEY_JSON"]
     api_key_hash = JSON.parse(api_key_json)
-    File.open("AppStoreConnectAPIKey.json","w") do |f|
-      f.write(api_key_hash.to_json)
+    file_path = File.expand_path("AppStoreConnectAPIKey.json") # Use full path
+    File.open(file_path, "w") do |f|
+        f.write(api_key_hash.to_json)
     end
-  end
+    return file_path
+end
 end
