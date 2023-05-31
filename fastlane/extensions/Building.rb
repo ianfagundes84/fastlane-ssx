@@ -17,7 +17,7 @@ platform :ios do
   end
 
   def build_ipa(config, method, profile)
-    project = ENV['XCODE_PROJECT_PATH'] || "./WhiteLabel.xcodeproj"
+    project = ENV['XCODE_PROJECT_PATH'] || "WhiteLabel/WhiteLabel.xcodeproj"
     puts "project: #{project}"
     puts "File exists? #{File.exist?(project)}"
     version_number = get_version_number(xcodeproj: project, target: config.target)
