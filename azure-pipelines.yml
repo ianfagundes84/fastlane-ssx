@@ -31,12 +31,18 @@ steps:
     fastlane ios fetch_certificates api_key_path:$(appstoreApiKey.secureFilePath)
   displayName: 'Run Fastlane to fetch certificates'
   workingDirectory: $(xcodeProjectPath)
+  env:
+    FASTLANE_USER: $(FASTLANE_USER)
+    FASTLANE_PASSWORD: $(FASTLANE_PASSWORD)
   
 - script: |
     sudo gem install fastlane -NV
     fastlane ios release_alpha config:WHITELABELSSX_DEV
   displayName: 'Run Fastlane to release alpha'
   workingDirectory: $(xcodeProjectPath)
+  env:
+    FASTLANE_USER: $(FASTLANE_USER)
+    FASTLANE_PASSWORD: $(FASTLANE_PASSWORD)
 
 - task: Xcode@5
   inputs:
