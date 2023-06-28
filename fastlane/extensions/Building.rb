@@ -18,12 +18,12 @@ platform :ios do
 
   def build_ipa(config, method, profile)
     project = ENV['XCODE_PROJECT_PATH'] || "WhiteLabel/WhiteLabel.xcodeproj"
-    UI.message "project: #{project}"
-    UI.message "File exists? #{File.exist?(project)}"
+    # UI.message "project: #{project}"
+    # UI.message "File exists? #{File.exist?(project)}"
     version_number = get_version_number(xcodeproj: project, target: config.target)
-    UI.message "Version Number is?: #{version_number}"
+    # UI.message "Version Number is?: #{version_number}"
     file_name = "#{config.scheme} (#{version_number} - #{$build_number}).ipa"
-    UI.message "config.scheme?: #{config.scheme}"
+    # UI.message "config.scheme?: #{config.scheme}"
 
     gym(
       scheme: config.scheme,

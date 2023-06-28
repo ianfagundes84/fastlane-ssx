@@ -55,7 +55,7 @@ platform :ios do
 
   private_lane :ensure_app_specific_password_exists do
     unless ENV["FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD"]
-      UI.user_error!("No FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD environment variable found. Please set it up.")
+      # UI.user_error!("No FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD environment variable found. Please set it up.")
     end
   end
 end

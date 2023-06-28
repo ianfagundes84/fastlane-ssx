@@ -4,7 +4,7 @@ platform :ios do
   desc "Release an Alpha version on TestFlight for config"
   lane :release_alpha do |options|
     name = options[:config]
-    UI.message "Validate name of the app: #{name}"
+    # UI.message "Validate name of the app: #{name}"
     raise "Invalid config: #{name}" unless config = getConfig(name)
     release_to_testflight(config)
   end
