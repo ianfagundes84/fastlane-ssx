@@ -1,19 +1,48 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
-- main
+- '*'
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'macOS-latest'
+
+variables:
+  scheme: 'WhiteLabel'
+  distributionMethod: 'development'
+  xcodeProjectPath: '$(Build.SourcesDirectory)/WhiteLabel.xcodeproj'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+- checkout: self
+
+- script: ls -R $(Build.SourcesDirectory)
+  displayName: 'Print directory structure'
+
+- task: InstallAppleCertificate@2
+  inputs:
+    certSecureFile: 'cert.p12'
+    certPwd: 'password'
+    keychain: 'temp'
+    deleteCert: true
+
+- task: InstallAppleProvisioningProfile@1
+  inputs:
+    provisioningProfileLocation: 'secureFiles'
+    provProfileSecureFile: 'profile.mobileprovision'
 
 - script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+    sudo gem install cocoapods
+    pod install
+  displayName: 'CocoaPods install'
+  workingDirectory: $(xcodeProjectPath)
+
+- task: Xcode@5
+  inputs:
+    actions: 'build'
+    scheme: $(scheme)
+    sdk: 'iphoneos'
+    configuration: 'Release'
+    xcodeVersion: 'default' 
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
+    artifactName: 'drop'
+    publishLocation: 'Container'
