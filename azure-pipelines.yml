@@ -12,6 +12,11 @@ variables:
 steps:
 - checkout: self
 
+- task: DownloadSecureFile@1
+  name: appstoreApiKey
+  inputs:
+    secureFile: 'AppStoreConnectAPIKey.json'
+
 - script: ls -R $(Build.SourcesDirectory)
   displayName: 'Print directory structure'
 
@@ -23,13 +28,15 @@ steps:
 
 - script: |
     sudo gem install fastlane -NV
-    fastlane ios fetch_certificates
+    fastlane ios fetch_certificates api_key_path:$(appstoreApiKey.secureFilePath)
   displayName: 'Run Fastlane to fetch certificates'
-
+  workingDirectory: $(xcodeProjectPath)
+  
 - script: |
     sudo gem install fastlane -NV
     fastlane ios release_alpha config:WHITELABELSSX_DEV
   displayName: 'Run Fastlane to release alpha'
+  workingDirectory: $(xcodeProjectPath)
 
 - task: Xcode@5
   inputs:
