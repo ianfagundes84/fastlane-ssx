@@ -39,6 +39,7 @@ end
 #     return file_path
 # end
 def recreate_api_key_file
+  puts "Current directory: #{Dir.pwd}"
   api_key = {
     "key_id": "8Z96WD6G8A",
     "issuer_id": "69a6de84-fb7c-47e3-e053-5b8c7c11a4d1",
