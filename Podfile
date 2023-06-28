@@ -7,7 +7,7 @@ target 'WhiteLabel' do
   
 end
 
-target 'WhiteLabel copy' do
+target 'WhiteLabelCopy' do
   
   use_frameworks!
   
