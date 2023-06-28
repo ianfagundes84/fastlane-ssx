@@ -5,18 +5,18 @@ platform :ios do
   lane :build_ipa do |options|
     name = options[:config]
     raise "Invalid config: #{name}" unless config = getConfig(name)
-    build_adhoc_ipa(config)
+    build_adhoc_ipa(config, $build_number)
   end
 
-  def build_adhoc_ipa(config)
-    build_ipa(config, "ad-hoc", config.profile_adhoc)
+  def build_adhoc_ipa(config, build_number)
+    build_ipa(config, "ad-hoc", config.profile_adhoc, build_number)
   end
 
-  def build_appstore_ipa(config)
-    build_ipa(config, "app-store", config.profile_appstore)
+  def build_appstore_ipa(config, build_number)
+    build_ipa(config, "app-store", config.profile_appstore, build_number)
   end
 
-  def build_ipa(config, method, profile)
+  def build_ipa(config, method, profile, build_number)
     project = ENV['XCODE_PROJECT_PATH'] || "WhiteLabel/WhiteLabel.xcodeproj"
     # UI.message "project: #{project}"
     # UI.message "File exists? #{File.exist?(project)}"
@@ -24,7 +24,6 @@ platform :ios do
     # UI.message "Version Number is?: #{version_number}"
     file_name = "#{config.scheme} (#{version_number} - #{$build_number}).ipa"
     # UI.message "config.scheme?: #{config.scheme}"
-
     gym(
       scheme: config.scheme,
       export_method: method,

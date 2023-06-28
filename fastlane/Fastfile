@@ -3,6 +3,19 @@
 #automation for CI part
 require 'base64'
 require 'tempfile'
+require_relative 'values/bundle_ids'
+
+# Declare getConfig function here
+def getConfig(name)
+  case name
+  when "WHITELABELSSX_DEV"
+    return Configs::WHITELABELSSX_DEV
+  when "WHITELABELSSX_DEV_COPY"
+    return Configs::WHITELABELSSX_DEV_COPY
+  else
+    return nil
+  end
+end
 
 fastlane_session_base64 = ENV["FASTLANE_SESSION_BASE64"]
 

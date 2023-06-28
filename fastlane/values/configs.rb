@@ -2,17 +2,6 @@ require_relative 'bundle_ids'
 require_relative 'firebase_ids'
 require_relative 'profiles'
 
-def getConfig(name)
-  case name
-  when "WHITELABELSSX_DEV"
-    return Configs::WHITELABELSSX_DEV
-  when "WHITELABELSSX_DEV_COPY"
-    return Configs::WHITELABELSSX_DEV_COPY
-  else
-    return nil
-  end
-end
-
 class Config
   attr_reader :id
   attr_reader :target
