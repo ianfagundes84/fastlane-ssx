@@ -19,10 +19,10 @@ platform :ios do
   desc "Update profiles on apple developer portal when adding new devices"
   lane :update_profiles do |options|
     target_name = options[:target_name]
-    if prompt(text: "Ao realizar esse procedimento, os profiles atuais serão revogados e substituídos, deseja continuar?", boolean: true)
+    # if prompt(text: "Ao realizar esse procedimento, os profiles atuais serão revogados e substituídos, deseja continuar?", boolean: true)
       update_profiles(target_name, [Identifiers::WHITELABELSSX_DEV])
       update_profiles(target_name, [Identifiers::WHITELABELSSX_DEV_COPY]) 
-    end
+    # end
   end
 
   def fetch_certificates(branch, bundle_ids, api_key_path)
