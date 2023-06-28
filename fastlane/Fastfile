@@ -14,7 +14,7 @@ else
   temp_fastlane_session_file.write(decoded_fastlane_session)
   temp_fastlane_session_file.rewind
 
-ENV["SPACESHIP_SESSION_FILE"] = temp_fastlane_session_file.path
+  ENV["SPACESHIP_SESSION_FILE"] = temp_fastlane_session_file.path
 end
 
 #Fastfile scope
@@ -28,16 +28,11 @@ require_relative 'values/bundle_ids'
 
 platform :ios do
 
-# Ask a name for a new app on App Store Connect
-  desc "Ask a name for the new app"
+  desc "Create a new app on App Store Connect"
   lane :create_new_app do
-    app_name = UI.input("What is the name of the new app?")
-    app_bundle = UI.input("What is the bundle ID of the new app?")
-    app_teamName = UI.input("What is the team name?")
-    create_app(app_name, app_bundle, app_teamName)
+    create_app(ENV["APP_NAME"], ENV["APP_BUNDLE"], ENV["APP_TEAMNAME"])
   end
 
-# Define a lane to create a new app on App Store Connect
   desc "Create a new app on App Store Connect"
   def create_app(app_name, app_bundle, app_teamName)
     produce(
@@ -49,24 +44,13 @@ platform :ios do
       team_name: app_teamName
     )
   end
-  
-  # desc "Authenticate with AppStoreConnect" 
-  # lane :auth_app_store_connect do 
-  #     app_store_connect_api_key(
-  #       key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
-  #       issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
-  #       key_content: ENV["APP_STORE_CONNECT_API_KEY_KEY"],
-  #       duration: 1200, 
-  #       is_key_content_base64: true,
-  #       in_house: false)
-  # end
 
   desc "Authenticate with AppStoreConnect" 
   lane :auth_app_store_connect do 
-      app_store_connect_api_key(
-        key_filepath: "./fastlane-ssx/fastlane/AppStoreConnectAPIKey.json",
-        duration: 1200, 
-        in_house: false)
+    app_store_connect_api_key(
+      key_filepath: "./fastlane-ssx/fastlane/AppStoreConnectAPIKey.json",
+      duration: 1200, 
+      in_house: false)
   end
 
   private_lane :ensure_app_specific_password_exists do
