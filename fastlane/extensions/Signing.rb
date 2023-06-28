@@ -39,32 +39,20 @@ end
 #     return file_path
 # end
 def recreate_api_key_file
-  # Add the file path of your JSON file
-  file_path = 'AppStoreConnectAPIKey.json'
+  api_key = {
+    "key_id": "8Z96WD6G8A",
+    "issuer_id": "69a6de84-fb7c-47e3-e053-5b8c7c11a4d1",
+    "key": "-----BEGIN PRIVATE KEY-----\nMIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgjDwq/3vqO0uqsXqQ/y3BDiCGb8fG91XmlUIYy9s1wDagCgYIKoZIzj0DAQehRANCAAThsyhUsknewhmoqzlgri9nFzCz7lLUke929wxGHJ7fJw7sW5pq/ZfzMPSWH5+ngtHlf+MitVsX4/RobCg5th8U\n-----END PRIVATE KEY-----",
+    "in_house": false
+  }
   
-  # Print out a statement indicating that file is about to be read
-  puts "Reading file: #{file_path}"
-  
-  # Read the file's contents
-  file_contents = File.read(file_path)
-  
-  # Print out the contents of the file
-  puts "File contents: #{file_contents}"
-  
-  # Continue with your existing code...
-  
-  # existing code here
-  # json_contents = JSON.parse(file_contents)
-  # ...
-
-  # Rescuing the JSON::ParserError to provide more debug information
-  begin
-    json_contents = JSON.parse(file_contents)
-  rescue JSON::ParserError => e
-    puts "Failed to parse JSON due to #{e.message}"
-    # Reraise the exception
-    raise
+  file_path = "AppStoreConnectAPIKey.json"
+  File.open(file_path, "w") do |f|
+    f.write(api_key.to_json)
   end
+
+  return file_path # Ensure that the file path is returned, not the parsed JSON
 end
+
 
 end
