@@ -33,6 +33,11 @@ steps:
   displayName: 'CocoaPods install'
   workingDirectory: $(xcodeProjectPath)
 
+- script: |
+    sudo gem install fastlane -NV
+    fastlane ios fetch_certificates
+  displayName: 'Run Fastlane'
+
 - task: Xcode@5
   inputs:
     actions: 'build'
