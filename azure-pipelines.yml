@@ -54,16 +54,13 @@ steps:
           exit 1
       fi
 
-- task: Bash@3
-  displayName: 'Install Fastlane'
-  inputs:
-    targetType: 'inline'
-    script: |
-      sudo gem install fastlane -NV
-      if [ $? -ne 0 ]; then
-          echo "Fastlane installation failed."
-          exit 1
-      fi
+- script: |
+    export FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD=your-application-specific-password
+    sudo gem install fastlane -NV
+    fastlane ios fetch_certificates
+  displayName: 'Run Fastlane to fetch certificates'
+  env:
+    FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: $(FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD)
 
 - task: Bash@3
   displayName: 'Fetch Certificates and Upload to TestFlight using Fastlane'
