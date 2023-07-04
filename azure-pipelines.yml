@@ -21,13 +21,62 @@ steps:
   displayName: 'CocoaPods install'
   workingDirectory: $(xcodeProjectPath)
 
-- script: |
-    sudo gem install fastlane -NV
-    fastlane ios fetch_certificates
-  displayName: 'Run Fastlane to fetch certificates'
+- task: Bash@3
+  displayName: 'Check for Ruby'
+  inputs:
+    targetType: 'inline'
+    script: |
+      if ! command -v ruby &> /dev/null; then
+          echo "Ruby could not be found. Install Ruby before running this pipeline."
+          exit 1
+      fi
+
+- task: Bash@3
+  displayName: 'Install Bundler'
+  inputs:
+    targetType: 'inline'
+    script: |
+      sudo gem install bundler:2.2.27
+      if [ $? -ne 0 ]; then
+          echo "Bundler installation failed."
+          exit 1
+      fi
+
+- task: Bash@3
+  displayName: 'Configure and Install Bundle'
+  inputs:
+    targetType: 'inline'
+    script: |
+      bundle config path vendor/bundle
+      bundle install --jobs 4 --retry 3
+      if [ $? -ne 0 ]; then
+          echo "Bundle installation failed."
+          exit 1
+      fi
+
+- task: Bash@3
+  displayName: 'Install Fastlane'
+  inputs:
+    targetType: 'inline'
+    script: |
+      sudo gem install fastlane -NV
+      if [ $? -ne 0 ]; then
+          echo "Fastlane installation failed."
+          exit 1
+      fi
+
+- task: Bash@3
+  displayName: 'Fetch Certificates using Fastlane'
+  inputs:
+    targetType: 'inline'
+    script: |
+      fastlane ios fetch_certificates
+      if [ $? -ne 0 ]; then
+          echo "Fetching certificates failed."
+          exit 1
+      fi
 
 - script: |
-    sudo gem install fastlane -NV
     fastlane ios release_alpha config:WHITELABELSSX_DEV
   displayName: 'Run Fastlane to release alpha'
 
