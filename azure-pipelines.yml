@@ -75,9 +75,9 @@ steps:
           echo "Fetching certificates or uploading to TestFlight failed."
           exit 1
       fi
-    env:
-      FASTLANE_PASSWORD: $(FASTLANE_PASSWORD)
-      MATCH_PASSWORD: $(MATCH_PASSWORD)
+  env:
+    FASTLANE_PASSWORD: $(FASTLANE_PASSWORD)
+    MATCH_PASSWORD: $(MATCH_PASSWORD)
   displayName: 'Fetch Certificates and Upload to TestFlight using Fastlane'
 
 - script: |
