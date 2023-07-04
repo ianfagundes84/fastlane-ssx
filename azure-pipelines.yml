@@ -65,6 +65,8 @@ steps:
   displayName: 'Run Fastlane to fetch certificates'
   env:
     FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: $(FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD)
+    FASTLANE_PASSWORD: $(FASTLANE_PASSWORD)
+    MATCH_PASSWORD: $(MATCH_PASSWORD)
 
 - task: Bash@3
   displayName: 'Fetch Certificates and Upload to TestFlight using Fastlane'
