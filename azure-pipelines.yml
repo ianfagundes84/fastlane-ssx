@@ -61,7 +61,7 @@ steps:
 - script: |
     export FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD=your-application-specific-password
     sudo gem install fastlane -NV
-    fastlane ios fetch_certificates
+    bundle exec fastlane ios fetch_certificates --interactive
   displayName: 'Run Fastlane to fetch certificates'
   env:
     FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: $(FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD)
@@ -71,7 +71,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      fastlane ios fetch_certificates
+     bundle exec fastlane ios fetch_certificates --interactive
       fastlane pilot upload --username "your_app_store_connect_account@example.com" --ipa "path_to_your_ipa" --skip_waiting_for_build_processing true
       if [ $? -ne 0 ]; then
           echo "Fetching certificates or uploading to TestFlight failed."
