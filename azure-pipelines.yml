@@ -1,103 +1,95 @@
+---
 trigger:
-- develop
-
+  - develop
 pool:
-  vmImage: 'macOS-latest'
-
+  vmImage: macOS-latest
 variables:
-  scheme: 'WhiteLabel'
-  distributionMethod: 'development'
-  xcodeProjectPath: '$(Build.SourcesDirectory)/WhiteLabel.xcodeproj'
-
+  scheme: WhiteLabel
+  distributionMethod: development
+  xcodeProjectPath: $(Build.SourcesDirectory)/WhiteLabel.xcodeproj
 steps:
-- checkout: self
+  - checkout: self
+  - script: ls -R $(Build.SourcesDirectory)
+    displayName: Print directory structure
+  - script: |
+      sudo gem install cocoapods
+      pod install
+    displayName: CocoaPods install
+    workingDirectory: $(xcodeProjectPath)
+  - task: Bash@3
+    displayName: Check for Ruby
+    inputs:
+      targetType: inline
+      script: >
+        if ! command -v ruby &> /dev/null; then
+            echo "Ruby could not be found. Install Ruby before running this pipeline."
+            exit 1
+        fi
+  - task: Bash@3
+    displayName: Install Bundler
+    inputs:
+      targetType: inline
+      script: |
+        sudo gem install bundler:2.2.27
+        if [ $? -ne 0 ]; then
+            echo "Bundler installation failed."
+            exit 1
+        fi
+  - task: Bash@3
+    displayName: Configure and Install Bundle
+    inputs:
+      targetType: inline
+      script: |
+        bundle config path vendor/bundle
+        bundle install --jobs 4 --retry 3
+        if [ $? -ne 0 ]; then
+            echo "Bundle installation failed."
+            exit 1
+        fi
+  - script: >
+      export
+      FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD=your-application-specific-password
 
-- script: ls -R $(Build.SourcesDirectory)
-  displayName: 'Print directory structure'
+      sudo gem install fastlane -NV
 
-- script: |
-    sudo gem install cocoapods
-    pod install
-  displayName: 'CocoaPods install'
-  workingDirectory: $(xcodeProjectPath)
-
-- task: Bash@3
-  displayName: 'Check for Ruby'
-  inputs:
-    targetType: 'inline'
-    script: |
-      if ! command -v ruby &> /dev/null; then
-          echo "Ruby could not be found. Install Ruby before running this pipeline."
-          exit 1
-      fi
-
-- task: Bash@3
-  displayName: 'Install Bundler'
-  inputs:
-    targetType: 'inline'
-    script: |
-      sudo gem install bundler:2.2.27
-      if [ $? -ne 0 ]; then
-          echo "Bundler installation failed."
-          exit 1
-      fi
-
-- task: Bash@3
-  displayName: 'Configure and Install Bundle'
-  inputs:
-    targetType: 'inline'
-    script: |
-      bundle config path vendor/bundle
-      bundle install --jobs 4 --retry 3
-      if [ $? -ne 0 ]; then
-          echo "Bundle installation failed."
-          exit 1
-      fi
-
-- script: |
-    export FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD=your-application-specific-password
-    sudo gem install fastlane -NV
-    bundle exec fastlane ios fetch_certificates --interactive
-  displayName: 'Run Fastlane to fetch certificates'
-  env:
-    FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: $(FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD)
-    FASTLANE_PASSWORD: $(FASTLANE_PASSWORD)
-    MATCH_PASSWORD: $(MATCH_PASSWORD)
-
-- task: Bash@3
-  displayName: 'Fetch Certificates and Upload to TestFlight using Fastlane'
-  inputs:
-    targetType: 'inline'
-    script: |
       bundle exec fastlane ios fetch_certificates --interactive
-      fastlane pilot upload --username "your_app_store_connect_account@example.com" --ipa "path_to_your_ipa" --skip_waiting_for_build_processing true
-      if [ $? -ne 0 ]; then
-          echo "Fetching certificates or uploading to TestFlight failed."
-          exit 1
-      fi
+    displayName: Run Fastlane to fetch certificates
     env:
+      FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: $(FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD)
       FASTLANE_PASSWORD: $(FASTLANE_PASSWORD)
       MATCH_PASSWORD: $(MATCH_PASSWORD)
+  - task: Bash@3
+    displayName: Fetch Certificates and Upload to TestFlight using Fastlane
+    inputs:
+      targetType: inline
+      script: >
+        bundle exec fastlane ios fetch_certificates --interactive
 
-- script: |
-    fastlane ios release_alpha config:WHITELABELSSX_DEV
-  displayName: 'Run Fastlane to release alpha'
+        fastlane pilot upload --username "your_app_store_connect_account@example.com" --ipa "path_to_your_ipa" --skip_waiting_for_build_processing true
 
-- task: InstallAppleProvisioningProfile@1
-  inputs:
-    provisioningProfileLocation: 'secureFiles'
-    provProfileSecureFile: 'provisioning_profile_uuid'
-
-- task: Xcode@5
-  inputs:
-    actions: 'build'
-    scheme: $(scheme)
-    sdk: 'iphoneos'
-    configuration: 'Release'
-    xcodeVersion: 'default' 
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
-    artifactName: 'drop'
-    publishLocation: 'Container'
+        if [ $? -ne 0 ]; then
+            echo "Fetching certificates or uploading to TestFlight failed."
+            exit 1
+        fi
+      env:
+        FASTLANE_PASSWORD: $(FASTLANE_PASSWORD)
+        MATCH_PASSWORD: $(MATCH_PASSWORD)
+  - script: |
+      fastlane ios release_alpha config:WHITELABELSSX_DEV
+    displayName: Run Fastlane to release alpha
+  - task: InstallAppleProvisioningProfile@1
+    inputs:
+      provisioningProfileLocation: secureFiles
+      provProfileSecureFile: provisioning_profile_uuid
+  - task: Xcode@5
+    inputs:
+      actions: build
+      scheme: $(scheme)
+      sdk: iphoneos
+      configuration: Release
+      xcodeVersion: default
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: $(Build.ArtifactStagingDirectory)
+      artifactName: drop
+      publishLocation: Container
