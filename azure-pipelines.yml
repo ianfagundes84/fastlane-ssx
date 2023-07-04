@@ -66,15 +66,19 @@ steps:
       fi
 
 - task: Bash@3
-  displayName: 'Fetch Certificates using Fastlane'
+  displayName: 'Fetch Certificates and Upload to TestFlight using Fastlane'
   inputs:
     targetType: 'inline'
     script: |
       fastlane ios fetch_certificates
+      fastlane pilot upload --username "your_app_store_connect_account@example.com" --ipa "path_to_your_ipa" --skip_waiting_for_build_processing true
       if [ $? -ne 0 ]; then
-          echo "Fetching certificates failed."
+          echo "Fetching certificates or uploading to TestFlight failed."
           exit 1
       fi
+    env:
+      FASTLANE_PASSWORD: $(FASTLANE_PASSWORD)
+      MATCH_PASSWORD: $(MATCH_PASSWORD)
 
 - script: |
     fastlane ios release_alpha config:WHITELABELSSX_DEV
