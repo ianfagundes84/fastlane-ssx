@@ -1,9 +1,5 @@
 trigger:
-- task: InstallAppleProvisioningProfile@1
-  inputs:
-    provisioningProfileLocation: 'secureFiles'
-    provProfileSecureFile: 'U2FsdGVkX1/zuWMGlrnSCMZFBNgVTb/fBOG2oRlKCWtkVqZw39wu9TZHxxQZ NkoUNJz21rpnrHaTRmdTvKouFee2dEi99yHpIL4e8B42Q1syHnA8amI4gDbE 2s30Ne3EzSqdywaJLSKobtt+9DGYH9fXUI61jrVueuzM8z/Ucu5QaUKWa0Xx HnCanWOdt2WKrS5f84OTXg1xIqFCKA0sxESqCkqeadb6/rymJFqoK7W50k+J M6u56/rmpQXrcZjIWT/ml5hmBKq/OmnIyTMGB2jM14O2UFEkkZKIzEAm3wWy 8sZqZ3MrDS6thPLQco4WGlqvxpnrkE6YtOvGl14TbJs0Gc0KlxhIqerrsSO9 4CsYBTl99cCt6h0++CGb69kLBlU758D0WqoB9Ufbs0XLmb9kZE0Apb8jo8Mb j9QBYf1aeiDclH/GGZ4Hn9Og8lXTeHVGmHTCinGPaMOmzzneP9tsMmsSxER0 1Su5s9lDTEmRakZblP0HUyT1UdEVYJaGNTZK11Q5lwfEiFYZU2VMA7WqNZfy xy5c2Krimzr16SQDFmSGnGTK8YqIhz1DD9bZswrkh7QaLfygxWh5Gnvvfuyb n37ZhG+JqfdOO9WdqqzTn9tpwH2YUK757rWV64Mx4B/g4bG5ao8pQJ2gIBKp Z3qR6DVbyxzWhTLNkR1DBlOJmAH/qG7aN1iVoAqUT+ZvpfQbFLlBdIFX7zQ6 XiGw6gUK2gcDbxFTgkz4b1WMWkwsX5kyATJU2k7ohE6PyTlS71nQ4QsU4oCM 9IlwNwFTFig9RUV5FqAgy13cbf4GJwyybaKK61krLxpbvxj3pme/6eAdsOx2 cVzDLfQp5TfgKg07PljI4WMgQ+iCpEW2M6GdjKwkHJ8enyel9KFcw0p4utpi iY0El1jd3fof8cevr/bhsuSrC/W+eFgEyfvz1Qb8exZqcvWSVCoOICse3Rts 9c1v+vhMCdDEZ1hHx3ejVgHjCdHZwCxYepJIOEA153BjFLqo0CylOIjWTOIP 5Jfmcyc0C83yFdDzJZ/XUgdXaTtAOqeOqB4BXW8OWm5dPI/JwxcrTi39zHCr zV+BqtLR7zyJjQV8OGPk/x7gHsgrUjidnMumjk8tlz5Liwieo1PMfxJBYF9q Mpyyb1AQTacD3Htn04rf2ssakEf/ivYvUxEhiqz0YTVMUYiaXd3u8nW2QHu3 TbwqNuZqLwrddbYlEGyCLEqOBu5V+rSmLBtoDFYjw5pdsLlI+TOxaSOm2Tkp UeZBDj4tgW8JchsFHjRYG/5BJzX7b8U4GQDQGC/g0V24f/eKaEMPd6UKDHvp BEHqnRIp/TEuFJPE0a3AnZWEMsBrlrq3auV0/3ft7Wldd4EGtDuqJ9mpXIsk Pb/3nWeTnqDk3vTFNcfiBLMT/yGFwIVOStw8nKMZQGFrmsT81Oix2aNEjCJY pCMJ7KdYKOtN/PiLfwhT9MZTX2c5ptT3qVxonFI14zC/DtsrVerIvj20UxyM HOmCSBtV6KR9QAOfl5zErqgCZ3CK6pagAds2gBT9cYruVupV3E9Fbji9pzQu IpkXz52/D0CI5zDzKSqKlnbegTWEp6ZaJ4ZJOCSXT7dTNd/frlJKbYuCaPQf 37FBlt9CHH/kdKv7ICJUCsXCVoxBj1hdsobnt+M3OGisJSZsgAvzmHXcFHtR sZ2PnxZfLeRddXmgeOA6dg8Pr/WwTY2LIuiteRSVM3k5JBf+FyJisHxLfj1S wTQtkMc71eT2uJv9IQ0F9ZbJsSNNUleB00IWo6O/qA3lon3AEuV70yBByLEr QbOXw2/4B5uX3I7oLqBMoI1ElXU+u6EZhC9/cNW2foYb/AiExb2GdEqwEO1x WN7hbFb+40G4/271adtqkXhrew1PCLYXF2Eb9KJKc+FMCg2jEMHYM+FYs8x8 lblckc4mAXfQC5ynvyjs8mMpUSUC3dr/iXvNpWZp0Lowp4pl2x3/x1be4P3/ uxhNVMvNgnCbVrV5OiYNL6Ru9wKKO8dTBpVMyj3qUa+sAfe+hhzPQMYtsZBH NBHZude9JR5LvDueQWg3kwbJxmSOOlTcXE0J+ScNZIghNRyJs3MipnKvzj9o rxIZorCnBhOM9xVLp53uAGA6OZkJXLi2HiRRJeRGiBnTQaLIAhfwKN7a72wW 2zyxs4kkPGEH82VCOvPdxb9E2If4Ua3WD6+cXshKv6iqk+IpBQsX5Xr/olrc Ws0YVIrb1nucb0zZh8o78Sd6Bgg2asnmwiTPp5xhgw=='
-- '*'
+- master
 
 pool:
   vmImage: 'macOS-latest'
@@ -73,7 +69,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-     bundle exec fastlane ios fetch_certificates --interactive
+      bundle exec fastlane ios fetch_certificates --interactive
       fastlane pilot upload --username "your_app_store_connect_account@example.com" --ipa "path_to_your_ipa" --skip_waiting_for_build_processing true
       if [ $? -ne 0 ]; then
           echo "Fetching certificates or uploading to TestFlight failed."
@@ -86,6 +82,11 @@ steps:
 - script: |
     fastlane ios release_alpha config:WHITELABELSSX_DEV
   displayName: 'Run Fastlane to release alpha'
+
+- task: InstallAppleProvisioningProfile@1
+  inputs:
+    provisioningProfileLocation: 'secureFiles'
+    provProfileSecureFile: 'provisioning_profile_uuid'
 
 - task: Xcode@5
   inputs:
