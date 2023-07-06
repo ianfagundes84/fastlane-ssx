@@ -56,7 +56,7 @@ steps:
 
 - task: InstallAppleCertificate@2
   inputs:
-    certSecureFile: '$(System.DefaultWorkingDirectory)/_temp'
+    certSecureFile: 'N82PBP77YQ.p12'
     keychain: 'system123'
   displayName: Install Apple Certificate
   
