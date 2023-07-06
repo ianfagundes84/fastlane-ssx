@@ -53,11 +53,11 @@ steps:
           echo "Bundle installation failed."
           exit 1
       fi
-      
+
 - task: InstallAppleCertificate@2
   inputs:
-    certSecureFile: '*****.p12'
-    keychain: 'temp'
+    certSecureFile: 'N82PBP77YQ.p12'
+    keychain: 'system123'
   displayName: Install Apple Certificate
   
 - task: InstallAppleProvisioningProfile@1
