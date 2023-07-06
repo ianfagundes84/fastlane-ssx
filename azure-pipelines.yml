@@ -54,20 +54,10 @@ steps:
           exit 1
       fi
 
-- script: |
-    export FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD=your-application-specific-password
-    sudo gem install fastlane -NV
-    bundle exec fastlane ios fetch_certificates --interactive
-  displayName: 'Run Fastlane to fetch certificates'
-  env:
-    FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: $(FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD)
-    FASTLANE_PASSWORD: $(FASTLANE_PASSWORD)
-    MATCH_PASSWORD: $(MATCH_PASSWORD)
-
 - task: InstallAppleCertificate@2
   inputs:
-    certSecureFile: '*****.p12'
-    keychain: 'temp'
+    certSecureFile: 'N82PBP77YQ.p12'
+    keychain: 'system123'
   displayName: Install Apple Certificate
   
 - task: InstallAppleProvisioningProfile@1
