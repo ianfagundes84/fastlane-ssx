@@ -63,7 +63,7 @@ steps:
 - task: InstallAppleProvisioningProfile@1
   inputs:
     provisioningProfileLocation: '$(System.DefaultWorkingDirectory)/_temp/Development_br.com.systemsat.whitelabelssx'
-    provProfileSecureFile: '*****'
+    provProfileSecureFile: 'Development_br.com.systemsat.whitelabelssx.mobileprovision'
   displayName: 'Install Apple Provisioning Profile'
 
 - task: Xcode@5
