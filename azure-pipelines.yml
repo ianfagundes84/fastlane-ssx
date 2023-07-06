@@ -64,29 +64,17 @@ steps:
     FASTLANE_PASSWORD: $(FASTLANE_PASSWORD)
     MATCH_PASSWORD: $(MATCH_PASSWORD)
 
-- task: Bash@3
-  displayName: 'Fetch Certificates and Upload to TestFlight using Fastlane'
+- task: InstallAppleCertificate@2
   inputs:
-    targetType: 'inline'
-    script: |
-      bundle exec fastlane ios fetch_certificates --interactive
-      fastlane pilot upload --username "your_app_store_connect_account@example.com" --ipa "path_to_your_ipa" --skip_waiting_for_build_processing true
-      if [ $? -ne 0 ]; then
-          echo "Fetching certificates or uploading to TestFlight failed."
-          exit 1
-      fi
-    env:
-      FASTLANE_PASSWORD: $(FASTLANE_PASSWORD)
-      MATCH_PASSWORD: $(MATCH_PASSWORD)
-
-- script: |
-    fastlane ios release_alpha config:WHITELABELSSX_DEV
-  displayName: 'Run Fastlane to release alpha'
-
+    certSecureFile: '*****.p12'
+    keychain: 'temp'
+  displayName: Install Apple Certificate
+  
 - task: InstallAppleProvisioningProfile@1
   inputs:
     provisioningProfileLocation: 'secureFiles'
-    provProfileSecureFile: 'provisioning_profile_uuid'
+    provProfileSecureFile: '*****'
+  displayName: 'Install Apple Provisioning Profile'
 
 - task: Xcode@5
   inputs:
