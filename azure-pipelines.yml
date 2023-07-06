@@ -57,7 +57,7 @@ steps:
 - task: InstallAppleCertificate@2
   inputs:
     certSecureFile: 'Certificates.p12'
-    keychain: 'system123'
+    keychain: 'casa123'
   displayName: Install Apple Certificate
   
 - task: InstallAppleProvisioningProfile@1
