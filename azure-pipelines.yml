@@ -15,12 +15,6 @@ steps:
 - script: ls -R $(Build.SourcesDirectory)
   displayName: 'Print directory structure'
 
-- script: |
-    sudo gem install cocoapods
-    pod install
-  displayName: 'CocoaPods install'
-  workingDirectory: $(xcodeProjectPath)
-
 - task: Bash@3
   displayName: 'Check for Ruby'
   inputs:
@@ -66,6 +60,12 @@ steps:
     provProfileSecureFile: '*****'
   displayName: 'Install Apple Provisioning Profile'
 
+- script: |
+    cd $(xcodeProjectPath)
+    sudo gem install cocoapods
+    pod install
+  displayName: 'CocoaPods install'
+  
 - task: Xcode@5
   inputs:
     actions: 'build'
