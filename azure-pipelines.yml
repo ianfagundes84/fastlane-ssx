@@ -46,6 +46,8 @@ steps:
     sdk: 'iphoneos'
     configuration: 'Release'
     xcodeVersion: 'default' 
+    signingOption: "manual"
+    provisioningProfileName: '$(APPLE_PROV_PROFILE_UUID)'
 
 - task: PublishBuildArtifacts@1
   inputs:
