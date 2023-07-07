@@ -33,7 +33,11 @@ steps:
     pod update
     pod install
   displayName: 'CocoaPods install'
-  
+
+- script: |
+    rm -rf ~/Library/Developer/Xcode/DerivedData/
+  displayName: 'Clean Derived Data'
+
 - task: Xcode@5
   inputs:
     actions: 'clean build'
