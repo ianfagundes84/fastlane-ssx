@@ -15,22 +15,6 @@ steps:
 - script: ls -R $(Build.SourcesDirectory)
   displayName: 'Print directory structure'
 
-- task: CocoaPods@0
-  inputs:
-    workingDirectory: $(Build.SourcesDirectory)/MyProject 
-    forceRepoUpdate: true
-  displayName: 'CocoaPods install'
-
-- task: Bash@3
-  displayName: 'Check for Ruby'
-  inputs:
-    targetType: 'inline'
-    script: |
-      if ! command -v ruby &> /dev/null; then
-          echo "Ruby could not be found. Install Ruby before running this pipeline."
-          exit 1
-      fi
-
 - task: Bash@3
   displayName: 'Install Bundler'
   inputs:
