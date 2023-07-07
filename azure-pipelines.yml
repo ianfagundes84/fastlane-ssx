@@ -38,6 +38,10 @@ steps:
     rm -rf ~/Library/Developer/Xcode/DerivedData/
   displayName: 'Clean Derived Data'
 
+- script: |
+    export CODE_SIGN_IDENTITY=<Apple Development: Ian Fagundes (484BC5RF4V)>
+  displayName: 'Set Code Sign Identity'
+
 - task: Xcode@5
   inputs:
     actions: 'clean build'
