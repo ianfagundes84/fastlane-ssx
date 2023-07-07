@@ -24,7 +24,7 @@ steps:
 - task: InstallAppleProvisioningProfile@1
   inputs:
     provisioningProfileLocation: 'secureFiles'
-    provProfileSecureFile: 'Development_br.com.systemsat.whitelabelssx.mobileprovision'
+    provProfileSecureFile: 'match_Development_brcomsystemsatwhitelabelssx.mobileprovision'
   displayName: 'Install Apple Provisioning Profile'
 
 - script: |
