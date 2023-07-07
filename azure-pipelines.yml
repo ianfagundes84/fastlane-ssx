@@ -57,8 +57,8 @@ steps:
 - task: InstallAppleCertificate@2
   inputs:
     certSecureFile: 'Certificate.p12'
-    keychain: '$(P12_PASSWORD)'
-  displayName: Install Apple Certificate
+    certPwd: '$(P12_PASSWORD)'
+    keychain: 'temp'
   
 - task: InstallAppleProvisioningProfile@1
   inputs:
@@ -66,6 +66,13 @@ steps:
     provProfileSecureFile: 'Development_br.com.systemsat.whitelabelssx.mobileprovision'
   displayName: 'Install Apple Provisioning Profile'
 
+- script: |
+    cd $(xcodeProjectPath)
+    sudo gem install cocoapods
+    pod update
+    pod install
+  displayName: 'CocoaPods install'
+  
 - task: Xcode@5
   inputs:
     actions: 'clean build'
