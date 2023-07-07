@@ -15,6 +15,12 @@ steps:
 - script: ls -R $(Build.SourcesDirectory)
   displayName: 'Print directory structure'
 
+- task: CocoaPods@0
+  inputs:
+    workingDirectory: $(Build.SourcesDirectory)/MyProject 
+    forceRepoUpdate: true
+  displayName: 'CocoaPods install'
+
 - task: Bash@3
   displayName: 'Check for Ruby'
   inputs:
@@ -50,9 +56,8 @@ steps:
 
 - task: InstallAppleCertificate@2
   inputs:
-    certSecureFile: 'Certificate.p12'
-    certPwd: '$(P12_PASSWORD)'
-    keychain: 'temp'
+    certSecureFile: 'Certificates.p12'
+    keychain: '$(P12_PASSWORD)'
   displayName: Install Apple Certificate
   
 - task: InstallAppleProvisioningProfile@1
@@ -61,16 +66,10 @@ steps:
     provProfileSecureFile: 'Development_br.com.systemsat.whitelabelssx.mobileprovision'
   displayName: 'Install Apple Provisioning Profile'
 
-- script: |
-    cd $(xcodeProjectPath)
-    sudo gem install cocoapods
-    pod update
-    pod install
-  displayName: 'CocoaPods install'
-  
 - task: Xcode@5
   inputs:
     actions: 'clean build'
+    xcWorkspacePath: '**/*.xcworkspace' 
     scheme: $(scheme)
     sdk: 'iphoneos'
     configuration: 'Release'
