@@ -7,7 +7,7 @@ pool:
 variables:
   scheme: 'WhiteLabel'
   distributionMethod: 'development'
-  xcodeProjectPath: '$(Build.SourcesDirectory)/WhiteLabel.xcodeproj'
+  xcWorkspacePath: '$(Build.SourcesDirectory)/WhiteLabel.xcworkspace'
 
 steps:
 - checkout: self
