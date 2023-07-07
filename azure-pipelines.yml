@@ -66,6 +66,10 @@ steps:
     provProfileSecureFile: 'Development_br.com.systemsat.whitelabelssx.mobileprovision'
   displayName: 'Install Apple Provisioning Profile'
 
+- script: |
+    rm -rf ~/Library/Developer/Xcode/DerivedData/
+  displayName: 'Clean Derived Data'
+  
 - task: Xcode@5
   inputs:
     actions: 'clean build'
