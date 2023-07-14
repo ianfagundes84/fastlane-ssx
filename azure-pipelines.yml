@@ -42,6 +42,21 @@ steps:
     export CODE_SIGN_IDENTITY=%CODE_SIGN_IDENTITY%
   displayName: 'Set Code Sign Identity'
 
+- script: |
+    echo 'Delete existing Pods directory'
+    rm -rf ./Pods
+  displayName: 'Delete Pods Directory'
+
+- script: |
+    echo 'Update CocoaPods'
+    pod repo update
+  displayName: 'Update CocoaPods Repo'
+
+- script: |
+    echo 'Install Pods'
+    pod install
+  displayName: 'Install CocoaPods'
+  
 - task: Xcode@5
   inputs:
     actions: 'clean build'
