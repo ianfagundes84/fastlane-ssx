@@ -39,7 +39,7 @@ steps:
   displayName: 'Clean Derived Data'
 
 - script: |
-    export CODE_SIGN_IDENTITY=$(CODE_SIGN_IDENTITY)
+    export CODE_SIGN_IDENTITY = $(CODE_SIGN_IDENTITY)
   displayName: 'Set Code Sign Identity'
 
 - task: Xcode@5
