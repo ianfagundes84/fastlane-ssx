@@ -50,13 +50,14 @@ steps:
 - task: Xcode@5
   inputs:
     actions: 'clean build'
-    xcWorkspacePath: '**/*.xcodeproj' 
+    xcWorkspacePath: '**/*.xcworkspace' 
     scheme: $(scheme)
     sdk: 'iphoneos'
     configuration: 'Release'
     xcodeVersion: 'default' 
-    signingOption: "manual"
-    provisioningProfileName: '$(APPLE_PROV_PROFILE_UUID)'
+    signingOption: 'manual'
+    signingIdentity: '$(CODE_SIGN_IDENTITY)'
+    provisioningProfileUUID: '$(APPLE_PROV_PROFILE_UUID)'
 
 - task: PublishBuildArtifacts@1
   inputs:
