@@ -56,6 +56,11 @@ steps:
     echo 'Install Pods'
     pod install
   displayName: 'Install CocoaPods'
+
+- script: |
+    echo 'Clean build folder'
+    xcodebuild clean
+  displayName: 'Clean Build Folder'
   
 - task: Xcode@5
   inputs:
