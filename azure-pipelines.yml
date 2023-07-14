@@ -51,7 +51,7 @@ steps:
   inputs:
     actions: 'clean build'
     xcWorkspacePath: '**/*.xcworkspace' 
-    scheme: $(scheme)
+    scheme: 'WhiteLabelCopy'
     sdk: 'iphoneos'
     configuration: 'Release'
     xcodeVersion: 'default' 
