@@ -69,7 +69,22 @@ steps:
 - script: |
     rm -rf ~/Library/Developer/Xcode/DerivedData/
   displayName: 'Clean Derived Data'
-  
+
+- script: |
+    echo 'Delete existing Pods directory'
+    rm -rf ./Pods
+  displayName: 'Delete Pods Directory'
+
+- script: |
+    echo 'Update CocoaPods'
+    pod repo update
+  displayName: 'Update CocoaPods Repo'
+
+- script: |
+    echo 'Install Pods'
+    pod install
+  displayName: 'Install CocoaPods'
+    
 - task: Xcode@5
   inputs:
     actions: 'clean build'
