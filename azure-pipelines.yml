@@ -5,9 +5,9 @@ pool:
   vmImage: 'macOS-latest'
 
 variables:
-  scheme: 'WhiteLabel'
+  scheme: 'WhiteLabelCopy'
   distributionMethod: 'development'
-  xcodeProjectPath: '$(Build.SourcesDirectory)/WhiteLabel.xcodeproj'
+  xcodeProjectPath: '$(Build.SourcesDirectory)/WhiteLabelCopy.xcodeproj'
 
 steps:
 - checkout: self
@@ -24,7 +24,7 @@ steps:
 - task: InstallAppleProvisioningProfile@1
   inputs:
     provisioningProfileLocation: 'secureFiles'
-    provProfileSecureFile: 'match Development br.com.systemsat.whitelabelssx.mobileprovision'
+    provProfileSecureFile: 'match_Development_brcomsystemsatWhiteLabelCopy.mobileprovision'
   displayName: 'Install Apple Provisioning Profile'
 
 - script: |
