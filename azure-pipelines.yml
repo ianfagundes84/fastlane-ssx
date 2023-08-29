@@ -54,7 +54,8 @@ steps:
     xcWorkspacePath: '$(xcWorkspacePath)'
     scheme: '$(scheme)'
     sdk: 'iphoneos'
-    configuration: 'Release'
+    configuration: 'Develop'
+    useXcpretty: false
     signingOption: 'manual'
     signingIdentity: '$(CODE_SIGN_IDENTITY)'
     provisioningProfileUUID: '$(APPLE_PROV_PROFILE_UUID)'
