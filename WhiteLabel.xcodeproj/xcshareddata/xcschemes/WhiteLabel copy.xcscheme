@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "14DEE87229DB7C54002D5C8D"
-               BuildableName = "WhiteLabelCopy.app"
-               BlueprintName = "WhiteLabelCopy"
+               BuildableName = "WhiteLabel copy.app"
+               BlueprintName = "WhiteLabel copy"
                ReferencedContainer = "container:WhiteLabel.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,8 +45,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "14DEE87229DB7C54002D5C8D"
-            BuildableName = "WhiteLabelCopy.app"
-            BlueprintName = "WhiteLabelCopy"
+            BuildableName = "WhiteLabel copy.app"
+            BlueprintName = "WhiteLabel copy"
             ReferencedContainer = "container:WhiteLabel.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -62,8 +62,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "14DEE87229DB7C54002D5C8D"
-            BuildableName = "WhiteLabelCopy.app"
-            BlueprintName = "WhiteLabelCopy"
+            BuildableName = "WhiteLabel copy.app"
+            BlueprintName = "WhiteLabel copy"
             ReferencedContainer = "container:WhiteLabel.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

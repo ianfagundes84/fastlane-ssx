@@ -32,7 +32,7 @@
 		14DEE86729DB6CFE002D5C8D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		14DEE86A29DB6CFE002D5C8D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		14DEE86C29DB6CFE002D5C8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		14DEE87F29DB7C54002D5C8D /* WhiteLabelCopy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhiteLabelCopy.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		14DEE87F29DB7C54002D5C8D /* WhiteLabel copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WhiteLabel copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		14DEE88029DB7C54002D5C8D /* WhiteLabel copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "WhiteLabel copy-Info.plist"; path = "/Users/ianfagundes/Desktop/workspace/WhiteLabel/WhiteLabel copy-Info.plist"; sourceTree = "<absolute>"; };
 		14DEE88229DB82AE002D5C8D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		14DEE88429DB92C1002D5C8D /* DefaultProperties.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = DefaultProperties.plist; sourceTree = "<group>"; };
@@ -69,7 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				14DEE85B29DB6CFE002D5C8D /* WhiteLabel.app */,
-				14DEE87F29DB7C54002D5C8D /* WhiteLabelCopy.app */,
+				14DEE87F29DB7C54002D5C8D /* WhiteLabel copy.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -78,7 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				14DEE88429DB92C1002D5C8D /* DefaultProperties.plist */,
-				14DEE88129DB802B002D5C8D /* WhiteLabelCopy */,
+				14DEE88129DB802B002D5C8D /* WhiteLabel copy */,
 				14DEE85E29DB6CFE002D5C8D /* AppDelegate.swift */,
 				14DEE86029DB6CFE002D5C8D /* SceneDelegate.swift */,
 				14DEE86229DB6CFE002D5C8D /* ViewController.swift */,
@@ -90,14 +90,14 @@
 			path = WhiteLabel;
 			sourceTree = "<group>";
 		};
-		14DEE88129DB802B002D5C8D /* WhiteLabelCopy */ = {
+		14DEE88129DB802B002D5C8D /* WhiteLabel copy */ = {
 			isa = PBXGroup;
 			children = (
 				14DEE88029DB7C54002D5C8D /* WhiteLabel copy-Info.plist */,
 				14DEE88229DB82AE002D5C8D /* Assets.xcassets */,
 				14DEE88629DB92FC002D5C8D /* DefaultProperties.plist */,
 			);
-			path = WhiteLabelCopy;
+			path = "WhiteLabel copy";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -120,9 +120,9 @@
 			productReference = 14DEE85B29DB6CFE002D5C8D /* WhiteLabel.app */;
 			productType = "com.apple.product-type.application";
 		};
-		14DEE87229DB7C54002D5C8D /* WhiteLabelCopy */ = {
+		14DEE87229DB7C54002D5C8D /* WhiteLabel copy */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 14DEE87C29DB7C54002D5C8D /* Build configuration list for PBXNativeTarget "WhiteLabelCopy" */;
+			buildConfigurationList = 14DEE87C29DB7C54002D5C8D /* Build configuration list for PBXNativeTarget "WhiteLabel copy" */;
 			buildPhases = (
 				14DEE87329DB7C54002D5C8D /* Sources */,
 				14DEE87729DB7C54002D5C8D /* Frameworks */,
@@ -132,9 +132,9 @@
 			);
 			dependencies = (
 			);
-			name = WhiteLabelCopy;
+			name = "WhiteLabel copy";
 			productName = WhiteLabel;
-			productReference = 14DEE87F29DB7C54002D5C8D /* WhiteLabelCopy.app */;
+			productReference = 14DEE87F29DB7C54002D5C8D /* WhiteLabel copy.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -166,7 +166,7 @@
 			projectRoot = "";
 			targets = (
 				14DEE85A29DB6CFE002D5C8D /* WhiteLabel */,
-				14DEE87229DB7C54002D5C8D /* WhiteLabelCopy */,
+				14DEE87229DB7C54002D5C8D /* WhiteLabel copy */,
 			);
 		};
 /* End PBXProject section */
@@ -289,7 +289,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -343,7 +343,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -438,7 +438,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = W8L47TG474;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "WhiteLabel copy-Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = WhiteLabelCopy;
+				INFOPLIST_KEY_CFBundleDisplayName = "WhiteLabel copy";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -475,7 +475,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = W8L47TG474;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "WhiteLabel copy-Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = WhiteLabelCopy;
+				INFOPLIST_KEY_CFBundleDisplayName = "WhiteLabel copy";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -520,7 +520,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		14DEE87C29DB7C54002D5C8D /* Build configuration list for PBXNativeTarget "WhiteLabelCopy" */ = {
+		14DEE87C29DB7C54002D5C8D /* Build configuration list for PBXNativeTarget "WhiteLabel copy" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				14DEE87D29DB7C54002D5C8D /* Debug */,
