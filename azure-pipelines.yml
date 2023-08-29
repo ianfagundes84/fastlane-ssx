@@ -59,7 +59,7 @@ steps:
     signingOption: 'manual'
     signingIdentity: '$(CODE_SIGN_IDENTITY)'
     provisioningProfileUUID: '$(APPLE_PROV_PROFILE_UUID)'
-
+    xcodeVersion: 12
 - task: PublishBuildArtifacts@1
   inputs:
     pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
