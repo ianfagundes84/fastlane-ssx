@@ -48,6 +48,10 @@ steps:
 - script: xcodebuild -list -workspace $(xcWorkspacePath)
   displayName: 'List Available Schemes'
   
+- script: |
+    security find-identity -v -p codesigning
+  displayName: 'List installed certificates'
+  
 - task: Xcode@5
   inputs:
     actions: 'clean build'
