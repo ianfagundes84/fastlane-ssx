@@ -71,8 +71,13 @@ steps:
     publishLocation: 'Container'
 
 - script: |
+    xcodebuild archive -workspace $(xcWorkspacePath) -scheme $(scheme) \
+    -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive
+  displayName: 'Archive Project'
+
+- script: |
     xcodebuild -exportArchive -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive \
-    -exportOptionsPlist $(Build.SourcesDirectory)/ExportOptions.plist \
+    -exportOptionsPlist $(Build.SourcesDirectory)/path/to/ExportOptions.plist \
     -exportPath $(Build.ArtifactStagingDirectory)/WhiteLabel.ipa
   displayName: 'Archive and export .ipa'
 
