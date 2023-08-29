@@ -17,7 +17,7 @@ steps:
 
 - task: InstallAppleCertificate@2
   inputs:
-    certSecureFile: 'Certificate.p12'
+    certSecureFile: 'CertificateAzure.p12'
     certPwd: '$(P12_PASSWORD)'
     keychain: 'temp'
   
