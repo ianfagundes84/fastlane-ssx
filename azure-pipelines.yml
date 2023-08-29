@@ -60,7 +60,7 @@ steps:
 - task: Xcode@5
   inputs:
     actions: 'clean build'
-    xcWorkspacePath: '$(Build.SourcesDirectory)/WhiteLabel.xcworkspace'
+    xcWorkspacePath: '$(xcWorkspacePath)'
     scheme: 'WhiteLabel'
     sdk: 'iphoneos'
     configuration: 'Release'
