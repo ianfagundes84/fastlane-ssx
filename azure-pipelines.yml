@@ -69,3 +69,14 @@ steps:
     pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
     artifactName: 'drop'
     publishLocation: 'Container'
+
+- script: |
+    xcodebuild -exportArchive -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive \
+    -exportOptionsPlist $(Build.SourcesDirectory)/ExportOptions.plist \
+    -exportPath $(Build.ArtifactStagingDirectory)/WhiteLabel.ipa
+  displayName: 'Archive and export .ipa'
+
+- script: |
+    xcrun altool --upload-app -f $(Build.ArtifactStagingDirectory)/WhiteLabel.ipa \
+    -u $(APPLE_DEVELOPER_USERNAME) -p $(APPLE_DEVELOPER_PASSWORD)
+  displayName: 'Upload to TestFlight'
