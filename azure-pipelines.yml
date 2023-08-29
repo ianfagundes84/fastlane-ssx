@@ -54,6 +54,9 @@ steps:
 - script: ls -la $(Build.SourcesDirectory)
   displayName: 'List files in source directory'
 
+- script: xcodebuild -list -workspace $(xcWorkspacePath)
+  displayName: 'List Available Schemes'
+  
 - task: Xcode@5
   inputs:
     actions: 'clean build'
