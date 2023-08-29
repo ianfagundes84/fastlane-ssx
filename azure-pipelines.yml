@@ -6,7 +6,6 @@ pool:
 
 variables:
   scheme: 'WhiteLabel'
-  distributionMethod: 'development'
   xcWorkspacePath: '$(Build.SourcesDirectory)/WhiteLabel.xcworkspace'
 
 steps:
@@ -29,25 +28,17 @@ steps:
 
 - script: |
     cd $(Build.SourcesDirectory)
-    sudo gem install cocoapods
     pod update
     pod install
   displayName: 'CocoaPods install'
 
-- script: |
-    rm -rf ~/Library/Developer/Xcode/DerivedData/
+- script: rm -rf ~/Library/Developer/Xcode/DerivedData/
   displayName: 'Clean Derived Data'
 
-- script: |
-    export CODE_SIGN_IDENTITY="${CODE_SIGN_IDENTITY}"
-  displayName: 'Set Code Sign Identity'
-
-- script: |
-    echo 'Clean build folder'
-    xcodebuild clean
+- script: echo 'Clean build folder' && xcodebuild clean
   displayName: 'Clean Build Folder'
 
-#For debug proposal
+# Debugging Steps (Optional)
 - script: echo $(xcWorkspacePath)
   displayName: 'Print xcWorkspacePath'
   
@@ -64,7 +55,6 @@ steps:
     scheme: '$(scheme)'
     sdk: 'iphoneos'
     configuration: 'Release'
-    xcodeVersion: 'default' 
     signingOption: 'manual'
     signingIdentity: '$(CODE_SIGN_IDENTITY)'
     provisioningProfileUUID: '$(APPLE_PROV_PROFILE_UUID)'
