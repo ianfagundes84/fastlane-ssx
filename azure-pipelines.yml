@@ -70,6 +70,9 @@ steps:
     artifactName: 'drop'
     publishLocation: 'Container'
 
+- script: ls -R $(Build.SourcesDirectory)/Path/To/
+  displayName: 'Debug: List files in specified directory'
+
 - script: |
     xcodebuild archive -workspace $(xcWorkspacePath) -scheme $(scheme) \
     -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive
