@@ -5,9 +5,8 @@ pool:
   vmImage: 'macOS-latest'
 
 variables:
-  scheme: 'WhiteLabelCopy'
-  distributionMethod: 'development'
-  xcodeProjectPath: '$(Build.SourcesDirectory)/WhiteLabelCopy.xcodeproj'
+  scheme: 'WhiteLabel'
+  xcWorkspacePath: '$(Build.SourcesDirectory)/WhiteLabel.xcworkspace'
 
 steps:
 - checkout: self
@@ -15,84 +14,50 @@ steps:
 - script: ls -R $(Build.SourcesDirectory)
   displayName: 'Print directory structure'
 
-- task: CocoaPods@0
-  inputs:
-    workingDirectory: $(Build.SourcesDirectory)/WhiteLabelCopy 
-    forceRepoUpdate: true
-  displayName: 'CocoaPods install'
-
-- task: Bash@3
-  displayName: 'Check for Ruby'
-  inputs:
-    targetType: 'inline'
-    script: |
-      if ! command -v ruby &> /dev/null; then
-          echo "Ruby could not be found. Install Ruby before running this pipeline."
-          exit 1
-      fi
-
-- task: Bash@3
-  displayName: 'Install Bundler'
-  inputs:
-    targetType: 'inline'
-    script: |
-      sudo gem install bundler:2.2.27
-      if [ $? -ne 0 ]; then
-          echo "Bundler installation failed."
-          exit 1
-      fi
-
-- task: Bash@3
-  displayName: 'Configure and Install Bundle'
-  inputs:
-    targetType: 'inline'
-    script: |
-      bundle config path vendor/bundle
-      bundle install --jobs 4 --retry 3
-      if [ $? -ne 0 ]; then
-          echo "Bundle installation failed."
-          exit 1
-      fi
-
 - task: InstallAppleCertificate@2
   inputs:
-    certSecureFile: 'Certificate.p12'
+    certSecureFile: 'CertificateAzure.p12'
+    certPwd: '$(P12_PASSWORD)'
     keychain: 'temp'
-  displayName: Install Apple Certificate
   
 - task: InstallAppleProvisioningProfile@1
   inputs:
     provisioningProfileLocation: 'secureFiles'
-    provProfileSecureFile: 'match_Development_brcomsystemsatWhiteLabelCopy.mobileprovision'
+    provProfileSecureFile: 'match Development br.com.systemsat.whitelabelssx.mobileprovision'
   displayName: 'Install Apple Provisioning Profile'
 
 - script: |
-    rm -rf ~/Library/Developer/Xcode/DerivedData/
+    cd $(Build.SourcesDirectory)
+    pod update
+    pod install
+  displayName: 'CocoaPods install'
+
+- script: rm -rf ~/Library/Developer/Xcode/DerivedData/
   displayName: 'Clean Derived Data'
 
-- script: |
-    echo 'Delete existing Pods directory'
-    rm -rf ./Pods
-  displayName: 'Delete Pods Directory'
+- script: echo 'Clean build folder' && xcodebuild clean
+  displayName: 'Clean Build Folder'
 
-- script: |
-    echo 'Update CocoaPods'
-    pod repo update
-  displayName: 'Update CocoaPods Repo'
+# Debugging Steps (Optional)
+- script: echo $(xcWorkspacePath)
+  displayName: 'Print xcWorkspacePath'
+  
+- script: ls -la $(Build.SourcesDirectory)
+  displayName: 'List files in source directory'
 
-- script: |
-    echo 'Install Pods'
-    pod install
-  displayName: 'Install CocoaPods'
-    
+- script: xcodebuild -list -workspace $(xcWorkspacePath)
+  displayName: 'List Available Schemes'
+  
 - task: Xcode@5
   inputs:
     actions: 'clean build'
-    xcWorkspacePath: '**/*.xcworkspace' 
-    scheme: $(scheme)
+    xcWorkspacePath: '$(xcWorkspacePath)'
+    scheme: '$(scheme)'
     sdk: 'iphoneos'
     configuration: 'Release'
-    xcodeVersion: 'default' 
+    signingOption: 'manual'
+    signingIdentity: '$(CODE_SIGN_IDENTITY)'
+    provisioningProfileUUID: '$(APPLE_PROV_PROFILE_UUID)'
 
 - task: PublishBuildArtifacts@1
   inputs:
