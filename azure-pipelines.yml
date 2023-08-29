@@ -48,6 +48,9 @@ steps:
   displayName: 'Clean Build Folder'
 
 #For debug proposal
+- script: echo $(xcWorkspacePath)
+  displayName: 'Print xcWorkspacePath'
+  
 - script: ls -la $(Build.SourcesDirectory)
   displayName: 'List files in source directory'
 
