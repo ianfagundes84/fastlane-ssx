@@ -16,14 +16,14 @@ steps:
 
 - task: InstallAppleCertificate@2
   inputs:
-    certSecureFile: 'CertificateAzure.p12'
+    certSecureFile: 'Certificates.p12'
     certPwd: '$(P12_PASSWORD)'
     keychain: 'temp'
   
 - task: InstallAppleProvisioningProfile@1
   inputs:
     provisioningProfileLocation: 'secureFiles'
-    provProfileSecureFile: 'match Development br.com.systemsat.whitelabelssx.mobileprovision'
+    provProfileSecureFile: 'DevelopmentWhiteLabel.mobileprovision'
   displayName: 'Install Apple Provisioning Profile'
 
 - script: |
@@ -48,13 +48,18 @@ steps:
 - script: xcodebuild -list -workspace $(xcWorkspacePath)
   displayName: 'List Available Schemes'
   
+- script: |
+    security find-identity -v -p codesigning
+  displayName: 'List installed certificates'
+  
 - task: Xcode@5
   inputs:
     actions: 'clean build'
     xcWorkspacePath: '$(xcWorkspacePath)'
     scheme: '$(scheme)'
     sdk: 'iphoneos'
-    configuration: 'Release'
+    configuration: 'Development'
+    useXcpretty: false
     signingOption: 'manual'
     signingIdentity: '$(CODE_SIGN_IDENTITY)'
     provisioningProfileUUID: '$(APPLE_PROV_PROFILE_UUID)'
@@ -64,3 +69,14 @@ steps:
     pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
     artifactName: 'drop'
     publishLocation: 'Container'
+
+- script: |
+    xcodebuild -exportArchive -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive \
+    -exportOptionsPlist $(Build.SourcesDirectory)/ExportOptions.plist \
+    -exportPath $(Build.ArtifactStagingDirectory)/WhiteLabel.ipa
+  displayName: 'Archive and export .ipa'
+
+- script: |
+    xcrun altool --upload-app -f $(Build.ArtifactStagingDirectory)/WhiteLabel.ipa \
+    -u $(APPLE_DEVELOPER_USERNAME) -p $(APPLE_DEVELOPER_PASSWORD)
+  displayName: 'Upload to TestFlight'
