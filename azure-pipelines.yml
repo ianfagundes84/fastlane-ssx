@@ -5,9 +5,9 @@ pool:
   vmImage: 'macOS-latest'
 
 variables:
-  scheme: 'WhiteLabelCopy'
+  scheme: 'WhiteLabel'
   distributionMethod: 'development'
-  xcWorkspacePath: '$(Build.SourcesDirectory)/WhiteLabelCopy.xcworkspace'
+  xcWorkspacePath: '$(Build.SourcesDirectory)/WhiteLabel.xcworkspace'
 
 steps:
 - checkout: self
@@ -24,7 +24,7 @@ steps:
 - task: InstallAppleProvisioningProfile@1
   inputs:
     provisioningProfileLocation: 'secureFiles'
-    provProfileSecureFile: 'match_Development_brcomsystemsatWhiteLabelCopy.mobileprovision'
+    provProfileSecureFile: 'match_Development_brcomsystemsatWhiteLabel.mobileprovision'
   displayName: 'Install Apple Provisioning Profile'
 
 - script: |
@@ -58,7 +58,7 @@ steps:
   inputs:
     actions: 'clean build'
     xcWorkspacePath: '$(Build.SourcesDirectory)/WhiteLabel.xcworkspace'
-    scheme: 'WhiteLabelCopy'
+    scheme: 'WhiteLabel'
     sdk: 'iphoneos'
     configuration: 'Release'
     xcodeVersion: 'default' 
