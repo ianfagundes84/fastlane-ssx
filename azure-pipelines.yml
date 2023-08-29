@@ -60,7 +60,7 @@ steps:
 - task: Xcode@5
   inputs:
     actions: 'clean build'
-    xcWorkspacePath: '$(xcWorkspacePath)'
+    xcWorkspacePath: '$(XCWORKSPACEPATH)'
     scheme: '$(SCHEME_NAME)'
     sdk: 'iphoneos'
     configuration: 'Release'
