@@ -16,14 +16,14 @@ steps:
 
 - task: InstallAppleCertificate@2
   inputs:
-    certSecureFile: 'CertificateAzure.p12'
+    certSecureFile: 'Certificates.p12'
     certPwd: '$(P12_PASSWORD)'
     keychain: 'temp'
   
 - task: InstallAppleProvisioningProfile@1
   inputs:
     provisioningProfileLocation: 'secureFiles'
-    provProfileSecureFile: 'match Development br.com.systemsat.whitelabelssx.mobileprovision'
+    provProfileSecureFile: 'DevelopmentWhiteLabel.mobileprovision'
   displayName: 'Install Apple Provisioning Profile'
 
 - script: |
