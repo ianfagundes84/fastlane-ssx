@@ -46,7 +46,11 @@ steps:
     echo 'Clean build folder'
     xcodebuild clean
   displayName: 'Clean Build Folder'
-  
+
+#For debug proposal
+- script: ls -la $(Build.SourcesDirectory)
+  displayName: 'List files in source directory'
+
 - task: Xcode@5
   inputs:
     actions: 'clean build'
