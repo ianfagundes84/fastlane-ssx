@@ -87,6 +87,12 @@ steps:
     -exportPath $(Build.ArtifactStagingDirectory)/WhiteLabel.ipa
   displayName: 'Archive and export .ipa'
 
+- script: echo "$(APPLE_DEVELOPER_USERNAME)"
+  displayName: 'Debug: Show APPLE_DEVELOPER_USERNAME'
+  
+- script: echo "$(APPLE_DEVELOPER_PASSWORD)"
+  displayName: 'Debug: Show APPLE_DEVELOPER_PASSWORD'
+  
 - script: |
     xcrun altool --upload-app -f $(Build.ArtifactStagingDirectory)/WhiteLabel.ipa \
     -u $(APPLE_DEVELOPER_USERNAME) -p $(APPLE_DEVELOPER_PASSWORD)
