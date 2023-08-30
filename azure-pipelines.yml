@@ -16,14 +16,14 @@ steps:
 
 - task: InstallAppleCertificate@2
   inputs:
-    certSecureFile: 'Certificates.p12'
+    certSecureFile: 'CertificatesDistribution.p12'
     certPwd: '$(P12_PASSWORD)'
     keychain: 'temp'
   
 - task: InstallAppleProvisioningProfile@1
   inputs:
     provisioningProfileLocation: 'secureFiles'
-    provProfileSecureFile: 'DevelopmentWhiteLabel.mobileprovision'
+    provProfileSecureFile: 'DistributionWhiteLabel.mobileprovision'
   displayName: 'Install Apple Provisioning Profile'
 
 - script: |
@@ -58,7 +58,7 @@ steps:
     xcWorkspacePath: '$(xcWorkspacePath)'
     scheme: '$(scheme)'
     sdk: 'iphoneos'
-    configuration: 'Development'
+    configuration: 'Release'
     useXcpretty: false
     signingOption: 'manual'
     signingIdentity: '$(CODE_SIGN_IDENTITY)'
