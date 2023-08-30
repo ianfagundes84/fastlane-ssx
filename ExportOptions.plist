@@ -9,7 +9,7 @@
         <key>provisioningProfiles</key>
         <dict>
             <key>br.com.systemsat.whitelabelssx</key>
-            <string>DevelopmentWhiteLabel</string>
+            <string>DistributionWhiteLabel</string>
         </dict>
     </dict>
 </plist>
