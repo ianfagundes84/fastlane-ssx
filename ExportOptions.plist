@@ -3,12 +3,12 @@
 <plist version="1.0">
     <dict>
         <key>method</key>
-        <string>development</string>
+        <string>app-store</string>
         <key>teamID</key>
         <string>W8L47TG474</string>
         <key>provisioningProfiles</key>
         <dict>
-            <key>.br.com.systemsat.whitelabel</key>
+            <key>br.com.systemsat.whitelabelssx</key>
             <string>DevelopmentWhiteLabel</string>
         </dict>
     </dict>
