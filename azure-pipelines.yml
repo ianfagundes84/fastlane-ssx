@@ -91,11 +91,18 @@ steps:
   displayName: 'Archive and export .ipa'
 
 # Debugging Steps (Init)
-# - script: unzip -q $(Build.ArtifactStagingDirectory)/WhiteLabel.ipa -d $(Pipeline.Workspace)/a/WhiteLabel
-#   displayName: 'Unzip IPA for debugging'
+- script: |
+    unzip -q $(Build.ArtifactStagingDirectory)/WhiteLabel.ipa -d $(Pipeline.Workspace)/a/WhiteLabel
+    if [ -f "$(Pipeline.Workspace)/a/WhiteLabel/Payload/WhiteLabel.app/Info.plist" ]; then
+      echo "Info.plist file found."
+    else
+      echo "Info.plist file not found. Exiting."
+      exit 1
+    fi
+  displayName: 'Validate Info.plist in IPA'
 
-# - script: cat $(Pipeline.Workspace)/a/WhiteLabel/Payload/WhiteLabel.app/Info.plist
-#   displayName: 'Display Info.plist for debugging'
+- script: cat $(Pipeline.Workspace)/a/WhiteLabel/Payload/WhiteLabel.app/Info.plist
+  displayName: 'Display Info.plist for debugging'
 # Debugging Steps (End)
 
 - script: |
