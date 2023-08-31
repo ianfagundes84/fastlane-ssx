@@ -87,7 +87,7 @@ steps:
 - script: |
     xcodebuild -exportArchive -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive \
     -exportOptionsPlist $(Build.SourcesDirectory)/ExportOptions.plist \
-    -exportPath $(Build.ArtifactStagingDirectory)/WhiteLabel.ipa
+    -exportPath $(Build.ArtifactStagingDirectory)
   displayName: 'Archive and export .ipa'
 
 # Debugging Steps (Init)
