@@ -38,7 +38,7 @@ steps:
 - script: echo 'Clean build folder' && xcodebuild clean
   displayName: 'Clean Build Folder'
 
-# Debugging Steps (Optional)
+# Debugging Steps (Init)
 - script: echo $(xcWorkspacePath)
   displayName: 'Print xcWorkspacePath'
   
@@ -51,6 +51,7 @@ steps:
 - script: |
     security find-identity -v -p codesigning
   displayName: 'List installed certificates'
+# Debugging Steps (End)
   
 - task: Xcode@5
   inputs:
@@ -70,11 +71,13 @@ steps:
     artifactName: 'drop'
     publishLocation: 'Container'
 
+# Debugging Steps (Init)
 - script: ls -R $(Build.SourcesDirectory)/
   displayName: 'Debug: List files in specified directory'
 
 - script: ls -R $(Build.SourcesDirectory)
   displayName: 'Debug: List all files from source directory'
+# Debugging Steps (End)
 
 - script: |
     xcodebuild archive -workspace $(xcWorkspacePath) -scheme $(scheme) \
@@ -87,12 +90,20 @@ steps:
     -exportPath $(Build.ArtifactStagingDirectory)/WhiteLabel.ipa
   displayName: 'Archive and export .ipa'
 
+# Debugging Steps (Init)
+- script: |
+    pwd
+    ls -la /Users/runner/work/1/a/
+    unzip -q /Users/runner/work/1/a/WhiteLabel.ipa -d /Users/runner/work/1/a/WhiteLabel
+  displayName: 'Unzip IPA for debugging'
+
 - script: unzip -q $(Build.ArtifactStagingDirectory)/WhiteLabel.ipa -d $(Build.ArtifactStagingDirectory)/WhiteLabel
   displayName: 'Unzip IPA for debugging'
 
 - script: cat $(Build.ArtifactStagingDirectory)/WhiteLabel/Payload/WhiteLabel.app/Info.plist
   displayName: 'Display Info.plist for debugging'
-  
+# Debugging Steps (End)
+
 - script: |
     xcrun altool --upload-app -f "$(Build.ArtifactStagingDirectory)/WhiteLabel.ipa" \
     -t ios -u '$(APPLE_DEVELOPER_USERNAME)' -p '$(APPLE_DEVELOPER_PASSWORD)'
