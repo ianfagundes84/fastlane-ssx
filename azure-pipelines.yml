@@ -92,11 +92,11 @@ steps:
   displayName: 'Archive and export .ipa'
 
 # Debugging Steps (Init)
-- script: unzip -q $(Build.ArtifactStagingDirectory)/WhiteLabel.ipa -d $(Pipeline.Workspace)/a/WhiteLabel
-  displayName: 'Unzip IPA for debugging'
+# - script: unzip -q $(Build.ArtifactStagingDirectory)/WhiteLabel.ipa -d $(Pipeline.Workspace)/a/WhiteLabel
+#   displayName: 'Unzip IPA for debugging'
 
-- script: cat $(Pipeline.Workspace)/a/WhiteLabel/Payload/WhiteLabel.app/Info.plist
-  displayName: 'Display Info.plist for debugging'
+# - script: cat $(Pipeline.Workspace)/a/WhiteLabel/Payload/WhiteLabel.app/Info.plist
+#   displayName: 'Display Info.plist for debugging'
 # Debugging Steps (End)
 
 - script: |
