@@ -75,8 +75,8 @@ steps:
 - script: ls -R $(Build.SourcesDirectory)/
   displayName: 'Debug: List files in specified directory'
 
-- script: ls -R $(Build.SourcesDirectory)
-  displayName: 'Debug: List all files from source directory'
+- script: ls -R $(Build.ArtifactStagingDirectory)/
+  displayName: 'Debug: List all files from Artifact Staging Directory'
 # Debugging Steps (End)
 
 - script: |
@@ -84,6 +84,7 @@ steps:
     -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive
   displayName: 'Archive Project'
 
+# Archive and export .ipa
 - script: |
     xcodebuild -exportArchive -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive \
     -exportOptionsPlist $(Build.SourcesDirectory)/ExportOptions.plist \
@@ -91,10 +92,10 @@ steps:
   displayName: 'Archive and export .ipa'
 
 # Debugging Steps (Init)
-- script: unzip -q /Users/runner/work/1/a/WhiteLabel.ipa -d /Users/runner/work/1/a/WhiteLabel
+- script: unzip -q $(Build.ArtifactStagingDirectory)/WhiteLabel.ipa -d $(Pipeline.Workspace)/a/WhiteLabel
   displayName: 'Unzip IPA for debugging'
 
-- script: cat $(Build.ArtifactStagingDirectory)/WhiteLabel/Payload/WhiteLabel.app/Info.plist
+- script: cat $(Pipeline.Workspace)/a/WhiteLabel/Payload/WhiteLabel.app/Info.plist
   displayName: 'Display Info.plist for debugging'
 # Debugging Steps (End)
 
