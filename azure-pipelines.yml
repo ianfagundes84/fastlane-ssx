@@ -87,11 +87,11 @@ steps:
     -exportPath $(Build.ArtifactStagingDirectory)/WhiteLabel.ipa
   displayName: 'Archive and export .ipa'
 
-- script: echo "$(APPLE_DEVELOPER_USERNAME)"
-  displayName: 'Debug: Show APPLE_DEVELOPER_USERNAME'
-  
-- script: echo "$(APPLE_DEVELOPER_PASSWORD)"
-  displayName: 'Debug: Show APPLE_DEVELOPER_PASSWORD'
+- script: unzip -q $(Build.ArtifactStagingDirectory)/WhiteLabel.ipa -d $(Build.ArtifactStagingDirectory)/WhiteLabel
+  displayName: 'Unzip IPA for debugging'
+
+- script: cat $(Build.ArtifactStagingDirectory)/WhiteLabel/Payload/WhiteLabel.app/Info.plist
+  displayName: 'Display Info.plist for debugging'
   
 - script: |
     xcrun altool --upload-app -f "$(Build.ArtifactStagingDirectory)/WhiteLabel.ipa" \
