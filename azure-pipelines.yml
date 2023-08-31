@@ -109,7 +109,9 @@ steps:
 # Increment Version Before Upload
 - script: |
     current_version=$(defaults read $(infoPlistPath) CFBundleVersion)
+    echo "Current Version: $current_version"
     new_version=$((current_version + 1))
+    echo "New Version: $new_version"
     defaults write $(infoPlistPath) CFBundleVersion $new_version
   displayName: 'Increment CFBundleVersion'
 
