@@ -65,11 +65,10 @@ steps:
     signingIdentity: '$(CODE_SIGN_IDENTITY)'
     provisioningProfileUUID: '$(APPLE_PROV_PROFILE_UUID)'
 
-- task: PublishBuildArtifacts@1
+- task: PublishPipelineArtifact@1
   inputs:
-    pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
-    artifactName: 'drop'
-    publishLocation: 'Container'
+    targetPath: '$(Build.ArtifactStagingDirectory)'
+    artifact: 'drop'
 
 # Debugging Steps (Init)
 - script: ls -R $(Build.SourcesDirectory)/
