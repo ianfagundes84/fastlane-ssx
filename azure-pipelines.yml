@@ -7,6 +7,7 @@ pool:
 variables:
   scheme: 'WhiteLabel'
   xcWorkspacePath: '$(Build.SourcesDirectory)/WhiteLabel.xcworkspace'
+  infoPlistPath: '$(Build.SourcesDirectory)/WhiteLabel/WhiteLabel/Info.plist'
 
 steps:
 - checkout: self
@@ -38,7 +39,7 @@ steps:
 - script: echo 'Clean build folder' && xcodebuild clean
   displayName: 'Clean Build Folder'
 
-# Debugging Steps (Optional)
+# Debugging Steps (Init)
 - script: echo $(xcWorkspacePath)
   displayName: 'Print xcWorkspacePath'
   
@@ -51,6 +52,7 @@ steps:
 - script: |
     security find-identity -v -p codesigning
   displayName: 'List installed certificates'
+# Debugging Steps (End)
   
 - task: Xcode@5
   inputs:
@@ -64,30 +66,57 @@ steps:
     signingIdentity: '$(CODE_SIGN_IDENTITY)'
     provisioningProfileUUID: '$(APPLE_PROV_PROFILE_UUID)'
 
-- task: PublishBuildArtifacts@1
+- task: PublishPipelineArtifact@1
   inputs:
-    pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
-    artifactName: 'drop'
-    publishLocation: 'Container'
+    targetPath: '$(Build.ArtifactStagingDirectory)'
+    artifact: 'drop'
 
+# Debugging Steps (Init)
 - script: ls -R $(Build.SourcesDirectory)/
   displayName: 'Debug: List files in specified directory'
 
-- script: ls -R $(Build.SourcesDirectory)
-  displayName: 'Debug: List all files from source directory'
+- script: ls -R $(Build.ArtifactStagingDirectory)/
+  displayName: 'Debug: List all files from Artifact Staging Directory'
+# Debugging Steps (End)
 
 - script: |
     xcodebuild archive -workspace $(xcWorkspacePath) -scheme $(scheme) \
     -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive
   displayName: 'Archive Project'
 
+# Archive and export .ipa
 - script: |
     xcodebuild -exportArchive -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive \
     -exportOptionsPlist $(Build.SourcesDirectory)/ExportOptions.plist \
-    -exportPath $(Build.ArtifactStagingDirectory)/WhiteLabel.ipa
+    -exportPath $(Build.ArtifactStagingDirectory)
   displayName: 'Archive and export .ipa'
 
+# Debugging Steps (Init)
 - script: |
-    xcrun altool --upload-app -f $(Build.ArtifactStagingDirectory)/WhiteLabel.ipa \
-    -u $(APPLE_DEVELOPER_USERNAME) -p $(APPLE_DEVELOPER_PASSWORD)
+    unzip -q $(Build.ArtifactStagingDirectory)/WhiteLabel.ipa -d $(Pipeline.Workspace)/a/WhiteLabel
+    if [ -f "$(Pipeline.Workspace)/a/WhiteLabel/Payload/WhiteLabel.app/Info.plist" ]; then
+      echo "Info.plist file found."
+    else
+      echo "Info.plist file not found. Exiting."
+      exit 1
+    fi
+  displayName: 'Validate Info.plist in IPA'
+
+- script: cat $(Pipeline.Workspace)/a/WhiteLabel/Payload/WhiteLabel.app/Info.plist
+  displayName: 'Display Info.plist for debugging'
+# Debugging Steps (End)
+
+# Increment Version Before Upload
+- script: |
+    current_version=$(defaults read $(infoPlistPath) CFBundleVersion)
+    echo "Current Version: $current_version"
+    new_version=$((current_version + 1))
+    echo "New Version: $new_version"
+    defaults write $(infoPlistPath) CFBundleVersion $new_version
+  displayName: 'Increment CFBundleVersion'
+
+- script: |
+    xcrun altool --upload-app -f "$(Build.ArtifactStagingDirectory)/WhiteLabel.ipa" \
+    -t ios -u '$(APPLE_DEVELOPER_USERNAME)' -p '$(APPLE_DEVELOPER_PASSWORD)'
   displayName: 'Upload to TestFlight'
+
