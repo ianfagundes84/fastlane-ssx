@@ -84,6 +84,15 @@ steps:
     -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive
   displayName: 'Archive Project'
 
+# Increment Version Before Upload
+- script: |
+    current_version=$(defaults read $(infoPlistPath) CFBundleVersion)
+    echo "Current Version: $current_version"
+    new_version=$((current_version + 1))
+    echo "New Version: $new_version"
+    defaults write $(infoPlistPath) CFBundleVersion $new_version
+  displayName: 'Increment CFBundleVersion'
+  
 # Archive and export .ipa
 - script: |
     xcodebuild -exportArchive -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive \
@@ -105,15 +114,6 @@ steps:
 - script: cat $(Pipeline.Workspace)/a/WhiteLabel/Payload/WhiteLabel.app/Info.plist
   displayName: 'Display Info.plist for debugging'
 # Debugging Steps (End)
-
-# Increment Version Before Upload
-- script: |
-    current_version=$(defaults read $(infoPlistPath) CFBundleVersion)
-    echo "Current Version: $current_version"
-    new_version=$((current_version + 1))
-    echo "New Version: $new_version"
-    defaults write $(infoPlistPath) CFBundleVersion $new_version
-  displayName: 'Increment CFBundleVersion'
 
 - script: |
     xcrun altool --upload-app -f "$(Build.ArtifactStagingDirectory)/WhiteLabel.ipa" \
