@@ -69,22 +69,8 @@ steps:
 
 # Increment Version Before Upload
 - script: |
-    # Debug: Ensure the file exists
-    ls -la $(infoPlistPath)
-    
-    # Read current version
-    current_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" $(infoPlistPath))
-    
-    if [ -z "$current_version" ]; then
-      echo "CFBundleVersion not found. Exiting."
-      exit 1
-    else
-      echo "Current Version: $current_version"
-      new_version=$((current_version + 1))
-      echo "New Version: $new_version"
-      /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $new_version" $(infoPlistPath)
-    fi
-  displayName: 'Increment CFBundleVersion by 1'
+    /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $(Build.BuildId)" $(infoPlistPath)
+  displayName: 'Increment CFBundleVersion using Build ID'
 
 # Debug: Display Info.plist After Update
 - script: cat $(infoPlistPath)
