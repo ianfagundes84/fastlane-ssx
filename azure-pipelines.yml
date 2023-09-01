@@ -54,15 +54,20 @@ steps:
   displayName: 'List installed certificates'
 # Debugging Steps (End)
 
+# # Increment Version Before Upload
+# - script: |
+#     current_version=$(defaults read $(infoPlistPath) CFBundleVersion)
+#     echo "Current Version: $current_version"
+#     new_version=$((current_version + 1))
+#     echo "New Version: $new_version"
+#     defaults write $(infoPlistPath) CFBundleVersion $new_version
+#   displayName: 'Increment CFBundleVersion'
+
 # Increment Version Before Upload
 - script: |
-    current_version=$(defaults read $(infoPlistPath) CFBundleVersion)
-    echo "Current Version: $current_version"
-    new_version=$((current_version + 1))
-    echo "New Version: $new_version"
-    defaults write $(infoPlistPath) CFBundleVersion $new_version
-  displayName: 'Increment CFBundleVersion'
-    
+    /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $(Build.BuildId)" $(infoPlistPath)
+  displayName: 'Increment CFBundleVersion using Build ID'
+
 - task: Xcode@5
   inputs:
     actions: 'clean build'
