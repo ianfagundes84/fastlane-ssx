@@ -69,8 +69,8 @@ steps:
 
 # Increment Version Before Upload
 - script: |
-    /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $(Build.BuildId)" $(infoPlistPath)
-  displayName: 'Increment CFBundleVersion using Build ID'
+    plutil -replace CFBundleVersion -string "$(Build.BuildId)" $(infoPlistPath)
+  displayName: 'Increment CFBundleVersion using plutil'
 
 # Debug: Display Info.plist After Update
 - script: cat $(infoPlistPath)
