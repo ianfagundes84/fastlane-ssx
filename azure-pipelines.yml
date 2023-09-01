@@ -63,10 +63,18 @@ steps:
 #     defaults write $(infoPlistPath) CFBundleVersion $new_version
 #   displayName: 'Increment CFBundleVersion'
 
+# Debug: Display Info.plist Before Update
+- script: cat $(infoPlistPath)
+  displayName: 'Debug: Display Info.plist Before Update'
+
 # Increment Version Before Upload
 - script: |
     /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $(Build.BuildId)" $(infoPlistPath)
   displayName: 'Increment CFBundleVersion using Build ID'
+
+# Debug: Display Info.plist After Update
+- script: cat $(infoPlistPath)
+  displayName: 'Debug: Display Info.plist After Update'
 
 - task: Xcode@5
   inputs:
