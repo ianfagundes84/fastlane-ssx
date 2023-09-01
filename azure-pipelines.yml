@@ -77,13 +77,6 @@ steps:
 - script: chmod 644 $(infoPlistPath)
   displayName: 'Change Info.plist permissions'
 
-# Check and Unlock File
-- script: chflags -v $(infoPlistPath)
-  displayName: 'Check if Info.plist is locked'
-  
-- script: chflags nouchg $(infoPlistPath)
-  displayName: 'Unlock Info.plist'
-
 # Increment Version
 - script: |
     current_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" $(infoPlistPath))
