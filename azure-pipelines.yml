@@ -63,6 +63,9 @@ steps:
 #     defaults write $(infoPlistPath) CFBundleVersion $new_version
 #   displayName: 'Increment CFBundleVersion'
 
+- script: find $(Build.SourcesDirectory) -name 'Info.plist'
+  displayName: 'Find all Info.plist files'
+
 # Debug: Display Info.plist Before Update
 - script: cat $(infoPlistPath)
   displayName: 'Debug: Display Info.plist Before Update'
