@@ -53,7 +53,16 @@ steps:
     security find-identity -v -p codesigning
   displayName: 'List installed certificates'
 # Debugging Steps (End)
-  
+
+# Increment Version Before Upload
+- script: |
+    current_version=$(defaults read $(infoPlistPath) CFBundleVersion)
+    echo "Current Version: $current_version"
+    new_version=$((current_version + 1))
+    echo "New Version: $new_version"
+    defaults write $(infoPlistPath) CFBundleVersion $new_version
+  displayName: 'Increment CFBundleVersion'
+    
 - task: Xcode@5
   inputs:
     actions: 'clean build'
@@ -83,15 +92,6 @@ steps:
     xcodebuild archive -workspace $(xcWorkspacePath) -scheme $(scheme) \
     -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive
   displayName: 'Archive Project'
-
-# Increment Version Before Upload
-- script: |
-    current_version=$(defaults read $(infoPlistPath) CFBundleVersion)
-    echo "Current Version: $current_version"
-    new_version=$((current_version + 1))
-    echo "New Version: $new_version"
-    defaults write $(infoPlistPath) CFBundleVersion $new_version
-  displayName: 'Increment CFBundleVersion'
   
 # Archive and export .ipa
 - script: |
