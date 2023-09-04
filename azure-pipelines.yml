@@ -149,6 +149,7 @@ steps:
   displayName: 'Archive and export .ipa'
 
 - script: |
+    stat -f "%Sm" -t "%Y-%m-%d %H:%M:%S" $(Build.ArtifactStagingDirectory)/$IPA_NAME
     xcrun assetutil --info "$(Build.ArtifactStagingDirectory)/$IPA_NAME" \
     -t ios -u '$(APPLE_DEVELOPER_USERNAME)' -p '$(APPLE_DEVELOPER_PASSWORD)'
   displayName: 'Upload to TestFlight'
