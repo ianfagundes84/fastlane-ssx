@@ -134,9 +134,9 @@ steps:
     -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive
   displayName: 'Archive Project'
 
-- script: |
-    /usr/libexec/PlistBuddy -c "Print CFBundleVersion" $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive/Info.plist
-  displayName: 'Debug: Display CFBundleVersion from xcarchive'
+# - script: |
+#     /usr/libexec/PlistBuddy -c "Print CFBundleVersion" $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive/Info.plist
+#   displayName: 'Debug: Display CFBundleVersion from xcarchive'
   
 # Archive and export .ipa
 - script: |
