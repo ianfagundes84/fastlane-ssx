@@ -140,7 +140,7 @@ steps:
   
 # Archive and export .ipa
 - script: |
-    xcodebuild -exportArchive -archivePath $(Build.ArtifactStagingDirectory)/build/WhiteLabel.xcarchive \
+    xcodebuild -exportArchive -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive \
     -exportOptionsPlist $(Build.SourcesDirectory)/ExportOptions.plist \
     -exportPath $(Build.ArtifactStagingDirectory)
   displayName: 'Archive and export .ipa'
