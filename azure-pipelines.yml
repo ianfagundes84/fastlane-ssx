@@ -103,9 +103,6 @@ steps:
 - script: cat $(infoPlistPath)
   displayName: 'Debug: Display Info.plist After Update'
 
-- script: /usr/libexec/PlistBuddy
-  displayName: 'Check PlistBuddy availability'
-
 - task: Xcode@5
   inputs:
     actions: 'clean build'
