@@ -148,6 +148,8 @@ steps:
     -exportPath $(Build.ArtifactStagingDirectory)
     
     # List contents of the directory
+    unzip $(Build.ArtifactStagingDirectory)/$IPA_NAME -d extractedIPA
+    ls -al extractedIPA
     echo "Contents of the directory:"
     ls -al $(Build.ArtifactStagingDirectory)
     
