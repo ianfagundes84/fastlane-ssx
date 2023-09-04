@@ -137,7 +137,7 @@ steps:
 # - script: |
 #     /usr/libexec/PlistBuddy -c "Print CFBundleVersion" $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive/Info.plist
 #   displayName: 'Debug: Display CFBundleVersion from xcarchive'
-  
+
 # Archive and export .ipa
 - script: |
     xcodebuild -exportArchive -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive \
@@ -145,13 +145,24 @@ steps:
     -exportPath $(Build.ArtifactStagingDirectory)
   displayName: 'Archive and export .ipa'
 
-- task: ExtractFiles@1
-  inputs:
-    archiveFilePatterns: '$(Build.ArtifactStagingDirectory)/WhiteLabel.ipa'
-    destinationFolder: '$(Agent.TempDirectory)'
-    cleanDestinationFolder: true
-    overwriteExistingFiles: false"
-  displayName: 'ExtractFiles .ipa'
+- script: |
+    echo "Unzipping IPA..."
+    unzip $(Build.ArtifactStagingDirectory)/WhiteLabel.ipa -d extracted
+
+    echo "Updating CFBundleVersion..."
+    current_version=$(/usr/libexec/PlistBuddy -c
+    echo "Extracted Current Version: $current_version"
+
+    new_version=$((current_version + 1))
+    echo "Extracted New Version: $new_version"
+
+    /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $new_version" $(infoPlistPath)
+    /usr/libexec/PlistBuddy -c "Set :CFBundleVersion "extracted/Payload/WhiteLabel.app/Info.plist
+
+    echo "Repackaging IPA..."
+    cd extracted
+    zip -qr ../WhiteLabel.ipa Payload
+  displayName: 'Change CFBundleVersion in IPA'
 
 - script: |
     xcrun altool --upload-app -f "$(Build.ArtifactStagingDirectory)/WhiteLabel.ipa" \
