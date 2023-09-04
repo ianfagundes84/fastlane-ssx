@@ -52,16 +52,6 @@ steps:
 - script: |
     security find-identity -v -p codesigning
   displayName: 'List installed certificates'
-# Debugging Steps (End)
-
-# # Increment Version Before Upload
-# - script: |
-#     current_version=$(defaults read $(infoPlistPath) CFBundleVersion)
-#     echo "Current Version: $current_version"
-#     new_version=$((current_version + 1))
-#     echo "New Version: $new_version"
-#     defaults write $(infoPlistPath) CFBundleVersion $new_version
-#   displayName: 'Increment CFBundleVersion'
 
 - script: find $(Build.SourcesDirectory) -name 'Info.plist'
   displayName: 'Find all Info.plist files'
@@ -79,17 +69,35 @@ steps:
 
 # Increment Version
 - script: |
+    echo "Fetching current version using PlistBuddy..."
     current_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" $(infoPlistPath))
+    
+    echo "Extracted Current Version: $current_version"
+    
     if [ -z "$current_version" ]; then
-      echo "CFBundleVersion not found. Exiting."
+      echo "CFBundleVersion not found in $(infoPlistPath). Exiting."
       exit 1
     else
-      echo "Current Version: $current_version"
+      echo "Incrementing version..."
       new_version=$((current_version + 1))
-      echo "New Version: $new_version"
+      echo "New Version to be set: $new_version"
+      
+      echo "Setting new version using PlistBuddy..."
       /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $new_version" $(infoPlistPath)
+      if [ $? -eq 0 ]; then
+          echo "Version set successfully."
+      else
+          echo "Error setting version."
+          exit 1
+      fi
+      
+      # After setting, fetch again to verify
+      updated_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" $(infoPlistPath))
+      echo "Updated Version in Info.plist: $updated_version"
     fi
-  displayName: 'Increment CFBundleVersion by 1'
+  displayName: 'Increment CFBundleVersion by 1 with Debugging'
+
+# Debugging Steps (End)
 
 # Debug: Display Info.plist After Update
 - script: cat $(infoPlistPath)
