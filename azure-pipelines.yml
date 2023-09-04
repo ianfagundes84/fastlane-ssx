@@ -145,6 +145,14 @@ steps:
     -exportPath $(Build.ArtifactStagingDirectory)
   displayName: 'Archive and export .ipa'
 
+- task: ExtractFiles@1
+  inputs:
+    archiveFilePatterns: '$(Build.ArtifactStagingDirectory)/WhiteLabel.ipa'
+    destinationFolder: '$(Agent.TempDirectory)'
+    cleanDestinationFolder: true
+    overwriteExistingFiles: false"
+  displayName: 'ExtractFiles .ipa'
+
 - script: |
     xcrun altool --upload-app -f "$(Build.ArtifactStagingDirectory)/WhiteLabel.ipa" \
     -t ios -u '$(APPLE_DEVELOPER_USERNAME)' -p '$(APPLE_DEVELOPER_PASSWORD)'
