@@ -142,15 +142,24 @@ steps:
 - script: |
     TIMESTAMP=$(date +"%Y%m%d%H%M%S")
     IPA_NAME="WhiteLabel_$TIMESTAMP.ipa"
+    
+    # Remove existing IPAs
+    rm -rf $(Build.ArtifactStagingDirectory)/*.ipa
+    
+    # Archive and export
     xcodebuild -exportArchive -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive \
     -exportOptionsPlist $(Build.SourcesDirectory)/ExportOptions.plist \
-    rm -rf $(Build.ArtifactStagingDirectory)/*.ipa
     -exportPath $(Build.ArtifactStagingDirectory)
-  displayName: 'Archive and export .ipa'
-
-- script: |
+    
+    # Check file details
     stat -f "%Sm" -t "%Y-%m-%d %H:%M:%S" $(Build.ArtifactStagingDirectory)/$IPA_NAME
-    xcrun assetutil --info "$(Build.ArtifactStagingDirectory)/$IPA_NAME" \
-    -t ios -u '$(APPLE_DEVELOPER_USERNAME)' -p '$(APPLE_DEVELOPER_PASSWORD)'
-  displayName: 'Upload to TestFlight'
+    xcrun assetutil --info "$(Build.ArtifactStagingDirectory)/$IPA_NAME"
+  displayName: 'Archive, Export .ipa and Check Details'
+
+
+# - script: |
+#     stat -f "%Sm" -t "%Y-%m-%d %H:%M:%S" $(Build.ArtifactStagingDirectory)/$IPA_NAME
+#     xcrun assetutil --info "$(Build.ArtifactStagingDirectory)/$IPA_NAME" \
+#     -t ios -u '$(APPLE_DEVELOPER_USERNAME)' -p '$(APPLE_DEVELOPER_PASSWORD)'
+#   displayName: 'Upload to TestFlight'
 
