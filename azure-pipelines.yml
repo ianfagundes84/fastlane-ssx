@@ -152,12 +152,11 @@ steps:
     echo "Updating CFBundleVersion..."
     current_version=$(/usr/libexec/PlistBuddy -c
     echo "Extracted Current Version: $current_version"
-
     new_version=$((current_version + 1))
     echo "Extracted New Version: $new_version"
 
     /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $new_version" $(infoPlistPath)
-    /usr/libexec/PlistBuddy -c "Set :CFBundleVersion "extracted/Payload/WhiteLabel.app/Info.plist
+    /usr/libexec/PlistBuddy -c "Set :CFBundleVersion "extracted/Payload/WhiteLabel.app/Info.plist"
 
     echo "Repackaging IPA..."
     cd extracted
