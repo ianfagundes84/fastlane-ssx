@@ -1,5 +1,5 @@
 trigger:
-- main
+- develop
 
 pool:
   vmImage: 'macOS-latest'
@@ -7,6 +7,7 @@ pool:
 variables:
   scheme: 'WhiteLabel'
   xcWorkspacePath: '$(Build.SourcesDirectory)/WhiteLabel.xcworkspace'
+  infoPlistPath: '$(Build.SourcesDirectory)/WhiteLabel/Info.plist'
 
 steps:
 - checkout: self
@@ -16,14 +17,14 @@ steps:
 
 - task: InstallAppleCertificate@2
   inputs:
-    certSecureFile: 'Certificates.p12'
+    certSecureFile: 'CertificatesDistribution.p12'
     certPwd: '$(P12_PASSWORD)'
     keychain: 'temp'
   
 - task: InstallAppleProvisioningProfile@1
   inputs:
     provisioningProfileLocation: 'secureFiles'
-    provProfileSecureFile: 'DevelopmentWhiteLabel.mobileprovision'
+    provProfileSecureFile: 'DistributionWhiteLabel.mobileprovision'
   displayName: 'Install Apple Provisioning Profile'
 
 - script: |
@@ -38,7 +39,7 @@ steps:
 - script: echo 'Clean build folder' && xcodebuild clean
   displayName: 'Clean Build Folder'
 
-# Debugging Steps (Optional)
+# Debugging Steps (Init)
 - script: echo $(xcWorkspacePath)
   displayName: 'Print xcWorkspacePath'
   
@@ -48,6 +49,60 @@ steps:
 - script: xcodebuild -list -workspace $(xcWorkspacePath)
   displayName: 'List Available Schemes'
   
+- script: |
+    security find-identity -v -p codesigning
+  displayName: 'List installed certificates'
+
+- script: find $(Build.SourcesDirectory) -name 'Info.plist'
+  displayName: 'Find all Info.plist files'
+
+# Check and Modify Permissions
+- script: ls -l $(infoPlistPath)
+  displayName: 'Check Info.plist permissions'
+  
+- script: chmod 644 $(infoPlistPath)
+  displayName: 'Change Info.plist permissions'
+
+# Debug: Display Info.plist Before Update
+- script: cat $(infoPlistPath)
+  displayName: 'Debug: Display Info.plist Before Update'
+
+# Increment Version
+- script: |
+    echo "Fetching current version using PlistBuddy..."
+    current_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" $(infoPlistPath))
+    
+    echo "Extracted Current Version: $current_version"
+    
+    if [ -z "$current_version" ]; then
+      echo "CFBundleVersion not found in $(infoPlistPath). Exiting."
+      exit 1
+    else
+      echo "Incrementing version..."
+      new_version=$((current_version + 1))
+      echo "New Version to be set: $new_version"
+      
+      echo "Setting new version using PlistBuddy..."
+      /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $new_version" $(infoPlistPath)
+      if [ $? -eq 0 ]; then
+          echo "Version set successfully."
+      else
+          echo "Error setting version."
+          exit 1
+      fi
+      
+      # After setting, fetch again to verify
+      updated_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" $(infoPlistPath))
+      echo "Updated Version in Info.plist: $updated_version"
+    fi
+  displayName: 'Increment CFBundleVersion by 1 with Debugging'
+
+# Debugging Steps (End)
+
+# Debug: Display Info.plist After Update
+- script: cat $(infoPlistPath)
+  displayName: 'Debug: Display Info.plist After Update'
+
 - task: Xcode@5
   inputs:
     actions: 'clean build'
@@ -55,12 +110,62 @@ steps:
     scheme: '$(scheme)'
     sdk: 'iphoneos'
     configuration: 'Release'
+    useXcpretty: false
     signingOption: 'manual'
+    exportOptions: plist
     signingIdentity: '$(CODE_SIGN_IDENTITY)'
     provisioningProfileUUID: '$(APPLE_PROV_PROFILE_UUID)'
 
-- task: PublishBuildArtifacts@1
+- task: PublishPipelineArtifact@1
   inputs:
-    pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
-    artifactName: 'drop'
-    publishLocation: 'Container'
+    targetPath: '$(Build.ArtifactStagingDirectory)'
+    artifact: 'drop'
+
+# Debugging Steps (Init)
+- script: ls -R $(Build.SourcesDirectory)/
+  displayName: 'Debug: List files in specified directory'
+
+- script: ls -R $(Build.ArtifactStagingDirectory)/
+  displayName: 'Debug: List all files from Artifact Staging Directory'
+# Debugging Steps (End)
+
+- script: |
+    xcodebuild archive -workspace $(xcWorkspacePath) -scheme $(scheme) \
+    -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive
+  displayName: 'Archive Project'
+
+# Archive and export .ipa
+- script: |
+    # Set the IPA name with a timestamp
+    TIMESTAMP=$(date +"%Y%m%d%H%M%S")
+    IPA_DIRECTORY="WhiteLabel_$TIMESTAMP"
+    IPA_NAME="WhiteLabel.ipa"  # The actual IPA will have this generic name
+    
+    # Remove any old IPAs and directories
+    rm -rf $(Build.ArtifactStagingDirectory)/*.ipa
+    rm -rf $(Build.ArtifactStagingDirectory)/$IPA_DIRECTORY
+    
+    # Archive and export
+    xcodebuild -exportArchive -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive \
+    -exportOptionsPlist $(Build.SourcesDirectory)/ExportOptions.plist \
+    -exportPath $(Build.ArtifactStagingDirectory)/$IPA_DIRECTORY
+    
+    # Confirm that the IPA was exported correctly
+    if [ ! -f $(Build.ArtifactStagingDirectory)/$IPA_DIRECTORY/$IPA_NAME ]; then
+        echo "Error: IPA not found!"
+        exit 1
+    fi
+    
+    # List contents of the directory
+    unzip $(Build.ArtifactStagingDirectory)/$IPA_DIRECTORY/$IPA_NAME -d extractedIPA
+    ls -al extractedIPA
+    echo "Contents of the export directory:"
+    ls -al $(Build.ArtifactStagingDirectory)/$IPA_DIRECTORY
+    
+    # Check details of the IPA
+    stat $(Build.ArtifactStagingDirectory)/$IPA_DIRECTORY/$IPA_NAME
+  displayName: 'Archive, Export .ipa and Check Details'
+
+
+
+
