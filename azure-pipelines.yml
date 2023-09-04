@@ -140,32 +140,16 @@ steps:
 
 # Archive and export .ipa
 - script: |
+    TIMESTAMP=$(date +"%Y%m%d%H%M%S")
+    IPA_NAME="WhiteLabel_$TIMESTAMP.ipa"
     xcodebuild -exportArchive -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive \
     -exportOptionsPlist $(Build.SourcesDirectory)/ExportOptions.plist \
+    rm -rf $(Build.ArtifactStagingDirectory)/*.ipa
     -exportPath $(Build.ArtifactStagingDirectory)
   displayName: 'Archive and export .ipa'
 
 - script: |
-    echo "Unzipping IPA..."
-    unzip $(Build.ArtifactStagingDirectory)/WhiteLabel.ipa -d extracted
-
-    infoPlistPath= "extracted/Payload/WhiteLabel.app/Info.plist"
-
-    echo "Updating CFBundleVersion..."
-    current_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" $(infoPlistPath))
-    echo "Extracted Current Version: $current_version"
-    new_version=$((current_version + 1))
-    echo "Extracted New Version: $new_version"
-
-    /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $new_version" $(infoPlistPath)
-
-    echo "Repackaging IPA..."
-    cd extracted
-    zip -qr ../WhiteLabel.ipa Payload
-  displayName: 'Change CFBundleVersion in IPA'
-
-- script: |
-    xcrun altool --upload-app -f "$(Build.ArtifactStagingDirectory)/WhiteLabel.ipa" \
+    xcrun assetutil --info "$(Build.ArtifactStagingDirectory)/$IPA_NAME" \
     -t ios -u '$(APPLE_DEVELOPER_USERNAME)' -p '$(APPLE_DEVELOPER_PASSWORD)'
   displayName: 'Upload to TestFlight'
 
