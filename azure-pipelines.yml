@@ -166,6 +166,9 @@ steps:
     stat $(Build.ArtifactStagingDirectory)/$IPA_DIRECTORY/$IPA_NAME
   displayName: 'Archive, Export .ipa and Check Details'
 
+- script: |
+    xcrun altool --upload-app --type ios --file $(Build.ArtifactStagingDirectory)/$IPA_DIRECTORY/$IPA_NAME --username $(APPLE_DEVELOPER_USERNAME) --password $(APPLE_DEVELOPER_PASSWORD)
+  displayName: 'Upload to App Store'
 
 
 
