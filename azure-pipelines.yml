@@ -134,10 +134,6 @@ steps:
     -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive
   displayName: 'Archive Project'
 
-# - script: |
-#     /usr/libexec/PlistBuddy -c "Print CFBundleVersion" $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive/Info.plist
-#   displayName: 'Debug: Display CFBundleVersion from xcarchive'
-
 # Archive and export .ipa
 - script: |
     TIMESTAMP=$(date +"%Y%m%d%H%M%S")
@@ -151,15 +147,12 @@ steps:
     -exportOptionsPlist $(Build.SourcesDirectory)/ExportOptions.plist \
     -exportPath $(Build.ArtifactStagingDirectory)
     
+    # List contents of the directory
+    echo "Contents of the directory:"
+    ls -al $(Build.ArtifactStagingDirectory)
+    
     # Check file details
-    stat -f "%Sm" -t "%Y-%m-%d %H:%M:%S" $(Build.ArtifactStagingDirectory)/$IPA_NAME
+    stat $(Build.ArtifactStagingDirectory)/$IPA_NAME
     xcrun assetutil --info "$(Build.ArtifactStagingDirectory)/$IPA_NAME"
   displayName: 'Archive, Export .ipa and Check Details'
-
-
-# - script: |
-#     stat -f "%Sm" -t "%Y-%m-%d %H:%M:%S" $(Build.ArtifactStagingDirectory)/$IPA_NAME
-#     xcrun assetutil --info "$(Build.ArtifactStagingDirectory)/$IPA_NAME" \
-#     -t ios -u '$(APPLE_DEVELOPER_USERNAME)' -p '$(APPLE_DEVELOPER_PASSWORD)'
-#   displayName: 'Upload to TestFlight'
 
