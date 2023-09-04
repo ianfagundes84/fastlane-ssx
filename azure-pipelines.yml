@@ -103,18 +103,19 @@ steps:
 - script: cat $(infoPlistPath)
   displayName: 'Debug: Display Info.plist After Update'
 
-- task: Xcode@5
-  inputs:
-    actions: 'clean build'
-    xcWorkspacePath: '$(xcWorkspacePath)'
-    scheme: '$(scheme)'
-    sdk: 'iphoneos'
-    configuration: 'Release'
-    useXcpretty: false
-    signingOption: 'manual'
-    exportOptions: plist
-    signingIdentity: '$(CODE_SIGN_IDENTITY)'
-    provisioningProfileUUID: '$(APPLE_PROV_PROFILE_UUID)'
+# Xcode build with specified destination
+- script: |
+    xcodebuild clean build \
+    -workspace $(xcWorkspacePath) \
+    -scheme $(scheme) \
+    -sdk iphoneos \
+    -configuration Release \
+    -destination 'platform=iOS Simulator,name=iPhone 11 Pro' \
+    CODE_SIGN_STYLE=Manual \
+    CODE_SIGN_IDENTITY=$(CODE_SIGN_IDENTITY) \
+    PROVISIONING_PROFILE=$(APPLE_PROV_PROFILE_UUID)
+  displayName: 'Xcode build with specified destination'
+
 
 - task: PublishPipelineArtifact@1
   inputs:
