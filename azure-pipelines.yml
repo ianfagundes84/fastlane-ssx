@@ -136,16 +136,23 @@ steps:
 
 # Archive and export .ipa
 - script: |
+    # Set the IPA name with a timestamp
     TIMESTAMP=$(date +"%Y%m%d%H%M%S")
     IPA_NAME="WhiteLabel_$TIMESTAMP.ipa"
     
-    # Remove existing IPAs
+    # Remove any old IPAs
     rm -rf $(Build.ArtifactStagingDirectory)/*.ipa
     
     # Archive and export
     xcodebuild -exportArchive -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive \
     -exportOptionsPlist $(Build.SourcesDirectory)/ExportOptions.plist \
-    -exportPath $(Build.ArtifactStagingDirectory)
+    -exportPath $(Build.ArtifactStagingDirectory)/$IPA_NAME
+    
+    # Confirm that the IPA was exported correctly
+    if [ ! -f $(Build.ArtifactStagingDirectory)/$IPA_NAME ]; then
+        echo "Error: IPA not found!"
+        exit 1
+    fi
     
     # List contents of the directory
     unzip $(Build.ArtifactStagingDirectory)/$IPA_NAME -d extractedIPA
@@ -153,8 +160,9 @@ steps:
     echo "Contents of the directory:"
     ls -al $(Build.ArtifactStagingDirectory)
     
-    # Check file details
+    # Check details of the IPA
     stat $(Build.ArtifactStagingDirectory)/$IPA_NAME
     xcrun assetutil --info "$(Build.ArtifactStagingDirectory)/$IPA_NAME"
   displayName: 'Archive, Export .ipa and Check Details'
+
 
