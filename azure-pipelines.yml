@@ -164,8 +164,8 @@ steps:
     
     # Check details of the IPA
     stat $(Build.ArtifactStagingDirectory)/$IPA_DIRECTORY/$IPA_NAME
-    xcrun assetutil --info "$(Build.ArtifactStagingDirectory)/$IPA_DIRECTORY/$IPA_NAME"
   displayName: 'Archive, Export .ipa and Check Details'
+
 
 
 
