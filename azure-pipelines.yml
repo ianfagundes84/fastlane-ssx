@@ -149,8 +149,6 @@ steps:
   
 # Archive and export .ipa
 - script: |
-    # Set the IPA name with a timestamp
-    TIMESTAMP=$(date +"%Y%m%d%H%M%S")
     IPA_NAME="WhiteLabel.ipa"  # The actual IPA will have this generic name
     
     # Remove any old IPAs and directories
@@ -173,8 +171,8 @@ steps:
     ls -al extractedIPA
     echo "Contents of the export directory:"
     ls -al $(Build.ArtifactStagingDirectory)/
-    plutil -p $(Build.ArtifactStagingDirectory)/Payload/WhiteLabel.app/Info.plist | grep CFBundleVersion 
-    
+
+    current_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" $(Build.ArtifactStagingDirectory)/Payload/WhiteLabel.app/)
     # Check details of the IPA
     stat $(Build.ArtifactStagingDirectory)/$IPA_NAME
   displayName: 'Archive, Export .ipa and Check Details'
