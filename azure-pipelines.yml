@@ -146,10 +146,6 @@ steps:
     xcodebuild archive -workspace $(xcWorkspacePath) -scheme $(scheme) \
     -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive
   displayName: 'Archive Project'
-
-- script: |
-    xcodebuild -showBuildSettings | grep CURRENT_PROJECT_VERSION | tr -d 'CURRENT_PROJECT_VERSION ='
-  displayName: 'Get Version'
   
 # Archive and export .ipa
 - script: |
@@ -179,6 +175,8 @@ steps:
     echo "Contents of the export directory:"
     ls -al $(Build.ArtifactStagingDirectory)/$IPA_DIRECTORY
     
+    current_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" $(Build.ArtifactStagingDirectory)/$IPA_DIRECTORY/Info.plist)
+    
     # Check details of the IPA
     stat $(Build.ArtifactStagingDirectory)/$IPA_DIRECTORY/$IPA_NAME
   displayName: 'Archive, Export .ipa and Check Details'
@@ -186,6 +184,7 @@ steps:
 - script: |
     unzip $(Build.ArtifactStagingDirectory)/$IPA_DIRECTORY/$IPA_NAME -d extractedIPA
     cat extractedIPA/Payload/WhiteLabel.app/Info.plist
+    current_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" extractedIPA/Payload/WhiteLabel.app/Info.plist)
   displayName: 'Check Info.plist inside IPA'
 
 - script: |
