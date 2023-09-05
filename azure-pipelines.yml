@@ -151,45 +151,40 @@ steps:
 - script: |
     # Set the IPA name with a timestamp
     TIMESTAMP=$(date +"%Y%m%d%H%M%S")
-    IPA_DIRECTORY="WhiteLabel_$TIMESTAMP"
     IPA_NAME="WhiteLabel.ipa"  # The actual IPA will have this generic name
     
     # Remove any old IPAs and directories
     rm -rf $(Build.ArtifactStagingDirectory)/*.ipa
-    rm -rf $(Build.ArtifactStagingDirectory)/$IPA_DIRECTORY
+    rm -rf $(Build.ArtifactStagingDirectory)/
     
     # Archive and export
     xcodebuild -exportArchive -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive \
     -exportOptionsPlist $(Build.SourcesDirectory)/ExportOptions.plist \
-    -exportPath $(Build.ArtifactStagingDirectory)/$IPA_DIRECTORY
+    -exportPath $(Build.ArtifactStagingDirectory)/
     
     # Confirm that the IPA was exported correctly
-    if [ ! -f $(Build.ArtifactStagingDirectory)/$IPA_DIRECTORY/$IPA_NAME ]; then
+    if [ ! -f $(Build.ArtifactStagingDirectory)/$IPA_NAME ]; then
         echo "Error: IPA not found!"
         exit 1
     fi
     
     # List contents of the directory
-    unzip $(Build.ArtifactStagingDirectory)/$IPA_DIRECTORY/$IPA_NAME -d extractedIPA
+    unzip $(Build.ArtifactStagingDirectory)/$IPA_NAME -d extractedIPA
     ls -al extractedIPA
     echo "Contents of the export directory:"
-    ls -al $(Build.ArtifactStagingDirectory)/$IPA_DIRECTORY
-    
-    current_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" $(Build.ArtifactStagingDirectory)/$IPA_DIRECTORY/Info.plist)
+    ls -al $(Build.ArtifactStagingDirectory)/
+    plutil -p $(Build.ArtifactStagingDirectory)/Payload/WhiteLabel.app/Info.plist | grep CFBundleVersion 
     
     # Check details of the IPA
-    stat $(Build.ArtifactStagingDirectory)/$IPA_DIRECTORY/$IPA_NAME
+    stat $(Build.ArtifactStagingDirectory)/$IPA_NAME
   displayName: 'Archive, Export .ipa and Check Details'
 
 - script: |
-    unzip $(Build.ArtifactStagingDirectory)/$IPA_DIRECTORY/$IPA_NAME -d extractedIPA
+    unzip $(Build.ArtifactStagingDirectory)/$IPA_NAME -d extractedIPA
     cat extractedIPA/Payload/WhiteLabel.app/Info.plist
     current_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" extractedIPA/Payload/WhiteLabel.app/Info.plist)
   displayName: 'Check Info.plist inside IPA'
 
 - script: |
-    xcrun altool --upload-app --type ios --file $(Build.ArtifactStagingDirectory)/$IPA_DIRECTORY/$IPA_NAME --username $(APPLE_DEVELOPER_USERNAME) --password $(APPLE_DEVELOPER_PASSWORD)
+    xcrun altool --upload-app --type ios --file $(Build.ArtifactStagingDirectory)/$IPA_NAME --username $(APPLE_DEVELOPER_USERNAME) --password $(APPLE_DEVELOPER_PASSWORD)
   displayName: 'Upload to App Store'
-
-
-
