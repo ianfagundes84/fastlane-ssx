@@ -181,7 +181,7 @@ steps:
 
 - script: |
     unzip $(Build.ArtifactStagingDirectory)/$IPA_DIRECTORY/$IPA_NAME -d extractedIPA
-    cat extractedIPA/Payload/SeuApp.app/Info.plist
+    cat extractedIPA/Payload/WhiteLabel.app/Info.plist
   displayName: 'Check Info.plist inside IPA'
 
 - script: |
