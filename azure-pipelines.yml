@@ -8,12 +8,10 @@ variables:
   scheme: 'WhiteLabel'
   xcWorkspacePath: '$(Build.SourcesDirectory)/WhiteLabel.xcworkspace'
   infoPlistPath: '$(Build.SourcesDirectory)/WhiteLabel/Info.plist'
+  IPA_NAME: 'WhiteLabel.ipa'
 
 steps:
 - checkout: self
-
-- script: ls -R $(Build.SourcesDirectory)
-  displayName: 'Print directory structure'
 
 - task: InstallAppleCertificate@2
   inputs:
@@ -33,89 +31,22 @@ steps:
     pod install
   displayName: 'CocoaPods install'
 
-- script: rm -rf ~/Library/Developer/Xcode/DerivedData/
-  displayName: 'Clean Derived Data'
-
-- script: echo 'Clean build folder' && xcodebuild clean
-  displayName: 'Clean Build Folder'
-
-# Debugging Steps (Init)
-- script: echo $(xcWorkspacePath)
-  displayName: 'Print xcWorkspacePath'
-  
-- script: ls -la $(Build.SourcesDirectory)
-  displayName: 'List files in source directory'
-
-- script: xcodebuild -list -workspace $(xcWorkspacePath)
-  displayName: 'List Available Schemes'
-  
 - script: |
-    security find-identity -v -p codesigning
-  displayName: 'List installed certificates'
+    rm -rf ~/Library/Developer/Xcode/DerivedData/
+    xcodebuild clean
+  displayName: 'Clean Xcode data'
 
-- script: find $(Build.SourcesDirectory) -name 'Info.plist'
-  displayName: 'Find all Info.plist files'
-
-# Check and Modify Permissions
-- script: ls -l $(infoPlistPath)
-  displayName: 'Check Info.plist permissions'
-  
-- script: chmod 644 $(infoPlistPath)
-  displayName: 'Change Info.plist permissions'
-
-# Set Bundle ID
 - script: |
-    echo "Setting Bundle ID in Info.plist..."
+    chmod 644 $(infoPlistPath)
     /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier $(BUNDLE_ID)" $(infoPlistPath)
-    if [ $? -eq 0 ]; then
-        echo "Bundle ID set successfully."
-    else
-        echo "Error setting Bundle ID."
-        exit 1
-    fi
-  displayName: 'Set Bundle ID in Info.plist'
-  
-# Debug: Display Info.plist Before Update
-- script: cat $(infoPlistPath)
-  displayName: 'Debug: Display Info.plist Before Update'
+  displayName: 'Set Permissions & Bundle ID in Info.plist'
 
-# Increment Version
 - script: |
-    echo "Fetching current version using PlistBuddy..."
     current_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" $(infoPlistPath))
-    
-    echo "Extracted Current Version: $current_version"
-    
-    if [ -z "$current_version" ]; then
-      echo "CFBundleVersion not found in $(infoPlistPath). Exiting."
-      exit 1
-    else
-      echo "Incrementing version..."
-      new_version=$((current_version + 1))
-      echo "New Version to be set: $new_version"
-      
-      echo "Setting new version using PlistBuddy..."
-      /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $new_version" $(infoPlistPath)
-      if [ $? -eq 0 ]; then
-          echo "Version set successfully."
-      else
-          echo "Error setting version."
-          exit 1
-      fi
-      
-      # After setting, fetch again to verify
-      updated_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" $(infoPlistPath))
-      echo "Updated Version in Info.plist: $updated_version"
-    fi
-  displayName: 'Increment CFBundleVersion by 1 with Debugging'
+    new_version=$((current_version + 1))
+    /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $new_version" $(infoPlistPath)
+  displayName: 'Increment CFBundleVersion by 1'
 
-# Debugging Steps (End)
-
-# Debug: Display Info.plist After Update
-- script: cat $(infoPlistPath)
-  displayName: 'Debug: Display Info.plist After Update'
-
-# Xcode build with specified destination and forcing CFBundlePackageType=APPL
 - script: |
     xcodebuild clean build \
     -workspace "$(xcWorkspacePath)" \
@@ -127,65 +58,31 @@ steps:
     CODE_SIGN_IDENTITY="$(CODE_SIGN_IDENTITY)" \
     PROVISIONING_PROFILE="$(APPLE_PROV_PROFILE_UUID)" \
     CFBundlePackageType=APPL
-  displayName: 'Xcode build with specified destination and forcing CFBundlePackageType=APPL'
+  displayName: 'Xcode build with specified destination'
 
 - task: PublishPipelineArtifact@1
   inputs:
     targetPath: '$(Build.ArtifactStagingDirectory)'
     artifact: 'drop'
 
-# Debugging Steps (Init)
-- script: ls -R $(Build.SourcesDirectory)/
-  displayName: 'Debug: List files in specified directory'
-
-- script: ls -R $(Build.ArtifactStagingDirectory)/
-  displayName: 'Debug: List all files from Artifact Staging Directory'
-# Debugging Steps (End)
-
 - script: |
     xcodebuild archive -workspace $(xcWorkspacePath) -scheme $(scheme) \
     -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive
   displayName: 'Archive Project'
-  
-# Archive and export .ipa
+
 - script: |
-    IPA_NAME="WhiteLabel.ipa"  # The actual IPA will have this generic name
-    
-    # Remove any old IPAs and directories
     rm -rf $(Build.ArtifactStagingDirectory)/*.ipa
     rm -rf $(Build.ArtifactStagingDirectory)/
     
-    # Archive and export
     xcodebuild -exportArchive -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive \
     -exportOptionsPlist $(Build.SourcesDirectory)/ExportOptions.plist \
     -exportPath $(Build.ArtifactStagingDirectory)/
     
-    # Confirm that the IPA was exported correctly
     if [ ! -f $(Build.ArtifactStagingDirectory)/$IPA_NAME ]; then
         echo "Error: IPA not found!"
         exit 1
     fi
-    
-    # List contents of the directory
-    unzip $(Build.ArtifactStagingDirectory)/$IPA_NAME -d extractedIPA
-    ls -al extractedIPA
-    echo "Contents of the export directory:"
-    ls -al $(Build.ArtifactStagingDirectory)/
-
-    current_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" $(Build.ArtifactStagingDirectory)/Payload/WhiteLabel.app/)
-    # Check details of the IPA
-    stat $(Build.ArtifactStagingDirectory)/$IPA_NAME
   displayName: 'Archive, Export .ipa and Check Details'
-
-- script: |
-    defaults read $(Build.ArtifactStagingDirectory)/WhiteLabel.app/Info.plist CFBundleVersion
-  displayName: 'Verificar CFBundleVersion'
-
-- script: |
-    unzip $(Build.ArtifactStagingDirectory)/$IPA_NAME -d extractedIPA
-    cat extractedIPA/Payload/WhiteLabel.app/Info.plist
-    current_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" extractedIPA/Payload/WhiteLabel.app/Info.plist)
-  displayName: 'Check Info.plist inside IPA'
 
 - script: |
     xcrun altool --upload-app --type ios --file $(Build.ArtifactStagingDirectory)/$IPA_NAME --username $(APPLE_DEVELOPER_USERNAME) --password $(APPLE_DEVELOPER_PASSWORD)
