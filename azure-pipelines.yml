@@ -178,6 +178,10 @@ steps:
   displayName: 'Archive, Export .ipa and Check Details'
 
 - script: |
+    defaults read $(Build.ArtifactStagingDirectory)/WhiteLabel.app/Info.plist CFBundleVersion
+  displayName: 'Verificar CFBundleVersion'
+
+- script: |
     unzip $(Build.ArtifactStagingDirectory)/$IPA_NAME -d extractedIPA
     cat extractedIPA/Payload/WhiteLabel.app/Info.plist
     current_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" extractedIPA/Payload/WhiteLabel.app/Info.plist)
