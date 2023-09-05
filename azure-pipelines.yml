@@ -147,6 +147,10 @@ steps:
     -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive
   displayName: 'Archive Project'
 
+- script: |
+    xcodebuild -showBuildSettings | grep CURRENT_PROJECT_VERSION | tr -d 'CURRENT_PROJECT_VERSION ='
+  displayName: 'Get Version'
+  
 # Archive and export .ipa
 - script: |
     # Set the IPA name with a timestamp
