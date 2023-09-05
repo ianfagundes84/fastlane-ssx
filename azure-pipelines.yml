@@ -115,7 +115,7 @@ steps:
 - script: cat $(infoPlistPath)
   displayName: 'Debug: Display Info.plist After Update'
 
-# Xcode build with specified destination
+# Xcode build with specified destination and forcing CFBundlePackageType=APPL
 - script: |
     xcodebuild clean build \
     -workspace "$(xcWorkspacePath)" \
@@ -127,7 +127,7 @@ steps:
     CODE_SIGN_IDENTITY="$(CODE_SIGN_IDENTITY)" \
     PROVISIONING_PROFILE="$(APPLE_PROV_PROFILE_UUID)" \
     CFBundlePackageType=APPL
-  displayName: 'Xcode build with specified destination'
+  displayName: 'Xcode build with specified destination and forcing CFBundlePackageType=APPL'
 
 - task: PublishPipelineArtifact@1
   inputs:
