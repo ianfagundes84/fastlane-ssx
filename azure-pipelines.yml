@@ -125,9 +125,9 @@ steps:
     -destination 'platform=iOS Simulator,name=iPhone 11 Pro' \
     CODE_SIGN_STYLE=Manual \
     CODE_SIGN_IDENTITY="$(CODE_SIGN_IDENTITY)" \
-    PROVISIONING_PROFILE="$(APPLE_PROV_PROFILE_UUID)"
+    PROVISIONING_PROFILE="$(APPLE_PROV_PROFILE_UUID)" \
+    CFBundlePackageType=APPL
   displayName: 'Xcode build with specified destination'
-
 
 - task: PublishPipelineArtifact@1
   inputs:
