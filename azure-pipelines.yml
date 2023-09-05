@@ -43,6 +43,7 @@ steps:
 
 - script: |
     current_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" $(infoPlistPath))
+    echo "Current Bundle Version: $current_version"
     new_version=$((current_version + 1))
     /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $new_version" $(infoPlistPath)
   displayName: 'Increment CFBundleVersion by 1'
@@ -85,5 +86,17 @@ steps:
   displayName: 'Archive, Export .ipa and Check Details'
 
 - script: |
-    xcrun altool --upload-app --type ios --file $(Build.ArtifactStagingDirectory)/$IPA_NAME --username $(APPLE_DEVELOPER_USERNAME) --password $(APPLE_DEVELOPER_PASSWORD)
-  displayName: 'Upload to App Store'
+    retry_count=0
+    max_retries=3
+    while [ $retry_count -lt $max_retries ]
+    do
+      xcrun altool --upload-app --type ios --file $(Build.ArtifactStagingDirectory)/$IPA_NAME --username $(APPLE_DEVELOPER_USERNAME) --password $(APPLE_DEVELOPER_PASSWORD) && break
+      retry_count=$((retry_count+1))
+      echo "Retry $retry_count/$max_retries..."
+      sleep 10
+    done
+    if [ $retry_count -eq $max_retries ]; then
+      echo "Failed to upload after $max_retries attempts. Exiting..."
+      exit 1
+    fi
+  displayName: 'Upload to App Store with Retry Mechanism'
