@@ -63,6 +63,18 @@ steps:
 - script: chmod 644 $(infoPlistPath)
   displayName: 'Change Info.plist permissions'
 
+# Set Bundle ID
+- script: |
+    echo "Setting Bundle ID in Info.plist..."
+    /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier $(BUNDLE_ID)" $(infoPlistPath)
+    if [ $? -eq 0 ]; then
+        echo "Bundle ID set successfully."
+    else
+        echo "Error setting Bundle ID."
+        exit 1
+    fi
+  displayName: 'Set Bundle ID in Info.plist'
+  
 # Debug: Display Info.plist Before Update
 - script: cat $(infoPlistPath)
   displayName: 'Debug: Display Info.plist Before Update'
