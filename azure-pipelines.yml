@@ -41,7 +41,7 @@ steps:
     do
       echo "Processing target: $target"
       
-      infoPlistPath="$(Build.SourcesDirectory)/WhiteLabel/$target/Info.plist"
+      infoPlistPath="$(Build.SourcesDirectory)/$target/Info.plist"
       echo "---- Info.plist BEFORE any updates ----"
       cat $infoPlistPath
 
