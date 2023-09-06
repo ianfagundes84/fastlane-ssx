@@ -9,7 +9,7 @@ variables:
   xcWorkspacePath: '$(Build.SourcesDirectory)/WhiteLabel.xcworkspace'
   IPA_NAME: 'WhiteLabel.ipa'
   APP_VERSION: '14'
-  
+
 steps:
 - checkout: self
 
@@ -18,7 +18,7 @@ steps:
     certSecureFile: 'CertificatesDistribution.p12'
     certPwd: '$(P12_PASSWORD)'
     keychain: 'temp'
-  
+
 - task: InstallAppleProvisioningProfile@1
   inputs:
     provisioningProfileLocation: 'secureFiles'
@@ -37,6 +37,13 @@ steps:
   displayName: 'Clean Xcode data'
 
 - script: |
+    if [ ! -f $(Build.SourcesDirectory)/ExportOptions.plist ]; then
+      echo "Error: ExportOptions.plist not found!"
+      exit 1
+    fi
+  displayName: 'Check ExportOptions.plist exists'
+
+- script: |
     for target in WhiteLabel 
     do
       echo "Processing target: $target"
@@ -52,9 +59,11 @@ steps:
       new_version=$((APP_VERSION + 1))
       /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $new_version" $infoPlistPath
       
+      echo "Archiving $target..."
       xcodebuild archive -workspace $(xcWorkspacePath) -scheme $target \
       -archivePath $(Build.SourcesDirectory)/build/$target.xcarchive
       
+      echo "Exporting IPA for $target..."
       rm -rf $(Build.ArtifactStagingDirectory)/$IPA_NAME-$target.ipa
       xcodebuild -exportArchive -archivePath $(Build.SourcesDirectory)/build/$target.xcarchive \
       -exportOptionsPlist $(Build.SourcesDirectory)/ExportOptions.plist \
