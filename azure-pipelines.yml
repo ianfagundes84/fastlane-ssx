@@ -59,25 +59,6 @@ steps:
   displayName: 'Print Updated CFBundleVersion'
 
 - script: |
-    xcodebuild clean build \
-    -workspace "$(xcWorkspacePath)" \
-    -scheme "$(scheme)" \
-    -sdk iphoneos \
-    -configuration Release \
-    -destination 'platform=iOS Simulator,name=iPhone 11 Pro' \
-    CODE_SIGN_STYLE=Manual \
-    CODE_SIGN_IDENTITY="$(CODE_SIGN_IDENTITY)" \
-    PROVISIONING_PROFILE="$(APPLE_PROV_PROFILE_UUID)" \
-    CFBundlePackageType=APPL \
-    CFBundleVersion=$new_version
-  displayName: 'Xcode build with specified destination'
-
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)'
-    artifact: 'drop'
-
-- script: |
     xcodebuild archive -workspace $(xcWorkspacePath) -scheme $(scheme) \
     -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive
   displayName: 'Archive Project'
@@ -95,6 +76,12 @@ steps:
         exit 1
     fi
   displayName: 'Archive, Export .ipa and Check Details'
+
+- script: |
+    mkdir tempIPA
+    unzip $(Build.ArtifactStagingDirectory)/$IPA_NAME -d tempIPA/
+    /usr/libexec/PlistBuddy -c "Print CFBundleVersion" tempIPA/Payload/WhiteLabel.app/Info.plist
+  displayName: 'Check CFBundleVersion inside .ipa'
 
 - script: |
     retry_count=0
