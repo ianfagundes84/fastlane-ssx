@@ -43,7 +43,7 @@ steps:
   displayName: 'Set Permissions & Bundle ID in Info.plist'
 
 - script: |
-    current_version=$(APP_VERSION)
+    current_version=${APP_VERSION}
     major_version=${current_version%%.*}
     minor_version=${current_version#*.}
     minor_version=${minor_version%%.*}
@@ -55,6 +55,11 @@ steps:
     /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $new_version" $(infoPlistPath)
     echo "Set Bundle Version to: $new_version"
   displayName: 'Increment Patch Version and Set CFBundleVersion'
+
+- script: |
+    updated_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" $(infoPlistPath))
+    echo "Updated Bundle Version in Info.plist: $updated_version"
+  displayName: 'Print Updated CFBundleVersion'
 
 - script: |
     xcodebuild clean build \
