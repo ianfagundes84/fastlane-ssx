@@ -44,7 +44,9 @@ steps:
 
 - script: |
     chmod 644 $(infoPlistPath)
+    echo "Permissions set for Info.plist"
     /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier $(BUNDLE_ID)" $(infoPlistPath)
+    echo "Bundle ID set in Info.plist"
   displayName: 'Set Permissions & Bundle ID in Info.plist'
 
 - script: |
