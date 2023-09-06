@@ -9,8 +9,7 @@ variables:
   xcWorkspacePath: '$(Build.SourcesDirectory)/WhiteLabel.xcworkspace'
   IPA_NAME: 'WhiteLabel'
   APP_VERSION: '14'
-  TARGET_NAMES: ['whitelabel', 'whitelabelcopy']
-
+  
 steps:
 - checkout: self
 
@@ -37,11 +36,12 @@ steps:
     xcodebuild clean
   displayName: 'Clean Xcode data'
 
-- ${{ each target in variables.TARGET_NAMES }}:
-  - script: |
-      echo "Processing target: ${{ target }}"
+- script: |
+    for target in whitelabel whitelabelcopy
+    do
+      echo "Processing target: $target"
       
-      infoPlistPath="$(Build.SourcesDirectory)/WhiteLabel/${{ target }}/Info.plist"
+      infoPlistPath="$(Build.SourcesDirectory)/WhiteLabel/$target/Info.plist"
       echo "---- Info.plist BEFORE any updates ----"
       cat $infoPlistPath
 
@@ -52,31 +52,31 @@ steps:
       new_version=$((APP_VERSION + 1))
       /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $new_version" $infoPlistPath
       
-      xcodebuild archive -workspace $(xcWorkspacePath) -scheme ${{ target }} \
-      -archivePath $(Build.SourcesDirectory)/build/${{ target }}.xcarchive
+      xcodebuild archive -workspace $(xcWorkspacePath) -scheme $target \
+      -archivePath $(Build.SourcesDirectory)/build/$target.xcarchive
       
-      rm -rf $(Build.ArtifactStagingDirectory)/$IPA_NAME-${{ target }}.ipa
-      xcodebuild -exportArchive -archivePath $(Build.SourcesDirectory)/build/${{ target }}.xcarchive \
+      rm -rf $(Build.ArtifactStagingDirectory)/$IPA_NAME-$target.ipa
+      xcodebuild -exportArchive -archivePath $(Build.SourcesDirectory)/build/$target.xcarchive \
       -exportOptionsPlist $(Build.SourcesDirectory)/ExportOptions.plist \
       -exportPath $(Build.ArtifactStagingDirectory)/
       
       echo "---- Info.plist AFTER updates ----"
       cat $infoPlistPath
       
-      if [ ! -f $(Build.ArtifactStagingDirectory)/$IPA_NAME-${{ target }}.ipa ]; then
-          echo "Error: IPA not found for target ${{ target }}!"
+      if [ ! -f $(Build.ArtifactStagingDirectory)/$IPA_NAME-$target.ipa ]; then
+          echo "Error: IPA not found for target $target!"
           exit 1
       fi
       
-      mkdir tempIPA_${{ target }}
-      unzip $(Build.ArtifactStagingDirectory)/$IPA_NAME-${{ target }}.ipa -d tempIPA_${{ target }}/
-      /usr/libexec/PlistBuddy -c "Print CFBundleVersion" tempIPA_${{ target }}/Payload/${{ target }}.app/Info.plist
+      mkdir tempIPA_$target
+      unzip $(Build.ArtifactStagingDirectory)/$IPA_NAME-$target.ipa -d tempIPA_$target/
+      /usr/libexec/PlistBuddy -c "Print CFBundleVersion" tempIPA_$target/Payload/$target.app/Info.plist
       
       retry_count=0
       max_retries=3
       while [ $retry_count -lt $max_retries ]
       do
-        xcrun altool --upload-app --type ios --file $(Build.ArtifactStagingDirectory)/$IPA_NAME-${{ target }}.ipa --username $(APPLE_DEVELOPER_USERNAME) --password $(APPLE_DEVELOPER_PASSWORD) && break
+        xcrun altool --upload-app --type ios --file $(Build.ArtifactStagingDirectory)/$IPA_NAME-$target.ipa --username $(APPLE_DEVELOPER_USERNAME) --password $(APPLE_DEVELOPER_PASSWORD) && break
         retry_count=$((retry_count+1))
         echo "Retry $retry_count/$max_retries..."
         sleep 10
@@ -85,4 +85,5 @@ steps:
         echo "Failed to upload after $max_retries attempts. Exiting..."
         exit 1
       fi
-    displayName: 'Process and Upload Target: ${{ target }}'
+    done
+  displayName: 'Process and Upload Targets'
