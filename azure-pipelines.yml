@@ -7,7 +7,7 @@ pool:
 variables:
   scheme: 'WhiteLabel'
   xcWorkspacePath: '$(Build.SourcesDirectory)/WhiteLabel.xcworkspace'
-  IPA_NAME: 'WhiteLabel'
+  IPA_NAME: 'WhiteLabel.ipa'
   APP_VERSION: '14'
   
 steps:
@@ -37,7 +37,7 @@ steps:
   displayName: 'Clean Xcode data'
 
 - script: |
-    for target in whitelabel whitelabelcopy
+    for target in WhiteLabel 
     do
       echo "Processing target: $target"
       
