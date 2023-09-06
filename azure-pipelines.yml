@@ -9,7 +9,7 @@ variables:
   xcWorkspacePath: '$(Build.SourcesDirectory)/WhiteLabel.xcworkspace'
   infoPlistPath: '$(Build.SourcesDirectory)/WhiteLabel/Info.plist'
   IPA_NAME: 'WhiteLabel.ipa'
-  APP_VERSION: '14.0.0'
+  APP_VERSION: '14'
 
 steps:
 - checkout: self
@@ -48,18 +48,10 @@ steps:
   displayName: 'Print Current CFBundleVersion'
 
 - script: |
-    current_version=${APP_VERSION}
-    major_version=${current_version%%.*}
-    minor_version=${current_version#*.}
-    minor_version=${minor_version%%.*}
-    patch_version=${current_version##*.}
-    
-    new_patch_version=$((patch_version + 1))
-    new_version="${major_version}.${minor_version}.${new_patch_version}"
-    
+    new_version=$((APP_VERSION + 1))
     /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $new_version" $(infoPlistPath)
     echo "Set Bundle Version to: $new_version"
-  displayName: 'Increment Patch Version and Set CFBundleVersion'
+  displayName: 'Increment Version and Set CFBundleVersion'
 
 - script: |
     updated_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" $(infoPlistPath))
