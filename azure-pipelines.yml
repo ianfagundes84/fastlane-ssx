@@ -43,6 +43,11 @@ steps:
   displayName: 'Set Permissions & Bundle ID in Info.plist'
 
 - script: |
+    current_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" $(infoPlistPath))
+    echo "Current Bundle Version BEFORE update: $current_version"
+  displayName: 'Print Current CFBundleVersion'
+
+- script: |
     current_version=${APP_VERSION}
     major_version=${current_version%%.*}
     minor_version=${current_version#*.}
@@ -58,7 +63,7 @@ steps:
 
 - script: |
     updated_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" $(infoPlistPath))
-    echo "Updated Bundle Version in Info.plist: $updated_version"
+    echo "Current Bundle Version AFTER update: $updated_version"
   displayName: 'Print Updated CFBundleVersion'
 
 - script: |
