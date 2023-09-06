@@ -9,6 +9,7 @@ variables:
   xcWorkspacePath: '$(Build.SourcesDirectory)/WhiteLabel.xcworkspace'
   infoPlistPath: '$(Build.SourcesDirectory)/WhiteLabel/Info.plist'
   IPA_NAME: 'WhiteLabel.ipa'
+  APP_VERSION: '14.0.0'
 
 steps:
 - checkout: self
@@ -42,12 +43,18 @@ steps:
   displayName: 'Set Permissions & Bundle ID in Info.plist'
 
 - script: |
-    current_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" $(infoPlistPath))
-    echo "Current Bundle Version: $current_version"
-    new_version=$((current_version + 1))
+    current_version=$(APP_VERSION)
+    major_version=${current_version%%.*}
+    minor_version=${current_version#*.}
+    minor_version=${minor_version%%.*}
+    patch_version=${current_version##*.}
+    
+    new_patch_version=$((patch_version + 1))
+    new_version="${major_version}.${minor_version}.${new_patch_version}"
+    
     /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $new_version" $(infoPlistPath)
-    echo "New Bundle Version: $new_version"
-  displayName: 'Increment CFBundleVersion by 1'
+    echo "Set Bundle Version to: $new_version"
+  displayName: 'Increment Patch Version and Set CFBundleVersion'
 
 - script: |
     xcodebuild clean build \
