@@ -7,9 +7,12 @@ pool:
 variables:
   scheme: 'WhiteLabel'
   xcWorkspacePath: '$(Build.SourcesDirectory)/WhiteLabel.xcworkspace'
-  infoPlistPath: '$(Build.SourcesDirectory)/WhiteLabel/Info.plist'
+  infoPlistPath: '$(Build.SourcesDirectory)/WhiteLabel/$(TARGET_NAME)/Info.plist'
   IPA_NAME: 'WhiteLabel.ipa'
   APP_VERSION: '14'
+  targets:
+    - whitelabel
+    - whitelabelcopy
 
 steps:
 - checkout: self
@@ -37,58 +40,42 @@ steps:
     xcodebuild clean
   displayName: 'Clean Xcode data'
 
-- script: |
-    echo "---- Info.plist BEFORE any updates ----"
-    cat $(infoPlistPath)
-  displayName: 'Print Info.plist BEFORE Updates'
+- ${{ each target in variables.targets }}:
+  - script: |
+      echo "Processing target: ${{ target }}"
+      
+      echo "---- Info.plist BEFORE any updates ----"
+      cat $(infoPlistPath)
 
-- script: |
-    chmod 644 $(infoPlistPath)
-    echo "Permissions set for Info.plist"
-    /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier $(BUNDLE_ID)" $(infoPlistPath)
-    echo "Bundle ID set in Info.plist"
-  displayName: 'Set Permissions & Bundle ID in Info.plist'
+      infoPlistPath="$(Build.SourcesDirectory)/${{ target }}/Info.plist"
+      chmod 644 $infoPlistPath
+      /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier $(BUNDLE_ID)" $infoPlistPath
 
-- script: |
-    current_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" $(infoPlistPath))
-    echo "Current Bundle Version BEFORE update: $current_version"
-  displayName: 'Print Current CFBundleVersion'
-
-- script: |
-    new_version=$((APP_VERSION + 1))
-    /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $new_version" $(infoPlistPath)
-    echo "Set Bundle Version to: $new_version"
-  displayName: 'Increment Version and Set CFBundleVersion'
-
-- script: |
-    echo "---- Info.plist AFTER updates ----"
-    cat $(infoPlistPath)
-  displayName: 'Print Info.plist AFTER Updates'
-
-- script: |
-    xcodebuild archive -workspace $(xcWorkspacePath) -scheme $(scheme) \
-    -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive
-  displayName: 'Archive Project'
-
-- script: |
-    rm -rf $(Build.ArtifactStagingDirectory)/*.ipa
-    rm -rf $(Build.ArtifactStagingDirectory)/
-    
-    xcodebuild -exportArchive -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive \
-    -exportOptionsPlist $(Build.SourcesDirectory)/ExportOptions.plist \
-    -exportPath $(Build.ArtifactStagingDirectory)/
-    
-    if [ ! -f $(Build.ArtifactStagingDirectory)/$IPA_NAME ]; then
-        echo "Error: IPA not found!"
-        exit 1
-    fi
-  displayName: 'Archive, Export .ipa and Check Details'
-
-- script: |
-    mkdir tempIPA
-    unzip $(Build.ArtifactStagingDirectory)/$IPA_NAME -d tempIPA/
-    /usr/libexec/PlistBuddy -c "Print CFBundleVersion" tempIPA/Payload/WhiteLabel.app/Info.plist
-  displayName: 'Check CFBundleVersion inside .ipa'
+      current_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" $infoPlistPath)
+      new_version=$((APP_VERSION + 1))
+      /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $new_version" $infoPlistPath
+      
+      xcodebuild archive -workspace $(xcWorkspacePath) -scheme ${{ target }} \
+      -archivePath $(Build.SourcesDirectory)/build/${{ target }}.xcarchive
+      
+      rm -rf $(Build.ArtifactStagingDirectory)/*.ipa
+      rm -rf $(Build.ArtifactStagingDirectory)/
+      xcodebuild -exportArchive -archivePath $(Build.SourcesDirectory)/build/${{ target }}.xcarchive \
+      -exportOptionsPlist $(Build.SourcesDirectory)/ExportOptions.plist \
+      -exportPath $(Build.ArtifactStagingDirectory)/
+      
+      echo "---- Info.plist AFTER updates ----"
+      cat $(infoPlistPath)
+      
+      if [ ! -f $(Build.ArtifactStagingDirectory)/$IPA_NAME ]; then
+          echo "Error: IPA not found for target ${{ target }}!"
+          exit 1
+      fi
+      
+      mkdir tempIPA_${{ target }}
+      unzip $(Build.ArtifactStagingDirectory)/$IPA_NAME -d tempIPA_${{ target }}/
+      /usr/libexec/PlistBuddy -c "Print CFBundleVersion" tempIPA_${{ target }}/Payload/${{ target }}.app/Info.plist
+    displayName: 'Process Target: ${{ target }}'
 
 - script: |
     retry_count=0
