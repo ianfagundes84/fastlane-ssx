@@ -68,7 +68,8 @@ steps:
     CODE_SIGN_STYLE=Manual \
     CODE_SIGN_IDENTITY="$(CODE_SIGN_IDENTITY)" \
     PROVISIONING_PROFILE="$(APPLE_PROV_PROFILE_UUID)" \
-    CFBundlePackageType=APPL
+    CFBundlePackageType=APPL \
+    CFBundleVersion=$new_version
   displayName: 'Xcode build with specified destination'
 
 - task: PublishPipelineArtifact@1
