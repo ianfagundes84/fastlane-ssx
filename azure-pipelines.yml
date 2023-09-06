@@ -38,6 +38,11 @@ steps:
   displayName: 'Clean Xcode data'
 
 - script: |
+    echo "---- Info.plist BEFORE any updates ----"
+    cat $(infoPlistPath)
+  displayName: 'Print Info.plist BEFORE Updates'
+
+- script: |
     chmod 644 $(infoPlistPath)
     /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier $(BUNDLE_ID)" $(infoPlistPath)
   displayName: 'Set Permissions & Bundle ID in Info.plist'
@@ -54,9 +59,9 @@ steps:
   displayName: 'Increment Version and Set CFBundleVersion'
 
 - script: |
-    updated_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" $(infoPlistPath))
-    echo "Current Bundle Version AFTER update: $updated_version"
-  displayName: 'Print Updated CFBundleVersion'
+    echo "---- Info.plist AFTER updates ----"
+    cat $(infoPlistPath)
+  displayName: 'Print Info.plist AFTER Updates'
 
 - script: |
     xcodebuild archive -workspace $(xcWorkspacePath) -scheme $(scheme) \
