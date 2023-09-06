@@ -43,7 +43,19 @@ steps:
     fi
   displayName: 'Check ExportOptions.plist exists'
 
-- script: |
+- script: |    
+    # Check if Archive directory exists and is writable
+    if [ ! -d "$(Build.SourcesDirectory)/build/" ]; then
+        echo "Error: Archive directory not found or not writable!"
+        exit 1
+    fi
+
+    # Check if Export directory exists and is writable
+    if [ ! -d "$(Build.ArtifactStagingDirectory)/" ]; then
+        echo "Error: Export directory not found or not writable!"
+        exit 1
+    fi
+
     for target in WhiteLabel 
     do
       echo "Processing target: $target"
