@@ -94,13 +94,14 @@ steps:
     echo "Listando conteúdo do diretório de exportação..."
     ls -la $(Build.ArtifactStagingDirectory)/
 
-    # Verificar a existência do IPA
-    echo "Verificando a existência do IPA..."
-    if [ -f $(Build.ArtifactStagingDirectory)/*$(scheme).ipa ]; then
-        echo "IPA encontrado."
-    else
+    # Buscar pelo IPA
+    echo "Buscando pelo arquivo IPA..."
+    IPA_FILE=$(find $(Build.ArtifactStagingDirectory)/ -name "*.ipa")
+    if [ -z "$IPA_FILE" ]; then
         echo "Erro: IPA não encontrado!"
         exit 1
+    else
+        echo "IPA encontrado: $IPA_FILE"
     fi
   displayName: 'Archive and Export IPA'
 
