@@ -88,7 +88,7 @@ steps:
     echo "Exportando IPA para $(scheme)..."
     xcodebuild -exportArchive -archivePath $(Build.SourcesDirectory)/build/$(scheme).xcarchive \
     -exportOptionsPlist $(Build.SourcesDirectory)/ExportOptions.plist \
-    -exportPath $(Build.ArtifactStagingDirectory)/
+    -exportPath $(Build.ArtifactStagingDirectory)/$(IPA_NAME)
 
     # Listar o conteúdo do diretório de exportação
     echo "Listando conteúdo do diretório de exportação..."
@@ -96,7 +96,7 @@ steps:
 
     # Buscar pelo IPA
     echo "Buscando pelo arquivo IPA..."
-    IPA_FILE=$(find $(Build.ArtifactStagingDirectory)/ -name "$(scheme).ipa*")
+    IPA_FILE=$(find $(Build.ArtifactStagingDirectory)/ -name "*.ipa")
     if [ -z "$IPA_FILE" ]; then
         echo "Erro: IPA não encontrado!"
         exit 1
@@ -108,7 +108,7 @@ steps:
 # Publicar o IPA como um artefato
 - task: PublishBuildArtifacts@1
   inputs:
-    pathtoPublish: '$(IPA_FILE)' 
+    pathtoPublish: '$(IPA_FILE)' # Isso usará o caminho encontrado na etapa anterior
     artifactName: 'drop'
     publishLocation: 'Container'
   displayName: 'Publish IPA as Artifact'
