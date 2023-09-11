@@ -96,7 +96,7 @@ steps:
 
     # Buscar pelo IPA
     echo "Buscando pelo arquivo IPA..."
-    IPA_FILE=$(find $(Build.ArtifactStagingDirectory)/ -name "$(scheme).ipa")
+    IPA_FILE=$(find $(Build.ArtifactStagingDirectory)/ -name "$(scheme).ipa*")
     if [ -z "$IPA_FILE" ]; then
         echo "Erro: IPA não encontrado!"
         exit 1
