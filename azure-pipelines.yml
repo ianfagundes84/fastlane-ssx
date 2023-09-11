@@ -73,13 +73,22 @@ steps:
 
 # Arquivo e Exportação
 - script: |      
-    xcodebuild archive -workspace $(xcWorkspacePath) -scheme $(scheme) \
-    -archivePath $(Build.SourcesDirectory)/build/$(scheme).xcarchive
-    
-    xcodebuild -exportArchive -archivePath $(Build.SourcesDirectory)/build/$(scheme).xcarchive \
-    -exportOptionsPlist $(Build.SourcesDirectory)/ExportOptions.plist \
-    -exportPath $(Build.ArtifactStagingDirectory)/
+    # ... [resto do script de arquivo e exportação]
+
+    echo "Verificando a existência do IPA..."
+    if [ -f $(Build.ArtifactStagingDirectory)/$IPA_NAME-$(scheme).ipa ]; then
+        echo "IPA encontrado: $(Build.ArtifactStagingDirectory)/$IPA_NAME-$(scheme).ipa"
+    else
+        echo "Erro: IPA não encontrado!"
+        exit 1
+    fi
   displayName: 'Archive and Export IPA'
+
+# Verificar o Conteúdo do Diretório de Exportação
+- script: |
+    echo "Listando conteúdo do diretório de exportação..."
+    ls -la $(Build.ArtifactStagingDirectory)/
+  displayName: 'List Directory Content'
 
 # Upload
 - script: |
