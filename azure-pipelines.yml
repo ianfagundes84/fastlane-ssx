@@ -107,6 +107,10 @@ steps:
 
 # Upload
 - script: |
+    # Listar o conteúdo do diretório de exportação
+    echo "Listando conteúdo do diretório de exportação antes do upload..."
+    ls -la $(Build.ArtifactStagingDirectory)/
+
     echo "Verificando a existência do IPA antes do upload..."
     if [ ! -f "$IPA_FILE" ]; then
       echo "Erro: IPA não encontrado em $IPA_FILE!"
@@ -129,3 +133,4 @@ steps:
       exit 1
     fi
   displayName: 'Upload to App Store'
+
