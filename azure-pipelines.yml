@@ -111,6 +111,9 @@ steps:
     echo "Listando conteúdo do diretório de exportação antes do upload..."
     ls -la $(Build.ArtifactStagingDirectory)/
 
+    echo "Modificando permissões do arquivo IPA..."
+    chmod 644 "$IPA_FILE"
+
     echo "Verificando a existência do IPA antes do upload..."
     if [ ! -f "$IPA_FILE" ]; then
       echo "Erro: IPA não encontrado em $IPA_FILE!"
@@ -133,4 +136,5 @@ steps:
       exit 1
     fi
   displayName: 'Upload to App Store'
+
 
