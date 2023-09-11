@@ -105,6 +105,14 @@ steps:
     fi
   displayName: 'Archive and Export IPA'
 
+# Publicação do Artefato
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(IPA_FILE)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+  displayName: 'Publish IPA as Artifact'
+
 # Upload
 - script: |
     # Listar o conteúdo do diretório de exportação
@@ -136,5 +144,3 @@ steps:
       exit 1
     fi
   displayName: 'Upload to App Store'
-
-
