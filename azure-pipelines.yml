@@ -108,7 +108,7 @@ steps:
 # Publicar o IPA como um artefato
 - task: PublishBuildArtifacts@1
   inputs:
-    pathtoPublish: '$(IPA_FILE)' # Isso usará o caminho encontrado na etapa anterior
+    pathtoPublish: '$(IPA_FILE)' 
     artifactName: 'drop'
     publishLocation: 'Container'
   displayName: 'Publish IPA as Artifact'
