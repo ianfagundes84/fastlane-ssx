@@ -44,17 +44,17 @@ steps:
   displayName: 'Check ExportOptions.plist exists'
 
 - script: |        
-    # Ensure Archive directory exists and create it if necessary
-    mkdir -p $(Build.SourcesDirectory)/build/
+    # # Ensure Archive directory exists and create it if necessary
+    # mkdir -p $(Build.SourcesDirectory)/build/
     
-    # Set permissions for Archive directory to ensure it's writable
-    chmod 755 $(Build.SourcesDirectory)/build/
+    # # Set permissions for Archive directory to ensure it's writable
+    # chmod 755 $(Build.SourcesDirectory)/build/
     
-    # Check if Archive directory is writable 
-    if [ ! -d "$(Build.SourcesDirectory)/build/" ]; then
-        echo "Error: Archive directory not found or not writable!"
-        exit 1
-    fi
+    # # Check if Archive directory is writable 
+    # if [ ! -d "$(Build.SourcesDirectory)/build/" ]; then
+    #     echo "Error: Archive directory not found or not writable!"
+    #     exit 1
+    # fi
 
     # Ensure Export directory exists and create it if necessary
     mkdir -p $(Build.ArtifactStagingDirectory)/
