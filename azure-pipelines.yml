@@ -96,7 +96,7 @@ steps:
 
     # Buscar pelo IPA
     echo "Buscando pelo arquivo IPA..."
-    IPA_FILE=$(find $(Build.ArtifactStagingDirectory)/ -name "*.ipa")
+    IPA_FILE=$(find $(Build.ArtifactStagingDirectory)/ -name "$(scheme).ipa")
     if [ -z "$IPA_FILE" ]; then
         echo "Erro: IPA não encontrado!"
         exit 1
@@ -107,11 +107,19 @@ steps:
 
 # Upload
 - script: |
+    echo "Verificando a existência do IPA antes do upload..."
+    if [ ! -f "$IPA_FILE" ]; then
+      echo "Erro: IPA não encontrado em $IPA_FILE!"
+      exit 1
+    else
+      echo "IPA encontrado em $IPA_FILE"
+    fi
+
     retry_count=0
     max_retries=3
     while [ $retry_count -lt $max_retries ]
     do
-      xcrun altool --upload-app --type ios --file $(Build.ArtifactStagingDirectory)/$IPA_NAME-$(scheme).ipa --username $(APPLE_DEVELOPER_USERNAME) --password $(APPLE_DEVELOPER_PASSWORD) && break
+      xcrun altool --upload-app --type ios --file "$IPA_FILE" --username $(APPLE_DEVELOPER_USERNAME) --password $(APPLE_DEVELOPER_PASSWORD)
       retry_count=$((retry_count+1))
       echo "Retry $retry_count/$max_retries..."
       sleep 10
