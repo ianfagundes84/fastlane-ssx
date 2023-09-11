@@ -84,11 +84,11 @@ steps:
         exit 1
     fi
 
-    # Exportação
+    # Exportação para criar IPA a partir de .xcarchive
     echo "Exportando IPA para $(scheme)..."
     xcodebuild -exportArchive -archivePath $(Build.SourcesDirectory)/build/$(scheme).xcarchive \
     -exportOptionsPlist $(Build.SourcesDirectory)/ExportOptions.plist \
-    -exportPath $(Build.ArtifactStagingDirectory)/$(IPA_NAME)
+    -exportPath $(Build.ArtifactStagingDirectory)/
 
     # Listar o conteúdo do diretório de exportação
     echo "Listando conteúdo do diretório de exportação..."
