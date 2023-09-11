@@ -73,8 +73,24 @@ steps:
 
 # Arquivo e Exportação
 - script: |      
-    # ... [resto do script de arquivo e exportação]
+    # Archiving
+    echo "Arquivando $(scheme)..."
+    xcodebuild archive -workspace $(xcWorkspacePath) -scheme $(scheme) \
+    -archivePath $(Build.SourcesDirectory)/build/$(scheme).xcarchive
 
+    # Verificar se o arquivo .xcarchive foi gerado com sucesso
+    if [ ! -d $(Build.SourcesDirectory)/build/$(scheme).xcarchive ]; then
+        echo "Erro: Arquivo .xcarchive não encontrado após o arquivamento!"
+        exit 1
+    fi
+
+    # Exportação
+    echo "Exportando IPA para $(scheme)..."
+    xcodebuild -exportArchive -archivePath $(Build.SourcesDirectory)/build/$(scheme).xcarchive \
+    -exportOptionsPlist $(Build.SourcesDirectory)/ExportOptions.plist \
+    -exportPath $(Build.ArtifactStagingDirectory)/
+
+    # Verificar a existência do IPA
     echo "Verificando a existência do IPA..."
     if [ -f $(Build.ArtifactStagingDirectory)/$IPA_NAME-$(scheme).ipa ]; then
         echo "IPA encontrado: $(Build.ArtifactStagingDirectory)/$IPA_NAME-$(scheme).ipa"
