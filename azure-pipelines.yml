@@ -104,15 +104,13 @@ steps:
         echo "IPA encontrado: $IPA_FILE"
     fi
   displayName: 'Archive and Export IPA'
+
 - task: AppStoreRelease@1
   inputs:
-    authType: 'UserAndPass'
-    username: 'ianfag@icloud.com'
-    password: 'nbhp-bjql-yofu-esls'
+    serviceEndpoint: 'App Store Connect'
     releaseTrack: 'TestFlight'
     appIdentifier: 'br.com.systemsat.whitelabelssx'
     appType: 'iOS'
-    appSpecificId: '6447273573'
     teamId: 'W8L47TG474'
     teamName: 'Systemsat Solucoes e Consultoria em Comunicacao de Dados Ltda.'
     
@@ -155,3 +153,4 @@ steps:
 #       exit 1
 #     fi
 #   displayName: 'Upload to App Store'
+
