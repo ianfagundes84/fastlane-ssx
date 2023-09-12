@@ -71,6 +71,7 @@ steps:
     /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $new_version" $infoPlistPath
   displayName: 'Update Info.plist'
 
+
 # Arquivo e Exportação
 - script: |      
     # Archiving
@@ -87,16 +88,13 @@ steps:
 
     # Export to create IPA from .xcarchive
     echo "Exportando IPA para $(scheme)..."
+    EXPORT_PATH="$(Build.ArtifactStagingDirectory)/$(scheme)"
     xcodebuild -exportArchive -archivePath $ARCHIVE_PATH \
     -exportOptionsPlist $(Build.SourcesDirectory)/ExportOptions.plist \
-    -exportPath $(Build.ArtifactStagingDirectory)/
+    -exportPath $EXPORT_PATH
 
-    # List contents of the export directory
-    echo "Listando conteúdo do diretório de exportação..."
-    ls -la $(Build.ArtifactStagingDirectory)/
-
-    # Check for IPA directly
-    IPA_PATH="$(Build.ArtifactStagingDirectory)/$(scheme).ipa"
+    # Validate IPA existence
+    IPA_PATH="$EXPORT_PATH.ipa"
     if [ ! -f "$IPA_PATH" ]; then
         echo "Erro: IPA não encontrado em $IPA_PATH!"
         exit 1
