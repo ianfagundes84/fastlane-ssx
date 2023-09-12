@@ -135,6 +135,18 @@ steps:
     -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive
   displayName: 'Archive Project'
 
+- task: AppStoreRelease@1
+  inputs:
+    authType: 'UserAndPass'
+    username: 'ianfag@icloud.com'
+    password: 'nbhp-bjql-yofu-esls'
+    releaseTrack: 'TestFlight'
+    appIdentifier: 'br.com.systemsat.whitelabelssx'
+    appType: 'iOS'
+    appSpecificId: '6447273573'
+    teamId: 'W8L47TG474'
+    teamName: 'Systemsat Solucoes e Consultoria em Comunicacao de Dados Ltda.'
+    
 # # Archive and export .ipa
 # - script: |
 #     # Set the IPA name with a timestamp
@@ -162,7 +174,6 @@ steps:
 #     ls -al extractedIPA
 #     echo "Contents of the export directory:"
 #     ls -al $(Build.ArtifactStagingDirectory)/$IPA_DIRECTORY
-    
 #     # Check details of the IPA
 #     stat $(Build.ArtifactStagingDirectory)/$IPA_DIRECTORY/$IPA_NAME
 #   displayName: 'Archive, Export .ipa and Check Details'
@@ -170,3 +181,4 @@ steps:
 # - script: |
 #     xcrun altool --upload-app --type ios --file $(Build.ArtifactStagingDirectory)/$IPA_DIRECTORY/$IPA_NAME --username $(APPLE_DEVELOPER_USERNAME) --password $(APPLE_DEVELOPER_PASSWORD)
 #   displayName: 'Upload to App Store'
+
