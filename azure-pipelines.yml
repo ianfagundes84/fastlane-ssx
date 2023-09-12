@@ -78,30 +78,30 @@ steps:
     xcodebuild archive -workspace $(xcWorkspacePath) -scheme $(scheme) \
     -archivePath $(Build.SourcesDirectory)/build/$(scheme).xcarchive
 
-    # Verificar se o arquivo .xcarchive foi gerado com sucesso
-    if [ ! -d $(Build.SourcesDirectory)/build/$(scheme).xcarchive ]; then
+    # Check .xcarchive generation
+    ARCHIVE_PATH="$(Build.SourcesDirectory)/build/$(scheme).xcarchive"
+    if [ ! -d "$ARCHIVE_PATH" ]; then
         echo "Erro: Arquivo .xcarchive não encontrado após o arquivamento!"
         exit 1
     fi
 
-    # Exportação para criar IPA a partir de .xcarchive
+    # Export to create IPA from .xcarchive
     echo "Exportando IPA para $(scheme)..."
-    xcodebuild -exportArchive -archivePath $(Build.SourcesDirectory)/build/$(scheme).xcarchive \
+    xcodebuild -exportArchive -archivePath $ARCHIVE_PATH \
     -exportOptionsPlist $(Build.SourcesDirectory)/ExportOptions.plist \
     -exportPath $(Build.ArtifactStagingDirectory)/
 
-    # Listar o conteúdo do diretório de exportação
+    # List contents of the export directory
     echo "Listando conteúdo do diretório de exportação..."
     ls -la $(Build.ArtifactStagingDirectory)/
 
-    # Buscar pelo IPA
-    echo "Buscando pelo arquivo IPA..."
-    IPA_FILE=$(find $(Build.ArtifactStagingDirectory)/ -name "$(scheme).ipa")
-    if [ -z "$IPA_FILE" ]; then
-        echo "Erro: IPA não encontrado!"
+    # Check for IPA directly
+    IPA_PATH="$(Build.ArtifactStagingDirectory)/$(scheme).ipa"
+    if [ ! -f "$IPA_PATH" ]; then
+        echo "Erro: IPA não encontrado em $IPA_PATH!"
         exit 1
     else
-        echo "IPA encontrado: $IPA_FILE"
+        echo "IPA encontrado: $IPA_PATH"
     fi
   displayName: 'Archive and Export IPA'
 
@@ -113,6 +113,7 @@ steps:
     appType: 'iOS'
     teamId: 'W8L47TG474'
     teamName: 'Systemsat Solucoes e Consultoria em Comunicacao de Dados Ltda.'
+
     
 # # Publicar o IPA como um artefato
 # - task: PublishBuildArtifacts@1
