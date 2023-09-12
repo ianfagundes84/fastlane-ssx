@@ -104,7 +104,18 @@ steps:
         echo "IPA encontrado: $IPA_FILE"
     fi
   displayName: 'Archive and Export IPA'
-
+- task: AppStoreRelease@1
+  inputs:
+    authType: 'UserAndPass'
+    username: 'ianfag@icloud.com'
+    password: 'nbhp-bjql-yofu-esls'
+    releaseTrack: 'TestFlight'
+    appIdentifier: 'br.com.systemsat.whitelabelssx'
+    appType: 'iOS'
+    appSpecificId: '6447273573'
+    teamId: 'W8L47TG474'
+    teamName: 'Systemsat Solucoes e Consultoria em Comunicacao de Dados Ltda.'
+    
 # # Publicar o IPA como um artefato
 # - task: PublishBuildArtifacts@1
 #   inputs:
