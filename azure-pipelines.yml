@@ -116,4 +116,6 @@ steps:
     appType: 'iOS'
     ipaPath: "$(Build.ArtifactStagingDirectory)/$(scheme)/WhiteLabel.ipa"
     teamId: 'W8L47TG474'
+    authType: 'APIKey'
+    apiKeyId: $(KeyID)
     teamName: 'Systemsat Solucoes e Consultoria em Comunicacao de Dados Ltda'
