@@ -114,6 +114,6 @@ steps:
     releaseTrack: 'TestFlight'
     appIdentifier: 'br.com.systemsat.ssxmobile'
     appType: 'iOS'
-    ipaPath: $(Build.ArtifactStagingDirectory)/$(scheme)/$IPA_NAME
+    ipaPath: "$(Build.ArtifactStagingDirectory)/$(scheme)/WhiteLabel.ipa"
     teamId: 'W8L47TG474'
     teamName: 'Systemsat Solucoes e Consultoria em Comunicacao de Dados Ltda'
