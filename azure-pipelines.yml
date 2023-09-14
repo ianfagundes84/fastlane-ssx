@@ -97,8 +97,8 @@ steps:
     echo "Conteúdo do diretório de exportação:"
     ls -la $EXPORT_PATH
 
-    # Validate IPA existence with adjusted path
-    IPA_PATH="$EXPORT_PATH/Products/$(IPA_NAME)"
+    # Validate IPA existence with the adjusted path
+    IPA_PATH="$EXPORT_PATH/$(IPA_NAME)"
     if [ ! -f "$IPA_PATH" ]; then
         echo "Erro: IPA não encontrado em $IPA_PATH!"
         exit 1
