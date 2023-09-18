@@ -134,12 +134,22 @@ steps:
 #     teamId: 'W8L47TG474'
 #     teamName: 'Systemsat Solucoes e Consultoria em Comunicacao de Dados Ltda.'
 
+# - task: AppStoreRelease@1
+#   inputs:
+#     serviceEndpoint: 'App Store Connect'
+#     releaseTrack: 'TestFlight'
+#     appIdentifier: 'br.com.systemsat.whitelabelssx'
+#     appType: 'iOS'
+#     appSpecificId: '53b4ecc6901c45418378d30a1c666dff'
+#     teamId: 'W8L47TG474'
+#     teamName: 'Systemsat Solucoes e Consultoria em Comunicacao de Dados Ltda.'
+
 - task: AppStoreRelease@1
   inputs:
-    serviceEndpoint: 'App Store Connect'
+    serviceEndpoint: 'Testing'
     releaseTrack: 'TestFlight'
     appIdentifier: 'br.com.systemsat.whitelabelssx'
     appType: 'iOS'
-    appSpecificId: '53b4ecc6901c45418378d30a1c666dff'
+    ipaPath: "$(Build.ArtifactStagingDirectory)/$(scheme)/WhiteLabel.ipa"
     teamId: 'W8L47TG474'
     teamName: 'Systemsat Solucoes e Consultoria em Comunicacao de Dados Ltda.'
