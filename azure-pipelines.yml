@@ -144,13 +144,24 @@ steps:
 #     teamId: 'W8L47TG474'
 #     teamName: 'Systemsat Solucoes e Consultoria em Comunicacao de Dados Ltda.'
 
+# - task: AppStoreRelease@1
+#   inputs:
+#     serviceEndpoint: 'Testing'
+#     releaseTrack: 'TestFlight'
+#     appIdentifier: 'br.com.systemsat.whitelabelssx'
+#     appType: 'iOS'
+#     ipaPath: "$(Build.ArtifactStagingDirectory)/$(scheme)/WhiteLabel.ipa"
+#     teamId: 'W8L47TG474'
+#     teamName: 'Systemsat Solucoes e Consultoria em Comunicacao de Dados Ltda.'
+
 - task: AppStoreRelease@1
   inputs:
-    serviceEndpoint: 'Testing'
+    authType: 'UserAndPass'
+    username: 'ianfag@icloud.com'
+    password: 'N~XD4UF)G_t<uEo$~hly'
     releaseTrack: 'TestFlight'
     appIdentifier: 'br.com.systemsat.whitelabelssx'
     appType: 'iOS'
-    ipaPath: "$(Build.ArtifactStagingDirectory)/$(scheme)/WhiteLabel.ipa"
-    apitoken: '---\n- !ruby/object:HTTP::Cookie\n  name: myacinfo\n  value: DAWTKNV323952cf8084a204fb20ab2508441a07d02d3cfe88cf6df83da58c53df8f5727e5c3aa4afd3147be05ef2f6ca63b95537d57b1b5b2d62d38b41ec27034243a4a351e6fecdec5ba54c7d78e14366bc22a48f00123621f3bcd03565962f340fc1e7ed544e293d624db7a74f00059721f5bda503f5cb549d37a15baa9b1e0af57ec35309734adf937d217c963225002e989e5fda8d12309d197d6e56d310e87719ad90a5dcd7900c6508cef10c74a93045e51c95bbcc1faf73c4f27211bd7c76395bb16018945e5ad8804008170f3f2ee35f2026e449c4693f17051038e9975f6ea492c35d821d94ab2438149990ade5e6b8ece51b5cb452f368520e9b1fc9d21279bc0da8b3a16225779679a624729e717483e9959ec32338aabab743da0daf7dffc72fe6e642784d4b5eef59ae810d64818639826c754a0adf4803f573c5aee8df8e7885d71086e69366752e883f08e536f99dfb6f06384aae375de98d9badcb5277a3005cd0a83e265f19906c11e43701646ed84756a39b2dffc8cd2ee89625e59fcaa14b41299e531b47d18c1ea5f0cea2097ca70b5ab03e148b1c8bdc9110d8dd729ee825e7f8c554f19388f14a2af64af7a49fff8fee0ca7f62729344efa545f61ae0919d34816798cbc4db84a48ba70586334884b55b3d3fe91b60aec57d5b2a0580cefe18dbd4599ab5914bd090c0c57ab8f3d052f3f2a60aa62ee4735d35be39c17355e83a35457a7472b2694b20f26585a47V3\n  domain: apple.com\n  for_domain: true\n  path: "/"\n  secure: true\n  httponly: true\n  expires:\n  max_age:\n  created_at: 2023-09-18 16:02:02.963340000 -03:00\n  accessed_at: 2023-09-18 18:51:22.491186000 -03:00\n- !ruby/object:HTTP::Cookie\n  name: DES5647a13432550c7c1e174fd5dbb62e47c\n  value: HSARMTKNSRVXWFlayh0QF3JN0lRwRhEOJV0BSp5q8uzQdxxJF1NJysOOgI/NRQgbLf7q3XaWUXqLMhKjOw8zf8WR1VlvR+alDCwL/iUvpdFWjIVDHALui4bdLrfKvUr+PzdzrVnje3AYNgirk8emFGgBFADrq9Ee0i+iaK6f3SAmwx93JJfyXPyy5DsiYICRS0wRuTbrhha9s2yMfzL8Td66MRzVMvgwOdKl+LdYkw==SRVX\n  domain: idmsa.apple.com\n  for_domain: true\n  path: "/"\n  secure: true\n  httponly: true\n  expires:\n  max_age: 2592000\n  created_at: 2023-09-12 10:32:50.123600000 -03:00\n  accessed_at: 2023-09-18 16:02:01.776741000 -03:00\n- !ruby/object:HTTP::Cookie\n  name: dqsid\n  value: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTUwNzM4ODIsImp0aSI6IkJZbjROU2tJTjNPQk9kWHRiNHBZVncifQ.smDjk_m90MaDNvxOZjcQbSYaXNBKN9lJkcLMBAXBaEg\n  domain: appstoreconnect.apple.com\n  for_domain: false\n  path: "/"\n  secure: true\n  httponly: true\n  expires:\n  max_age: 1800\n  created_at: &1 2023-09-18 18:51:23.330289000 -03:00\n  accessed_at: *1\n'
+    appSpecificId: '53b4ecc6901c45418378d30a1c666dff'
     teamId: 'W8L47TG474'
     teamName: 'Systemsat Solucoes e Consultoria em Comunicacao de Dados Ltda.'
