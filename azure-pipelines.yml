@@ -154,14 +154,25 @@ steps:
 #     teamId: 'W8L47TG474'
 #     teamName: 'Systemsat Solucoes e Consultoria em Comunicacao de Dados Ltda.'
 
+# - task: AppStoreRelease@1
+#   inputs:
+#     authType: 'UserAndPass'
+#     username: 'ianfag@icloud.com'
+#     password: 'N~XD4UF)G_t<uEo$~hly'
+#     releaseTrack: 'TestFlight'
+#     appIdentifier: 'br.com.systemsat.whitelabelssx'
+#     appType: 'iOS'
+#     appSpecificId: '53b4ecc6901c45418378d30a1c666dff'
+#     teamId: 'W8L47TG474'
+#     teamName: 'Systemsat Solucoes e Consultoria em Comunicacao de Dados Ltda.'
+
 - task: AppStoreRelease@1
   inputs:
-    authType: 'UserAndPass'
-    username: 'ianfag@icloud.com'
-    password: 'N~XD4UF)G_t<uEo$~hly'
+    serviceEndpoint: 'App Store Connect'
     releaseTrack: 'TestFlight'
     appIdentifier: 'br.com.systemsat.whitelabelssx'
     appType: 'iOS'
+    ipaPath: "$(Build.ArtifactStagingDirectory)/$(scheme)/WhiteLabel.ipa"
     appSpecificId: '53b4ecc6901c45418378d30a1c666dff'
     teamId: 'W8L47TG474'
     teamName: 'Systemsat Solucoes e Consultoria em Comunicacao de Dados Ltda.'
