@@ -151,6 +151,6 @@ steps:
     appIdentifier: 'br.com.systemsat.whitelabelssx'
     appType: 'iOS'
     ipaPath: "$(Build.ArtifactStagingDirectory)/$(scheme)/WhiteLabel.ipa"
-    appSpecificId: '53b4ecc6901c45418378d30a1c666dff'
+    apitoken: 'LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JR1RBZ0VBTUJNR0J5cUdTTTQ5QWdFR0NDcUdTTTQ5QXdFSEJIa3dkd0lCQVFRZ1ZGeWovY3FJelQrZFhITWIKVEkwS1B6Ukpaa3M4aEFSK0RMcDJvKzBOZXl5Z0NnWUlLb1pJemowREFRZWhSQU5DQUFSNzhJc3I3M0JLanJ0TwoxVzhzc24xcnhSVUdCZ0FwcGh4bFczeDZqOG9VMnBRQWd0STh1MVpGcis0V1d3NDZLU01tK1cxSG5GNGFua2VVCkdvblZTbHlsCi0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0='
     teamId: 'W8L47TG474'
     teamName: 'Systemsat Solucoes e Consultoria em Comunicacao de Dados Ltda.'
