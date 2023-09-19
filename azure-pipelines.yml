@@ -186,5 +186,5 @@ steps:
     ipaPath: "$(Build.ArtifactStagingDirectory)/$(scheme)/WhiteLabel.ipa"
     shouldSkipWaitingForProcessing: true
     shouldSkipSubmission: true
-    appSpecificPassword: '53b4ecc6901c45418378d30a1c666dff'
+    appSpecificPassword: 'f4b945b1608b45d6a89ddcd22be5baf8'
     appSpecificId: '6447273573'
