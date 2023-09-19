@@ -77,10 +77,15 @@ steps:
     fi
 
     echo "Incrementing version using APP_VERSION variable..."
+    echo "Current APP_VERSION: $APP_VERSION"
     new_version=$((APP_VERSION + 1))
     echo "New Version to be set: $new_version"
 
     /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $new_version" $infoPlistPath
+
+    # Re-fetch and print the updated version for confirmation
+    updated_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" $infoPlistPath)
+    echo "Updated Version in Info.plist: $updated_version"
 
 # Debugging Steps (End)
 
