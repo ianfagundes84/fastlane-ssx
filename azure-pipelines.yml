@@ -121,4 +121,3 @@ steps:
     appSpecificId: 'opnh-zkuo-ayfu-szvk'
     apiKeyId: '96KGBK2Q6J'
     apiKeyIssuerId: '69a6de84-fb7c-47e3-e053-5b8c7c11a4d1'
-    appBuildNumber: $(APP_VERSION + 1)
