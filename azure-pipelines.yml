@@ -62,7 +62,7 @@ steps:
 
 # Atualização do Info.plist
 - script: |
-    infoPlistPath="$(Build.ArtifactStagingDirectory)/$(scheme)/Info.plist"
+    infoPlistPath="$(Build.SourcesDirectory)/$(scheme)/Info.plist"
     chmod 644 $infoPlistPath
     /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier $(BUNDLE_ID)" $infoPlistPath
 
