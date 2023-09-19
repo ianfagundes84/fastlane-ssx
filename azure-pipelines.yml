@@ -108,75 +108,6 @@ steps:
   displayName: 'Archive and Export IPA'
 
 #Envio para AppStore
-# - task: AppStoreRelease@1
-#   inputs:
-#     serviceEndpoint: 'App Store Connect'
-#     releaseTrack: 'TestFlight'
-#     appIdentifier: 'br.com.systemsat.ssxmobile'
-#     appType: 'iOS'
-#     ipaPath: "$(Build.ArtifactStagingDirectory)/$(scheme)/WhiteLabel.ipa"
-#     teamId: 'W8L47TG474'
-#     authType: 'APIKey'
-#     apiKeyId: $(KeyID)
-#     teamName: 'Systemsat Solucoes e Consultoria em Comunicacao de Dados Ltda'
-
-# - task: AppStoreRelease@1
-#   inputs:
-#     authType: 'ApiKey'
-#     apiKeyId: 'NT82U7XU43'
-#     apiKeyIssuerId: '69a6de84-fb7c-47e3-e053-5b8c7c11a4d1'
-#     apitoken: 'LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JR1RBZ0VBTUJNR0J5cUdTTTQ5QWdFR0NDcUdTTTQ5QXdFSEJIa3dkd0lCQVFRZ1ZGeWovY3FJelQrZFhITWIKVEkwS1B6Ukpaa3M4aEFSK0RMcDJvKzBOZXl5Z0NnWUlLb1pJemowREFRZWhSQU5DQUFSNzhJc3I3M0JLanJ0TwoxVzhzc24xcnhSVUdCZ0FwcGh4bFczeDZqOG9VMnBRQWd0STh1MVpGcis0V1d3NDZLU01tK1cxSG5GNGFua2VVCkdvblZTbHlsCi0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0='
-#     releaseTrack: 'TestFlight'
-#     appIdentifier: 'br.com.systemsat.whitelabelssx'
-#     appType: 'iOS'
-#     ipaPath: "$(Build.ArtifactStagingDirectory)/$(scheme)/WhiteLabel.ipa"
-#     appSpecificId: '53b4ecc6901c45418378d30a1c666dff'
-#     teamId: 'W8L47TG474'
-#     teamName: 'Systemsat Solucoes e Consultoria em Comunicacao de Dados Ltda.'
-
-# - task: AppStoreRelease@1
-#   inputs:
-#     serviceEndpoint: 'App Store Connect'
-#     releaseTrack: 'TestFlight'
-#     appIdentifier: 'br.com.systemsat.whitelabelssx'
-#     appType: 'iOS'
-#     appSpecificId: '53b4ecc6901c45418378d30a1c666dff'
-#     teamId: 'W8L47TG474'
-#     teamName: 'Systemsat Solucoes e Consultoria em Comunicacao de Dados Ltda.'
-
-# - task: AppStoreRelease@1
-#   inputs:
-#     serviceEndpoint: 'Testing'
-#     releaseTrack: 'TestFlight'
-#     appIdentifier: 'br.com.systemsat.whitelabelssx'
-#     appType: 'iOS'
-#     ipaPath: "$(Build.ArtifactStagingDirectory)/$(scheme)/WhiteLabel.ipa"
-#     teamId: 'W8L47TG474'
-#     teamName: 'Systemsat Solucoes e Consultoria em Comunicacao de Dados Ltda.'
-
-# - task: AppStoreRelease@1
-#   inputs:
-#     authType: 'UserAndPass'
-#     username: 'ianfag@icloud.com'
-#     password: 'N~XD4UF)G_t<uEo$~hly'
-#     releaseTrack: 'TestFlight'
-#     appIdentifier: 'br.com.systemsat.whitelabelssx'
-#     appType: 'iOS'
-#     appSpecificId: '53b4ecc6901c45418378d30a1c666dff'
-#     teamId: 'W8L47TG474'
-#     teamName: 'Systemsat Solucoes e Consultoria em Comunicacao de Dados Ltda.'
-
-# - task: AppStoreRelease@1
-#   inputs:
-#     serviceEndpoint: 'App Store Connect'
-#     releaseTrack: 'TestFlight'
-#     appIdentifier: 'br.com.systemsat.whitelabelssx'
-#     appType: 'iOS'
-#     ipaPath: "$(Build.ArtifactStagingDirectory)/$(scheme)/WhiteLabel.ipa"
-#     # appSpecificId: '53b4ecc6901c45418378d30a1c666dff'
-#     teamId: 'W8L47TG474'
-#     teamName: 'Systemsat Solucoes e Consultoria em Comunicacao de Dados Ltda.'
-
 - task: AppStoreRelease@1
   inputs:
     serviceEndpoint: 'App Store Connect'
@@ -187,4 +118,4 @@ steps:
     shouldSkipWaitingForProcessing: true
     shouldSkipSubmission: true
     appSpecificPassword: 'f4b945b1608b45d6a89ddcd22be5baf8'
-    appSpecificId: '6447273573'
+    appSpecificId: 'opnh-zkuo-ayfu-szvk'
