@@ -66,10 +66,23 @@ steps:
     chmod 644 $infoPlistPath
     /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier $(BUNDLE_ID)" $infoPlistPath
 
+    echo "Fetching current version using PlistBuddy..."
     current_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" $infoPlistPath)
+    echo "Extracted Current Version: $current_version"
+
+    # Check if the current version is a number
+    if ! [[ "$current_version" =~ ^[0-9]+$ ]]; then
+        echo "Current version is not a number. Exiting."
+        exit 1
+    fi
+
+    echo "Incrementing version using APP_VERSION variable..."
     new_version=$((APP_VERSION + 1))
+    echo "New Version to be set: $new_version"
+
     /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $new_version" $infoPlistPath
-  displayName: 'Update Info.plist'
+
+# Debugging Steps (End)
 
 
 # Arquivo e Exportação
@@ -107,6 +120,10 @@ steps:
     fi
   displayName: 'Archive and Export IPA'
 
+- script: |
+    xcodebuild archive -workspace $(xcWorkspacePath) -scheme $(scheme) -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive
+  displayName: 'Archive Project'
+  
 #Envio para AppStore
 - task: AppStoreRelease@1
   inputs:
