@@ -135,12 +135,14 @@ steps:
     else
         echo "IPA encontrado: $IPA_PATH"
     fi
+    unzip -q $(Build.ArtifactStagingDirectory)/$(scheme)/WhiteLabel.ipa -d extractedIPA
+    cat extractedIPA/Payload/WhiteLabel.app/Info.plist
   displayName: 'Archive and Export IPA'
 
 # - script: |
 #     xcodebuild archive -workspace $(xcWorkspacePath) -scheme $(scheme) -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive
 #   displayName: 'Archive Project'
-  
+
 #Envio para AppStore
 - task: AppStoreRelease@1
   inputs:
