@@ -14,7 +14,7 @@ steps:
 - checkout: self
 
 # Instalação fastlane
-- script: gem install fastlane
+- script: bundle exec install fastlane
   displayName: 'Atualizar Fastlane'
 
 - script: fastlane --version
