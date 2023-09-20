@@ -75,7 +75,6 @@ steps:
 
     echo "Fetching current version using PlistBuddy..."
     current_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" $infoPlistPath)
-    APP_VERSION=$current_version
     echo "Extracted Current Version: $APP_VERSION"
 
     # Check if the current version is a number
@@ -87,6 +86,7 @@ steps:
     echo "Incrementing version using APP_VERSION variable..."
     echo "Current APP_VERSION: $APP_VERSION"
     new_version=$((APP_VERSION + 1))
+    APP_VERSION=$new_version
     echo "New Version to be set: $new_version"
 
     /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $new_version" $infoPlistPath
