@@ -33,6 +33,12 @@ steps:
     provProfileSecureFile: 'DistributionWhiteLabel.mobileprovision'
   displayName: 'Install Apple Provisioning Profile'
 
+steps:
+- task: DownloadSecureFile@1
+  name: appStoreKey
+  inputs:
+    secureFile: 'AuthKey_96KGBK2Q6J.p8'
+
 # Preparação do ambiente
 - script: |
     cd $(Build.SourcesDirectory)
