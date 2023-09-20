@@ -13,6 +13,10 @@ variables:
 steps:
 - checkout: self
 
+# Instalação fastlane
+- script: gem install fastlane
+  displayName: 'Atualizar Fastlane'
+
 # Instalação de Certificados e Perfil de Provisionamento
 - task: InstallAppleCertificate@2
   inputs:
