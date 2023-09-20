@@ -125,9 +125,9 @@ steps:
     fi
   displayName: 'Archive and Export IPA'
 
-- script: |
-    xcodebuild archive -workspace $(xcWorkspacePath) -scheme $(scheme) -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive
-  displayName: 'Archive Project'
+# - script: |
+#     xcodebuild archive -workspace $(xcWorkspacePath) -scheme $(scheme) -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive
+#   displayName: 'Archive Project'
   
 #Envio para AppStore
 - task: AppStoreRelease@1
