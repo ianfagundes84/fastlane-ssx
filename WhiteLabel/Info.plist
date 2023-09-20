@@ -5,9 +5,9 @@
 	<key>CFBundleIdentifier</key>
 	<string>br.com.systemsat.whitelabelssx</string>
 	<key>CFBundleShortVersionString</key>
-	<string>16</string>
-	<key>CFBundleVersion</key>
 	<string>1.0</string>
+	<key>CFBundleVersion</key>
+	<string>16</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>13.3</string>
 	<key>UIApplicationSceneManifest</key>
