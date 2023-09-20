@@ -70,5 +70,16 @@ platform :ios do
     unless ENV["FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD"]
       # UI.user_error!("No FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD environment variable found. Please set it up.")
     end
+  
+  lane :increment_build_number do
+      latest_testflight_build_number = sh("fastlane run latest_testflight_build_number app_identifier:6447273573")
+      incremented_build_number = latest_testflight_build_number.to_i + 1
+    
+      # Agora, use o número incrementado para definir a build atual
+      increment_build_number(
+        build_number: incremented_build_number,
+        xcodeproj: "/Users/ianfagundes/fastlane-ssx/WhiteLabel.xcodeproj" # Substitua pelo caminho correto do seu .xcodeproj
+      )
   end
+    
 end
