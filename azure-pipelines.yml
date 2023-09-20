@@ -14,7 +14,7 @@ steps:
 - checkout: self
 
 # Instalação fastlane
-- script: bundle install fastlane
+- script: gem install fastlane
   displayName: 'Atualizar Fastlane'
 
 - script: fastlane --version
@@ -95,6 +95,9 @@ steps:
     echo "Updated Version in Info.plist: $updated_version"
 
 # Debugging Steps (End)
+
+# - script: bundle exec fastlane run increment_build_number build_number:$(Build.BuildId) xcodeproj:$(xcWorkspacePath)
+#   displayName: Update Build Number
 
 # Atualização do BuildNumber
 - script: fastlane run increment_build_number build_number:$(APP_VERSION) xcodeproj:$(Build.SourcesDirectory)/$(scheme).xcodeproj
