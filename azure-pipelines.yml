@@ -75,8 +75,8 @@ steps:
 
     echo "Fetching current version using PlistBuddy..."
     current_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" $infoPlistPath)
-    $(APP_VERSION) = current_version
-    echo "Extracted Current Version: $current_version"
+    APP_VERSION=$current_version
+    echo "Extracted Current Version: $APP_VERSION"
 
     # Check if the current version is a number
     if ! [[ "$current_version" =~ ^[0-9]+$ ]]; then
