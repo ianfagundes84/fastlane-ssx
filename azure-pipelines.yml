@@ -97,7 +97,7 @@ steps:
 # Debugging Steps (End)
 
 # Atualização do BuildNumber
-- script: fastlane run increment_build_number build_number:$(APP_VERSION) xcodeproj:$(xcWorkspacePath)
+- script: fastlane run increment_build_number build_number:$(APP_VERSION) xcodeproj:$(Build.SourcesDirectory)/$(scheme).xcodeproj
   displayName: Update Build Number
 
 # Arquivo e Exportação
