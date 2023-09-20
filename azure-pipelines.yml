@@ -86,13 +86,13 @@ steps:
     echo "Incrementing version using APP_VERSION variable..."
     echo "Current APP_VERSION: $APP_VERSION"
     new_version=$((APP_VERSION + 1))
-    APP_VERSION=$new_version
     echo "New Version to be set: $new_version"
 
     /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $new_version" $infoPlistPath
 
     # Re-fetch and print the updated version for confirmation
     updated_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" $infoPlistPath)
+    APP_VERSION=$updated_version
     echo "Updated Version in Info.plist: $updated_version"
 
 # Debugging Steps (End)
@@ -101,8 +101,8 @@ steps:
 #   displayName: Update Build Number
 
 # Atualização do BuildNumber
-- script: fastlane run increment_build_number build_number:$(APP_VERSION) xcodeproj:$(Build.SourcesDirectory)/$(scheme).xcodeproj
-  displayName: Update Build Number
+# - script: fastlane run increment_build_number build_number:$(APP_VERSION) xcodeproj:$(Build.SourcesDirectory)/$(scheme).xcodeproj
+#   displayName: Update Build Number
 
 # Arquivo e Exportação
 - script: |      
