@@ -75,7 +75,15 @@ steps:
     versionCodeOption: 'buildid'
     versionCode: '$(Build.BuildId)'
     printFile: true
-    
+
+- script: |
+    git config --global user.email "ianfag@icloud.com"
+    git config --global user.name "Azure DevOps Build"
+    git add $(Build.SourcesDirectory)/$(scheme)/Info.plist
+    git commit -m "Automatically updated build version to $(Build.BuildId)"
+    git push origin develop
+  displayName: 'Commit updated Info.plist to develop branch'
+
 # Arquivo e Exportação
 - script: |      
     # Archiving
