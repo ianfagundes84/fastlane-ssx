@@ -10,6 +10,12 @@ variables:
   IPA_NAME: 'WhiteLabel.ipa'
 
 steps:
+# Checkout develop branch explicitly
+- script: |
+    git checkout develop
+    git pull origin develop
+  displayName: 'Checkout and update develop branch'
+
 # Instalação de Certificados e Perfil de Provisionamento
 - task: InstallAppleCertificate@2
   inputs:
@@ -76,6 +82,7 @@ steps:
     versionCode: '$(Build.BuildId)'
     printFile: true
 
+# Commit updated Info.plist to develop branch
 - script: |
     git config --global user.email "ianfag@icloud.com"
     git config --global user.name "Azure DevOps Build"
