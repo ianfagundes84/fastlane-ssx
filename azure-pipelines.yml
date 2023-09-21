@@ -131,7 +131,6 @@ steps:
     sourcePath: '$(Build.SourcesDirectory)/$(scheme)/Info.plist'
     versionCodeOption: 'buildid'
     versionCode: '$(Build.BuildId)'
-    versionCodeOffset: '16'
     printFile: true
     
 # Arquivo e Exportação
