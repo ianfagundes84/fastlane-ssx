@@ -29,6 +29,7 @@ steps:
     provProfileSecureFile: 'DistributionWhiteLabel.mobileprovision'
   displayName: 'Install Apple Provisioning Profile'
 
+# Download do securyFile
 - task: DownloadSecureFile@1
   name: appStoreKey
   inputs:
@@ -41,12 +42,14 @@ steps:
   displayName: 'Imprimir conteúdo do arquivo .p8'
 
 # Preparação do ambiente
+  # Instalação dos pods
 - script: |
     cd $(Build.SourcesDirectory)
     pod update
     pod install
   displayName: 'CocoaPods install'
-
+  
+  # Limpeza do derivedData
 - script: |
     rm -rf ~/Library/Developer/Xcode/DerivedData/
     xcodebuild clean
