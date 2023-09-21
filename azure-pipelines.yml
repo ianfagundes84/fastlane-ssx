@@ -87,29 +87,18 @@ steps:
     versionCode: '$(Build.BuildId)'
     printFile: true
 
-# Commit updated Info.plist to develop branch
-- task: GitHubRelease@1
-  inputs:
-    gitHubConnection: 'ianfagundes84'
-    repositoryName: 'ianfagundes84/fastlane-ssx'
-    action: 'edit'
-    target: '$(Build.SourceVersion)'
-    tag: 'edit'
-    changeLogCompareToRelease: 'lastFullRelease'
-    changeLogType: 'commitBased'
-  displayName: 'Commit testing'
-
-- script: |
-    git config --global user.email "ianfag@icloud.com"
-    git config --global user.name "Azure DevOps Build"
-    git remote set-url origin git@github.com:ianfagundes84/fastlane-ssx.git
-    git add $(Build.SourcesDirectory)/$(scheme)/Info.plist
-    git commit -m "Automatically updated build version to $(Build.BuildId)"
-    ssh -T git@github.com
-    git push origin develop
-  displayName: 'Commit updated Info.plist to develop branch'
-  env:
-    GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no"
+# # Commit updated Info.plist to develop branch
+# - script: |
+#     git config --global user.email "ianfag@icloud.com"
+#     git config --global user.name "Azure DevOps Build"
+#     git remote set-url origin git@github.com:ianfagundes84/fastlane-ssx.git
+#     git add $(Build.SourcesDirectory)/$(scheme)/Info.plist
+#     git commit -m "Automatically updated build version to $(Build.BuildId)"
+#     ssh -T git@github.com
+#     git push origin develop
+#   displayName: 'Commit updated Info.plist to develop branch'
+#   env:
+#     GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no"
 
 # Arquivo e Exportação
 - script: |      
