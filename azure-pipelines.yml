@@ -87,14 +87,18 @@ steps:
     versionCode: '$(Build.BuildId)'
     printFile: true
 
-# Configura o agente SSH
-- task: InstallSSHKey@0
-  inputs:
-    knownHostsEntry: '<known hosts entry>'
-    sshPublicKey: '$(PUBLICSSHKEY)'
-    sshKeySecureFile: 'sshKeySecureFile'
-
 # Commit updated Info.plist to develop branch
+- task: GitHubRelease@1
+  inputs:
+    gitHubConnection: 'ianfagundes84'
+    repositoryName: 'ianfagundes84/fastlane-ssx'
+    action: 'edit'
+    target: '$(Build.SourceVersion)'
+    tag: 'edit'
+    changeLogCompareToRelease: 'lastFullRelease'
+    changeLogType: 'commitBased'
+displayName: 'Commit testing'
+
 - script: |
     git config --global user.email "ianfag@icloud.com"
     git config --global user.name "Azure DevOps Build"
