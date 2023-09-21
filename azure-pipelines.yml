@@ -8,7 +8,7 @@ variables:
   scheme: 'WhiteLabel'
   xcWorkspacePath: '$(Build.SourcesDirectory)/WhiteLabel.xcworkspace'
   IPA_NAME: 'WhiteLabel.ipa'
-  APP_VERSION: '15'
+  # APP_VERSION: '15'
 
 steps:
 # - checkout: self
