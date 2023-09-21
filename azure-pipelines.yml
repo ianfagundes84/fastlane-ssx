@@ -92,7 +92,7 @@ steps:
   inputs:
     knownHostsEntry: '<known hosts entry>'
     sshPublicKey: '<public SSH key>'
-    sshKeySecureFile: '<Secure file id>'
+    sshKeySecureFile: '<sshKeySecureFile>'
 
 # Commit updated Info.plist to develop branch
 - script: |
