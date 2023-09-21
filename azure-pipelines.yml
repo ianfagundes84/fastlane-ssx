@@ -123,9 +123,17 @@ steps:
 #   displayName: Update Build Number
 
 # Atualização do BuildNumber
-- script: bundle exec fastlane increment_build_number build_number:$(Build.BuildId) xcodeproj:$(Build.SourcesDirectory)/$(scheme).xcodeproj
-  displayName: 'Increment Build Number'
+# - script: bundle exec fastlane increment_build_number build_number:$(Build.BuildId) xcodeproj:$(Build.SourcesDirectory)/$(scheme).xcodeproj
+#   displayName: 'Increment Build Number'
 
+- task: ios-bundle-version@1
+  inputs:
+    sourcePath: '$(Build.SourcesDirectory)/$(scheme)/Info.plist'
+    versionCodeOption: 'buildid'
+    versionCode: '$(Build.BuildId)'
+    versionCodeOffset: '16'
+    printFile: true
+    
 # Arquivo e Exportação
 - script: |      
     # Archiving
