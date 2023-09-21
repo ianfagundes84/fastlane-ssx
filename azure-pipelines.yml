@@ -12,7 +12,9 @@ variables:
 steps:
 # Checkout develop branch explicitly
 - script: |
-    git checkout develop
+    git remote update
+    git fetch 
+    git checkout --track origin/develop
     git pull origin develop
   displayName: 'Checkout and update develop branch'
 
