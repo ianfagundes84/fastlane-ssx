@@ -8,26 +8,8 @@ variables:
   scheme: 'WhiteLabel'
   xcWorkspacePath: '$(Build.SourcesDirectory)/WhiteLabel.xcworkspace'
   IPA_NAME: 'WhiteLabel.ipa'
-  # APP_VERSION: '15'
 
 steps:
-# - checkout: self
-# # Atualizar RubyGems
-# - script: |
-#     gem update --system
-#     gem update
-#   displayName: 'Atualizar RubyGems e todas as gems'
-
-# Instalação fastlane
-# - script: gem install fastlane
-#   displayName: 'Instalar Fastlane'
-
-# - script: ls -la $(Agent.TempDirectory)
-#   displayName: 'Listar conteúdo do diretório temporário'
-
-# - script: fastlane --version
-#   displayName: 'Verificar versão do Fastlane'
-
 # Instalação de Certificados e Perfil de Provisionamento
 - task: InstallAppleCertificate@2
   inputs:
@@ -86,46 +68,7 @@ steps:
     fi
   displayName: 'Prepare Export Directory'
 
-# Atualização do Info.plist
-# - script: |
-#     infoPlistPath="$(Build.SourcesDirectory)/$(scheme)/Info.plist"
-#     chmod 644 $infoPlistPath
-#     /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier $(BUNDLE_ID)" $infoPlistPath
-
-#     echo "Fetching current version using PlistBuddy..."
-#     current_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" $infoPlistPath)
-#     echo "Extracted Current Version: $APP_VERSION"
-
-#     # Check if the current version is a number
-#     if ! [[ "$current_version" =~ ^[0-9]+$ ]]; then
-#         echo "Current version is not a number. Exiting."
-#         exit 1
-#     fi
-
-#     echo "Incrementing version using APP_VERSION variable..."
-#     echo "Current APP_VERSION: $APP_VERSION"
-#     new_version=$((APP_VERSION + 1))
-#     echo "New Version to be set: $new_version"
-
-#     /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $new_version" $infoPlistPath
-
-#     # Re-fetch and print the updated version for confirmation
-#     updated_version=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" $infoPlistPath)
-#     APP_VERSION=$updated_version
-#     echo "Updated Version in Info.plist: $updated_version"
-
-# Atualização do BuildNumber
-# - script: bundle exec fastlane run increment_build_number build_number:$(Build.BuildId) xcodeproj:$(xcWorkspacePath)
-#   displayName: Update Build Number
-
-# Atualização do BuildNumber
-# - script: fastlane run increment_build_number build_number:$(APP_VERSION) xcodeproj:$(Build.SourcesDirectory)/$(scheme).xcodeproj
-#   displayName: Update Build Number
-
-# Atualização do BuildNumber
-# - script: bundle exec fastlane increment_build_number build_number:$(Build.BuildId) xcodeproj:$(Build.SourcesDirectory)/$(scheme).xcodeproj
-#   displayName: 'Increment Build Number'
-
+# Atualização do Build
 - task: ios-bundle-version@1
   inputs:
     sourcePath: '$(Build.SourcesDirectory)/$(scheme)/Info.plist'
@@ -170,10 +113,6 @@ steps:
     cat extractedIPA/Payload/WhiteLabel.app/Info.plist
   displayName: 'Archive and Export IPA'
 
-# - script: |
-#     xcodebuild archive -workspace $(xcWorkspacePath) -scheme $(scheme) -archivePath $(Build.SourcesDirectory)/build/WhiteLabel.xcarchive
-#   displayName: 'Archive Project'
-
 #Envio para AppStore
 - task: AppStoreRelease@1
   inputs:
@@ -184,7 +123,6 @@ steps:
     ipaPath: "$(Build.ArtifactStagingDirectory)/$(scheme)/WhiteLabel.ipa"
     shouldSkipWaitingForProcessing: true
     shouldSkipSubmission: true
-    # appSpecificPassword: 'f4b945b1608b45d6a89ddcd22be5baf8'
     appSpecificId: 'opnh-zkuo-ayfu-szvk'
     apiKeyId: '96KGBK2Q6J'
     apiKeyIssuerId: '69a6de84-fb7c-47e3-e053-5b8c7c11a4d1'
