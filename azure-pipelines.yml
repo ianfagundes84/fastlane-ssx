@@ -11,22 +11,22 @@ variables:
   APP_VERSION: '15'
 
 steps:
-- checkout: self
-# Atualizar RubyGems
-- script: |
-    gem update --system
-    gem update
-  displayName: 'Atualizar RubyGems e todas as gems'
+# - checkout: self
+# # Atualizar RubyGems
+# - script: |
+#     gem update --system
+#     gem update
+#   displayName: 'Atualizar RubyGems e todas as gems'
 
 # Instalação fastlane
-- script: gem install fastlane
-  displayName: 'Instalar Fastlane'
+# - script: gem install fastlane
+#   displayName: 'Instalar Fastlane'
 
-- script: ls -la $(Agent.TempDirectory)
-  displayName: 'Listar conteúdo do diretório temporário'
+# - script: ls -la $(Agent.TempDirectory)
+#   displayName: 'Listar conteúdo do diretório temporário'
 
-- script: fastlane --version
-  displayName: 'Verificar versão do Fastlane'
+# - script: fastlane --version
+#   displayName: 'Verificar versão do Fastlane'
 
 # Instalação de Certificados e Perfil de Provisionamento
 - task: InstallAppleCertificate@2
