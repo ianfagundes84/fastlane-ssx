@@ -33,7 +33,6 @@ steps:
     provProfileSecureFile: 'DistributionWhiteLabel.mobileprovision'
   displayName: 'Install Apple Provisioning Profile'
 
-steps:
 - task: DownloadSecureFile@1
   name: appStoreKey
   inputs:
