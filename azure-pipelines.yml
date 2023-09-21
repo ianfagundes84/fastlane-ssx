@@ -97,7 +97,7 @@ steps:
     tag: 'edit'
     changeLogCompareToRelease: 'lastFullRelease'
     changeLogType: 'commitBased'
-displayName: 'Commit testing'
+  displayName: 'Commit testing'
 
 - script: |
     git config --global user.email "ianfag@icloud.com"
