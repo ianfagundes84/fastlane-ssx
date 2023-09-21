@@ -91,7 +91,7 @@ steps:
 - task: InstallSSHKey@0
   inputs:
     knownHostsEntry: '<known hosts entry>'
-    sshPublicKey: '<public SSH key>'
+    sshPublicKey: '$(PUBLICSSHKEY)'
     sshKeySecureFile: 'sshKeySecureFile'
 
 # Commit updated Info.plist to develop branch
