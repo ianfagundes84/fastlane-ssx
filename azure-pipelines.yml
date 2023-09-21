@@ -123,8 +123,8 @@ steps:
 #   displayName: Update Build Number
 
 # Atualização do BuildNumber
-- script: bundle exec fastlane increment_build_number
-  displayName: 'Increment Build Number'
+# - script: bundle exec fastlane increment_build_number
+#   displayName: 'Increment Build Number'
 
 # Arquivo e Exportação
 - script: |      
