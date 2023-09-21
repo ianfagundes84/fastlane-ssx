@@ -86,10 +86,15 @@ steps:
 - script: |
     git config --global user.email "ianfag@icloud.com"
     git config --global user.name "Azure DevOps Build"
+    
+    git remote set-url origin git@github.com:ianfagundes84/fastlane-ssx.git
+    
     git add $(Build.SourcesDirectory)/$(scheme)/Info.plist
     git commit -m "Automatically updated build version to $(Build.BuildId)"
     git push origin develop
   displayName: 'Commit updated Info.plist to develop branch'
+  env:
+    GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no"
 
 # Arquivo e Exportação
 - script: |      
