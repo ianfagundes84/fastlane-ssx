@@ -94,7 +94,7 @@ steps:
     
     git add $(Build.SourcesDirectory)/$(scheme)/Info.plist
     git commit -m "Automatically updated build version to $(Build.BuildId)"
-    git pull
+    
     git push origin develop
   displayName: 'Commit updated Info.plist to develop branch'
   env:
